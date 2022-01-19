@@ -1,7 +1,10 @@
 package com.example.caravan;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,11 +23,6 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
-
-    public void openMap(View view){
-        Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
 }
