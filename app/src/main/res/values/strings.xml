@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Caravan</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="open_map">Open Map</string>
+</resources>
