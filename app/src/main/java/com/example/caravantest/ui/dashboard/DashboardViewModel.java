@@ -1,5 +1,7 @@
 package com.example.caravantest.ui.dashboard;
 
+import android.content.Intent;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

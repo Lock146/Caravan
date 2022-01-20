@@ -11,15 +11,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.caravantest.R;
+import com.example.caravantest.databinding.ActivityMapsBinding;
 import com.example.caravantest.databinding.FragmentDashboardBinding;
+import com.google.android.gms.maps.GoogleMap;
 
 public class DashboardFragment extends Fragment {
 
+    private GoogleMap mMap;
+    private ActivityMapsBinding mbinding;
     private DashboardViewModel dashboardViewModel;
-private FragmentDashboardBinding binding;
+    private FragmentDashboardBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
+
         dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
 
