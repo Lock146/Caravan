@@ -11,8 +11,8 @@ import com.example.caravantest.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-private ActivityMainBinding binding;
-
+    private ActivityMainBinding binding;
+    public static final String EXTRA_MESSAGE = "com.example.CaravanTest.MESSAGE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

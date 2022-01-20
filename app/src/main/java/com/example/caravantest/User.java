@@ -1,4 +1,4 @@
-package com.example.caravan;
+package com.example.caravantest;
 
 public class User {
     public User(){
