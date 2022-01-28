@@ -13,37 +13,45 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.caravantest.R;
 import com.example.caravantest.databinding.ActivityMapsBinding;
 import com.example.caravantest.databinding.FragmentDashboardBinding;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class DashboardFragment extends Fragment {
 
-    private GoogleMap mMap;
-    private ActivityMapsBinding mbinding;
-    private DashboardViewModel dashboardViewModel;
-    private FragmentDashboardBinding binding;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        SupportMapFragment supportMapFragment = (SupportMapFragment)
+                getChildFragmentManager().findFragmentById(R.id.map);
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
-
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
-
-    binding = FragmentDashboardBinding.inflate(inflater, container, false);
-    View root = binding.getRoot();
-
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+                /**googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(@NonNull LatLng latLng) {
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(latLng);
+                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+                        googleMap.clear();
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                        googleMap.addMarker(markerOptions);
+                    }
+                }); */
+
+
+                // Add a marker in Sydney and move the camera
+                LatLng sydney = new LatLng(-34, 151);
+                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             }
         });
-        return root;
-    }
 
-@Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+        return view;
     }
 }
