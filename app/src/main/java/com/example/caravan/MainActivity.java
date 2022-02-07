@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -15,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_main);
     }
 
@@ -23,6 +27,20 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+    }
+
+    public void connect(View view){
+        Log.d("Networking", "Transmit called");
+        Intent intent = new Intent(this, Networking.class);
+
+        EditText serverIPText = (EditText) findViewById(R.id.serverIPTextEdit);
+        String serverIP = serverIPText.getText().toString();
+
+        EditText serverPortText = (EditText) findViewById(R.id.serverPortTextEdit);
+        String serverPort = serverPortText.getText().toString();
+        intent.putExtra("serverIP", serverIP);
+        intent.putExtra("serverPort", serverPort);
         startActivity(intent);
     }
 }

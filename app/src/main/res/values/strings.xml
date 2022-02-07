@@ -6,4 +6,10 @@
     <string name="open_map">Open Map</string>
     <string name="dialog_add">Add</string>
     <string name="dialog_cancel">Cancel</string>
+
+    <string name="server_ip_label">Server IP:</string>
+    <string name="defaultServerIP">10.0.2.2</string>
+    <string name="server_port_label">Server Port:</string>
+    <string name="defaultServerPort">12000</string>
+    <string name="connect">Connect</string>
 </resources>

@@ -9,6 +9,9 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,6 +36,9 @@
             android:name=".MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".Networking"
+            android:exported="false"/>
         <activity
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity">

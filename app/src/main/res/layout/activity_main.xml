@@ -33,4 +33,60 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName" />
 
+    <TextView
+        android:id="@+id/serverIPLabel"
+        android:layout_width="75dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/server_ip_label"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/serverIPTextEdit"
+        android:layout_width="295dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/defaultServerIP"
+        android:text="@string/defaultServerIP"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/serverIPLabel"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+    <TextView
+        android:id="@+id/serverPortLabel"
+        android:layout_width="80dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/server_port_label"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/serverIPLabel" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/serverPortTextEdit"
+        android:layout_width="295dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/defaultServerPort"
+        android:text="@string/defaultServerPort"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/serverIPTextEdit"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/serverPortLabel"
+        app:layout_constraintTop_toBottomOf="@+id/serverIPTextEdit" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="connect"
+        android:text="@string/connect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/serverPortTextEdit" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
