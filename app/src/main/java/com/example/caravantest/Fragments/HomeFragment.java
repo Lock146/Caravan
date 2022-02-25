@@ -134,13 +134,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         break;
 
-                    case R.id.btnSatellite:
-                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                        break;
-
-                    case R.id.btnTerrain:
-                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                        break;
                 }
                 return true;
             });
