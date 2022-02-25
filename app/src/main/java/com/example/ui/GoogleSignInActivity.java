@@ -4,6 +4,7 @@ package com.example.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
@@ -25,15 +26,17 @@ public class GoogleSignInActivity extends MainActivity {
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
+
+    Button Google;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //might not be that
+        Google.setOnClickListener(view ->{startActivity(new Intent(GoogleSignInActivity.this,MainActivity.class));});
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("666546403971-kl36pcctdfp2r92u228d223j17lhu05v.apps.googleusercontent.com")
@@ -76,9 +79,7 @@ public class GoogleSignInActivity extends MainActivity {
             }
         }
     }
-    // [END onactivityresult]
 
-    // [START auth_with_google]
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -103,7 +104,7 @@ public class GoogleSignInActivity extends MainActivity {
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivity(signInIntent, RC_SIGN_IN);
     }
 
 

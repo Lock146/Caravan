@@ -58,9 +58,4 @@ public class MainActivity<actionCodeSettings> extends AppCompatActivity {
         //String googleIdToken = "";
         //AuthCredential credential = GoogleAuthProvider.getCredential(googleIdToken, null); }
 
-    //public void signOut() {
-        // [START auth_sign_out]
-        //FirebaseAuth.getInstance().signOut();
-        // [END auth_sign_out]}
-
 
