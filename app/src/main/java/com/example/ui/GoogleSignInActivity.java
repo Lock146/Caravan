@@ -34,7 +34,6 @@ public class GoogleSignInActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // [START config_signin]
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("666546403971-kl36pcctdfp2r92u228d223j17lhu05v.apps.googleusercontent.com")
@@ -50,7 +49,7 @@ public class GoogleSignInActivity extends MainActivity {
 
     }
 
-    // [START on_start_check_user]
+
     @Override
     public void onStart() {
         super.onStart();
@@ -101,12 +100,12 @@ public class GoogleSignInActivity extends MainActivity {
     }
     // [END auth_with_google]
 
-    // [START signin]
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signin]
+
 
     private void updateUI(FirebaseUser user) {
 
