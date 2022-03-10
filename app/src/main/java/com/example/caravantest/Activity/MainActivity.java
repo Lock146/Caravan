@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if (snapshot.exists()) {
-
                     UserModel userModel = snapshot.getValue(UserModel.class);
                     Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
                     txtName.setText(userModel.getUsername());
