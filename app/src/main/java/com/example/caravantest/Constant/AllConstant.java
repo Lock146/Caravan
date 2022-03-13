@@ -20,10 +20,10 @@ public interface AllConstant {
                     new PlaceModel(3, R.drawable.ic_gas_station, "Gas", "gas_station"),
                     new PlaceModel(4, R.drawable.ic_gas_station, "Groceries", "supermarket"),
                     new PlaceModel(5, R.drawable.ic_gas_station, "Hotels", "hotel"),
-                    new PlaceModel(6, R.drawable.ic_gas_station, "Pharmacies", "pharmacy"),
-                    new PlaceModel(7, R.drawable.ic_gas_station, "Hospitals & Clinics", "hospital"),
-                    new PlaceModel(8, R.drawable.ic_gas_station, "Car Wash", "car_wash"),
-                    new PlaceModel(9, R.drawable.ic_gas_station, "Beauty Salons", "beauty_salon")
+                    new PlaceModel(6, R.drawable.ic_gas_station, "Attractions", "tourist_attraction"),
+                    new PlaceModel(7, R.drawable.ic_gas_station, "Parks", "park"),
+                    new PlaceModel(8, R.drawable.ic_gas_station, "Museums", "museum"),
+                    new PlaceModel(9, R.drawable.ic_gas_station, "Bars", "bar")
 
             )
     );

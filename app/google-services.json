@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "337809219741",
-    "project_id": "near-me-learning",
-    "storage_bucket": "near-me-learning.appspot.com"
+    "project_number": "558800286479",
+    "firebase_url": "https://caravan-860a9-default-rtdb.firebaseio.com",
+    "project_id": "caravan-860a9",
+    "storage_bucket": "caravan-860a9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:337809219741:android:43f8b8ca1dc6a6424bb474",
+        "mobilesdk_app_id": "1:558800286479:android:38df4229b19a402956047a",
         "android_client_info": {
           "package_name": "com.example.caravantest"
         }
       },
       "oauth_client": [
         {
-          "client_id": "337809219741-qttfutsck5tqd53atr945if49hj1sgcq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.caravantest",
-            "certificate_hash": "d58b8d6eff1f208f5da9b98a97707014b28ea325"
-          }
-        },
-        {
-          "client_id": "337809219741-jtfj1amovovkgoi3a4ivkcajigv2arl5.apps.googleusercontent.com",
+          "client_id": "558800286479-sd0nhorcpcrdlj3og7rnd83j1bmnor64.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA2dZuGBCsItXaBTGYHc57dXoeEGU5mvv8"
+          "current_key": "AIzaSyAw99LQGsRVLxTKwZ5W6UYZpBJ64m8Rsj0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "337809219741-jtfj1amovovkgoi3a4ivkcajigv2arl5.apps.googleusercontent.com",
+              "client_id": "558800286479-sd0nhorcpcrdlj3og7rnd83j1bmnor64.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
