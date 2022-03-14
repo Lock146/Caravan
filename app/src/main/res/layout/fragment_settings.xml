@@ -36,16 +36,18 @@
                         android:id="@+id/imgProfile"
                         android:layout_width="90dp"
                         android:layout_height="90dp"
-                        android:src="@drawable/ic_gas_station" />
+                        android:src="@drawable/ic_person_outline" />
 
                     <ImageView
                         android:id="@+id/imgCamera"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="64dp"
+                        android:layout_height="69dp"
                         android:src="@drawable/ic_gas_station"
-                        app:layout_anchor="@id/imgProfile"
-                        app:layout_anchorGravity="end|bottom"
-                        app:tint="@color/white" />
+                        android:visibility="visible"
+                        app:layout_anchor="@+id/imgProfile"
+                        app:layout_anchorGravity="center"
+                        app:tint="@color/transparentColor"
+                        tools:visibility="visible" />
 
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -60,7 +62,6 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    app:drawableEndCompat="@drawable/ic_gas_station"
                     app:drawableTint="@color/white" />
             </LinearLayout>
 
@@ -104,7 +105,7 @@
                             android:textColor="@color/itemTextColor"
                             android:textSize="20dp"
                             android:textStyle="bold"
-                            app:drawableStartCompat="@drawable/ic_gas_station"
+                            app:drawableStartCompat="@drawable/ic_email"
                             app:drawableTint="@color/primaryColor" />
 
                         <LinearLayout
@@ -144,7 +145,9 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_gas_station"
-                            app:tint="@color/primaryColor" />
+                            android:visibility="invisible"
+                            app:tint="@color/primaryColor"
+                            tools:visibility="invisible" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -173,7 +176,7 @@
                             android:textColor="@color/itemTextColor"
                             android:textSize="20dp"
                             android:textStyle="bold"
-                            app:drawableStartCompat="@drawable/ic_gas_station"
+                            app:drawableStartCompat="@drawable/ic_lock"
                             app:drawableTint="@color/primaryColor" />
 
 
@@ -183,7 +186,9 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_gas_station"
-                            app:tint="@color/primaryColor" />
+                            android:visibility="invisible"
+                            app:tint="@color/primaryColor"
+                            tools:visibility="invisible" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -212,7 +217,7 @@
                             android:textColor="@color/itemTextColor"
                             android:textSize="20dp"
                             android:textStyle="bold"
-                            app:drawableStartCompat="@drawable/ic_gas_station"
+                            app:drawableStartCompat="@drawable/ic_logout"
                             app:drawableTint="@color/primaryColor" />
 
 
@@ -222,7 +227,9 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_gas_station"
-                            app:tint="@color/primaryColor" />
+                            android:visibility="invisible"
+                            app:tint="@color/primaryColor"
+                            tools:visibility="invisible" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>

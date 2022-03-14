@@ -4,17 +4,17 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/btnHome"
-            android:icon="@drawable/ic_gas_station"
+            android:icon="@drawable/ic_home"
             android:title="Home" />
 
         <item
             android:id="@+id/btnSavedPlaces"
-            android:icon="@drawable/ic_gas_station"
+            android:icon="@drawable/ic_bookmark"
             android:title="Saved Places" />
 
         <item
             android:id="@+id/btnSetting"
-            android:icon="@drawable/ic_gas_station"
+            android:icon="@drawable/ic_settings"
             android:title="Settings" />
     </group>
 
@@ -23,12 +23,12 @@
 
             <item
                 android:id="@+id/btnHelp"
-                android:icon="@drawable/ic_gas_station"
+                android:icon="@drawable/ic_about"
                 android:title="Help" />
 
             <item
                 android:id="@+id/btnAbout"
-                android:icon="@drawable/ic_gas_station"
+                android:icon="@drawable/ic_info"
                 android:title="About" />
         </menu>
     </item>
