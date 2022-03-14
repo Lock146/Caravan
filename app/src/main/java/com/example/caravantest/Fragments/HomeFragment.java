@@ -186,6 +186,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
+
+
+
+
+
         for (PlaceModel placeModel : AllConstant.placesName) {
 
             Chip chip = new Chip(requireContext());

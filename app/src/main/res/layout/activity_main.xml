@@ -19,4 +19,10 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/drawer_nav_graph" />
 
+    <fragment android:id="@+id/autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        />
+
 </RelativeLayout>
