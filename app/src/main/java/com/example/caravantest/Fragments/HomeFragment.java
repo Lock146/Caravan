@@ -218,6 +218,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 final LatLng location = place.getLatLng();
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
+                //String placeId = place.getId();
+                //Double lat = location.latitude;
+                //Double lng = location.longitude;
+
+                //Intent intent = new Intent(requireContext(), DirectionActivity.class);
+                //intent.putExtra("placeId", placeId);
+                //intent.putExtra("lat", lat);
+                //intent.putExtra("lng", lng);
+
+                //startActivity(intent);
+
             }
 
 
@@ -425,6 +436,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             }
         }
     }
+
+
 
     private void getPlaces(String placeName) {
 
