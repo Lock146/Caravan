@@ -1,5 +1,8 @@
 package com.example.caravantest;
 
+import android.util.Log;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,6 +22,15 @@ public class Database {
         String path = m_userID + "/data";
         DatabaseReference ref = m_database.getReference(path);
 
-        ref.setValue(message);
+        Task<Void> t = ref.setValue(message)
+                .addOnCompleteListener(e -> {
+                    Log.d("Database", "Completed sending data to database: " + e.toString());
+                })
+                .addOnFailureListener(e ->{
+                    Log.d("Database", "Failed to send data to database: " + e.toString());
+                })
+                .addOnSuccessListener(e -> {
+                    Log.d("Database", "Successfully sent data to database.");
+                });
     }
 }
