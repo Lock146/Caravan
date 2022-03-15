@@ -113,6 +113,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private InfoWindowAdapter infoWindowAdapter;
     private ArrayList<String> userSavedLocationId;
     private DatabaseReference locationReference, userLocationReference;
+    public LatLng testLocation;
 
     public HomeFragment() {
     }
@@ -172,6 +173,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
 
 
+
         binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
@@ -217,6 +219,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 final LatLng location = place.getLatLng();
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                testLocation = location;
 
                 //String placeId = place.getId();
                 //Double lat = location.latitude;
@@ -376,6 +379,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             isLocationPermissionOk = false;
             return;
         }
+
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -385,8 +389,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 mGoogleMap.setInfoWindowAdapter(infoWindowAdapter);
                 moveCameraToLocation(location);
 
+                 final double currentLatitude = location.getLatitude();
+                 final double currentLongitude = location.getLongitude();
+
+                 testLocation = new LatLng(currentLatitude,currentLongitude);
+
 
             }
+
         });
     }
 
@@ -445,11 +455,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
 
             loadingDialog.startLoading();
-            String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
-                    + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
-                    + "&radius=" + radius + "&type=" + placeName + "&key=" +
-                    getResources().getString(R.string.API_KEY);
-
+            String url;
+            if (testLocation == null) {
+                 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
+                        + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
+                        + "&radius=" + radius + "&type=" + placeName + "&key=" +
+                        getResources().getString(R.string.API_KEY);
+            }
+            else {
+                url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
+                        //+ currentLocation.getLatitude() + "," + currentLocation.getLongitude()
+                        + testLocation.latitude + ',' + testLocation.longitude
+                        + "&radius=" + radius + "&type=" + placeName + "&key=" +
+                        getResources().getString(R.string.API_KEY);
+            }
             if (currentLocation != null) {
 
 
