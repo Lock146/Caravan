@@ -205,14 +205,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+
+
+                final LatLng location = place.getLatLng();
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+
             }
 
 
@@ -258,7 +263,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Location Permission")
-                    .setMessage("Near me required location permission to show you near by places")
+                    .setMessage("Caravan required location permission to show you near by places")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -414,7 +419,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         if (fusedLocationProviderClient != null) {
 
-            startLocationUpdates();
+            //startLocationUpdates();
             if (currentMarker != null) {
                 currentMarker.remove();
             }
