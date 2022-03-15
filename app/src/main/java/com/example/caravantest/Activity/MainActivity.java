@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.example.caravantest.Database;
 import com.example.caravantest.R;
 import com.example.caravantest.UserModel;
 import com.example.caravantest.databinding.ActivityMainBinding;
@@ -73,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         getUserData();
 
-
+        Database database = new Database();
+        database.publish_message("This is a test message");
     }
 
     @Override
