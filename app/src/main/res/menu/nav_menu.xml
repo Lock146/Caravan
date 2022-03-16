@@ -23,11 +23,6 @@
         <menu>
 
             <item
-                android:id="@+id/btnHelp"
-                android:icon="@drawable/ic_about"
-                android:title="Help" />
-
-            <item
                 android:id="@+id/btnAbout"
                 android:icon="@drawable/ic_info"
                 android:title="About" />
