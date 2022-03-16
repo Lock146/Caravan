@@ -180,7 +180,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 if (checkedId != -1) {
                     PlaceModel placeModel = AllConstant.placesName.get(checkedId - 1);
-                    binding.edtPlaceName.setText(placeModel.getName());
+                    //binding.edtPlaceName.setText(placeModel.getName());
                     selectedPlaceModel = placeModel;
                     getPlaces(placeModel.getPlaceType());
                 }
@@ -200,6 +200,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
 
 
+
+
         Places.initialize(getActivity().getApplicationContext(), getString(R.string.API_KEY));
 
         // Initialize the AutocompleteSupportFragment.
@@ -208,6 +210,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        autocompleteFragment.setHint("Search a location...");
+
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {

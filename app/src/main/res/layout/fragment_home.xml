@@ -12,13 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <fragment android:id="@+id/autocomplete_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />
-
-
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinate"
@@ -26,6 +19,7 @@
         android:layout_height="120dp">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,10 +44,11 @@
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/primaryColor"
-                android:hint="Search Place"
-                android:inputType="text"
+                android:focusable="false"
+                android:hint=""
+                android:inputType=""
                 android:maxLines="1"
-                android:textColorHint="@color/itemTextColor" />
+                android:textColorHint="@color/transparentColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -64,6 +59,31 @@
             android:layout_marginBottom="30dp"
             android:elevation="5dp" />
 
+        <LinearLayout
+            android:layout_width="275dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="90dp"
+            android:elevation="10dp"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxStrokeColor="@color/white"
+            app:boxStrokeWidth="0dp"
+            app:endIconMode="clear_text"
+            app:hintEnabled="false"
+            app:layout_anchor="@id/view"
+            app:layout_anchorGravity="bottom|center">
+
+            <fragment
+                android:id="@+id/autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                app:layout_anchor="@+id/view"
+                app:layout_anchorGravity="center" />
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
