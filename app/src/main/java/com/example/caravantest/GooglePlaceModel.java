@@ -64,6 +64,7 @@ public class GooglePlaceModel {
 
     @Expose(serialize = false, deserialize = false)
     private boolean isSaved;
+    private boolean isCurrentLocation;
 
     public String getBusinessStatus() {
         return businessStatus;
@@ -177,5 +178,14 @@ public class GooglePlaceModel {
 
     public void setSaved(boolean saved) {
         isSaved = saved;
+    }
+
+    public boolean isCurrentLocation() {
+
+        return isCurrentLocation;
+    }
+
+    public void setCurrentLocation(boolean current) {
+        isCurrentLocation = current;
     }
 }
