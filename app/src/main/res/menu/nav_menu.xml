@@ -8,14 +8,15 @@
             android:title="Home" />
 
         <item
+            android:id="@+id/btnCurrentLocations"
+            android:icon="@drawable/ic_gas_station"
+            android:title="CurrentLocations" />
+
+        <item
             android:id="@+id/btnSavedPlaces"
             android:icon="@drawable/ic_bookmark"
             android:title="Saved Places" />
 
-        <item
-            android:id="@+id/btnSetting"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings" />
     </group>
 
     <item android:title="">
@@ -30,6 +31,10 @@
                 android:id="@+id/btnAbout"
                 android:icon="@drawable/ic_info"
                 android:title="About" />
+            <item
+                android:id="@+id/btnSetting"
+                android:icon="@drawable/ic_settings"
+                android:title="Settings" />
         </menu>
     </item>
 

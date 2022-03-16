@@ -112,7 +112,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private GooglePlaceAdapter googlePlaceAdapter;
     private InfoWindowAdapter infoWindowAdapter;
     private ArrayList<String> userSavedLocationId;
-    private DatabaseReference locationReference, userLocationReference;
+    private ArrayList<String> userCurrentLocationId;
+    private DatabaseReference locationReference, userLocationReference,  userCurrentReference;
     public LatLng testLocation;
 
     public HomeFragment() {
@@ -129,9 +130,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         retrofitAPI = RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
         googlePlaceModelList = new ArrayList<>();
         userSavedLocationId = new ArrayList<>();
+        userCurrentLocationId = new ArrayList<>();
         locationReference = FirebaseDatabase.getInstance().getReference("Places");
         userLocationReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Saved Locations");
+
+        userCurrentReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseAuth.getUid()).child("Current Locations");
 
         binding.btnMapType.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(requireContext(), view);
@@ -270,6 +275,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         setUpRecyclerView();
         getUserSavedLocations();
+        getUserCurrentLocations();
     }
 
     @Override
@@ -716,6 +722,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Saved Locations");
 
+
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -723,6 +731,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         String placeId = ds.getValue(String.class);
                         userSavedLocationId.add(placeId);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getUserCurrentLocations() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseAuth.getUid()).child("Current Locations");
+
+
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        String placeId = ds.getValue(String.class);
+                        userCurrentLocationId.add(placeId);
 
                     }
                 }

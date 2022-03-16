@@ -25,6 +25,11 @@
         android:label="fragment_saved_places"
         tools:layout="@layout/fragment_saved_places" />
     <fragment
+        android:id="@+id/btnCurrentLocations"
+        android:name="com.example.caravantest.Fragments.CurrentLocationsFragment"
+        android:label="fragment_current_locations"
+        tools:layout="@layout/fragment_current_locations" />
+    <fragment
         android:id="@+id/emailConfirmationFragment"
         android:name="com.example.caravantest.Fragments.EmailConfirmationFragment"
         android:label="fragment_email_confirmation"
