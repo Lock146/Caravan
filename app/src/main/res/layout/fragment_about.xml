@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".About">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
+        android:contentDescription="@string/app_name"
         android:layout_height="99dp"
         android:background="@color/teal_200"
         android:src="@drawable/ic_empty" />
@@ -18,19 +18,33 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="right"
+        android:gravity="end"
         android:paddingEnd="20dp"
+        android:paddingStart="20dp"
         android:paddingTop="20dp"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:text="About" />
+        android:text="@string/about" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:paddingTop="100dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="15dp"
+        android:gravity="start"
         android:layout_gravity="center"
-        android:textColor="@color/black"
+        android:lineSpacingExtra="6sp"
+        android:textColor="@color/accentColor"
         android:textSize="20sp"
-        android:text="Caravan is an app developed by the A New Dawn is Daying" />
+        android:text="@string/team_description"/>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="74dp"
+        app:icon="@drawable/ic_back_arrow"
+        app:iconSize="30sp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </FrameLayout>
