@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         setSupportActionBar(toolbarLayoutBinding.toolbar);
 
         firebaseAuth = FirebaseAuth.getInstance();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/black" />
+    <item android:drawable="@color/teal_200" />
 
 
     <item android:drawable="@drawable/ic_af24239a1e3b57d72213f4d1ac5604d8" android:gravity="center" />

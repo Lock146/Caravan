@@ -11,6 +11,11 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
+        android:id="@+id/btnAbout"
+        android:name="com.example.caravantest.About"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+    <fragment
         android:id="@+id/btnSetting"
         android:name="com.example.caravantest.Fragments.SettingsFragment"
         android:label="Saved Places"
