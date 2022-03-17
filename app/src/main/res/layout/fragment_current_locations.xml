@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="currentLocationModel"
+            type="com.example.caravantest.CurrentLocationModel" />
+
+        <variable
+            name="googlePlaceModel"
+            type="com.example.caravantest.GooglePlaceModel" />
+
+        <variable
+            name="listener"
+            type="com.example.caravantest.CurrentLocationInterface" />
+    </data>
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.CurrentLocationsFragment">
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedRecyclerView"
@@ -13,4 +33,14 @@
         android:scrollbars="none"
         tools:listitem="@layout/saved_item_layout" />
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="0.2"
+        android:onClick="@{()->listener.onStartClick()}"
+        android:src="@drawable/ic_gas_station"
+         />
+
 </RelativeLayout>
+
+</layout>

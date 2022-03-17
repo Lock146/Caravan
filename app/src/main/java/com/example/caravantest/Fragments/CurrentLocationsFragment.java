@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.example.caravantest.Activity.DirectionActivity;
 import com.example.caravantest.CurrentLocationInterface;
 import com.example.caravantest.CurrentLocationModel;
+import com.example.caravantest.GooglePlaceModel;
 import com.example.caravantest.R;
 import com.example.caravantest.SavedLocationInterface;
 import com.example.caravantest.SavedPlaceModel;
@@ -39,6 +40,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CurrentLocationsFragment extends Fragment implements CurrentLocationInterface {
@@ -49,6 +51,8 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
     private LoadingDialog loadingDialog;
     private FirebaseRecyclerAdapter<String, ViewHolder> firebaseRecyclerAdapter;
     private CurrentLocationInterface currentLocationInterface;
+    private List<CurrentLocationModel> currentLocationModelList;
+    private DatabaseReference locationCurrentReference, userCurrentReference;
 
 
     @Override
@@ -59,6 +63,8 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
         currentLocationInterface = this;
         firebaseAuth = FirebaseAuth.getInstance();
         currentLocationModelArrayList = new ArrayList<>();
+
+
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Current Locations");
         return binding.getRoot();
@@ -141,11 +147,41 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
             intent.putExtra("lat", currentLocationModel.getLat());
             intent.putExtra("lng", currentLocationModel.getLng());
 
+            if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+
+            }
             startActivity(intent);
 
         } else {
             Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    @Override
+    public void onLocationClick2(GooglePlaceModel googlePlaceModel) {
+
+    }
+
+    @Override
+    public void onConfirmationClick(CurrentLocationModel currentLocationModel) {
+
+        if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+            Intent intent = new Intent(requireContext(), DirectionActivity.class);
+            intent.putExtra("placeId", currentLocationModel.getPlaceId());
+            intent.putExtra("lat", currentLocationModel.getLat());
+            intent.putExtra("lng", currentLocationModel.getLng());
+
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onStartClick() {
 
     }
 
@@ -157,5 +193,7 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
             this.binding = binding;
         }
     }
+
+
 
 }

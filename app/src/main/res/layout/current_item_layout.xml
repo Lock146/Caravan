@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,11 +9,15 @@
             type="com.example.caravantest.CurrentLocationModel" />
 
         <variable
+            name="googlePlaceModel"
+            type="com.example.caravantest.GooglePlaceModel" />
+
+        <variable
             name="listener"
             type="com.example.caravantest.CurrentLocationInterface" />
     </data>
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -32,9 +37,9 @@
 
                 <TextView
                     android:id="@+id/txtPlaceName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_width="7dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@{currentLocationModel.name,default=`Location Name`}"
@@ -42,6 +47,13 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.2"
+                    android:onClick="@{()->listener.onLocationClick2(googlePlaceModel)}"
+                    android:src="@drawable/ic_gas_station"
+                    app:tint="@color/primaryColor" />
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="30dp"
