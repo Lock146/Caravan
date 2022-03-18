@@ -2,6 +2,7 @@ package com.example.caravantest.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,11 +41,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
 public class CurrentLocationsFragment extends Fragment implements CurrentLocationInterface {
 
+    private static final String TAG = "help";
     private FragmentCurrentLocationsBinding binding;
     private FirebaseAuth firebaseAuth;
     private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
@@ -63,6 +66,8 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
         currentLocationInterface = this;
         firebaseAuth = FirebaseAuth.getInstance();
         currentLocationModelArrayList = new ArrayList<>();
+
+        binding.currentLocation.setOnClickListener(currentLocation -> onStartClick());
 
 
 
@@ -100,6 +105,8 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
                         if (snapshot.exists()) {
 
                             CurrentLocationModel currentLocationModel = snapshot.getValue(CurrentLocationModel.class);
+                            currentLocationModelArrayList.add(currentLocationModel);
+
                             holder.binding.setCurrentLocationModel(currentLocationModel);
                             holder.binding.setListener(currentLocationInterface);
                         }
@@ -141,22 +148,25 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
     @Override
     public void onLocationClick(CurrentLocationModel currentLocationModel) {
 
-        if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
-            Intent intent = new Intent(requireContext(), DirectionActivity.class);
-            intent.putExtra("placeId", currentLocationModel.getPlaceId());
-            intent.putExtra("lat", currentLocationModel.getLat());
-            intent.putExtra("lng", currentLocationModel.getLng());
 
             if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+                Intent intent = new Intent(requireContext(), DirectionActivity.class);
+                intent.putExtra("placeId", currentLocationModel.getPlaceId());
+                intent.putExtra("lat", currentLocationModel.getLat());
+                intent.putExtra("lng", currentLocationModel.getLng());
 
+                if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+
+                }
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
             }
-            startActivity(intent);
 
-        } else {
-            Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
         }
 
-    }
+
 
     @Override
     public void onLocationClick2(GooglePlaceModel googlePlaceModel) {
@@ -180,13 +190,33 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
 
     }
 
-    @Override
+
     public void onStartClick() {
 
+        Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0) );
+        if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+            Intent intent = new Intent(requireContext(), DirectionActivity.class);
+            intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
+            intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
+            intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
+
+            if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+
+            }
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private CurrentItemLayoutBinding binding;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        public CurrentItemLayoutBinding binding;
+
 
         public ViewHolder(@NonNull CurrentItemLayoutBinding binding) {
             super(binding.getRoot());
@@ -196,4 +226,4 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
 
 
 
-}
+
