@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.caravantest.Adapter.DirectionStepAdapter;
 import com.example.caravantest.Constant.AllConstant;
+import com.example.caravantest.CurrentLocationModel;
 import com.example.caravantest.Model.DirectionPlaceModel.DirectionLegModel;
 import com.example.caravantest.Model.DirectionPlaceModel.DirectionResponseModel;
 import com.example.caravantest.Model.DirectionPlaceModel.DirectionRouteModel;
@@ -61,20 +62,46 @@ import retrofit2.Response;
 
 public class DirectionActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private ActivityDirectionBinding binding;
-    private GoogleMap mGoogleMap;
+    private static String TAG = "help";
+
+    private static ActivityDirectionBinding binding;
+    private static GoogleMap mGoogleMap;
     private AppPermissions appPermissions;
-    private boolean isLocationPermissionOk, isTrafficEnable;
+    private static boolean isLocationPermissionOk;
+    private boolean isTrafficEnable;
     private BottomSheetBehavior<RelativeLayout> bottomSheetBehavior;
-    private BottomSheetLayoutBinding bottomSheetLayoutBinding;
-    private RetrofitAPI retrofitAPI;
+    private static BottomSheetLayoutBinding bottomSheetLayoutBinding;
+    private static RetrofitAPI retrofitAPI;
     private LoadingDialog loadingDialog;
-    private Location currentLocation;
-    private Double endLat, endLng, endLat2, endLng2;
-    private String placeId, placeId2;
+    private static Location currentLocation;
+    private static Double endLat;
+    private static Double endLng;
+    private Double endLat2;
+    private Double endLng2;
+    private static String placeId;
+    private String placeId2;
     private int currentMode;
     private boolean moreStops;
-    private DirectionStepAdapter adapter;
+    private static DirectionStepAdapter adapter;
+    private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
+
+    public void getList(ArrayList<CurrentLocationModel> currentLocationModelArrayList) {
+        Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
+        while (!currentLocationModelArrayList.isEmpty()) {
+            if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+
+                placeId = currentLocationModelArrayList.get(0).getPlaceId();
+                endLat = currentLocationModelArrayList.get(0).getLat();
+                endLng = currentLocationModelArrayList.get(0).getLng();
+                getDirection("driving");
+
+            } else {
+
+            }
+
+            currentLocationModelArrayList.remove(0);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +109,10 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         binding = ActivityDirectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        endLat = getIntent().getDoubleExtra("lat", 0.0);
-        endLng = getIntent().getDoubleExtra("lng", 0.0);
-        placeId = getIntent().getStringExtra("placeId");
+        //endLat = getIntent().getDoubleExtra("lat", 0.0);
+        //endLng = getIntent().getDoubleExtra("lng", 0.0);
+        //placeId = getIntent().getStringExtra("placeId");
+        //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
 
         endLat2 = 37.0;
         endLng2 = -119.0;
@@ -469,6 +497,11 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         else
             super.onBackPressed();
     }
+    
+    
+    public ArrayList<CurrentLocationModel> getList() {
+        return currentLocationModelArrayList;
+    } 
 
     private List<com.google.maps.model.LatLng> decode(String points) {
 

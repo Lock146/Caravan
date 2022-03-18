@@ -2,6 +2,7 @@ package com.example.caravantest.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.caravantest.Activity.DirectionActivity;
+import com.example.caravantest.Activity.MainActivity;
 import com.example.caravantest.CurrentLocationInterface;
 import com.example.caravantest.CurrentLocationModel;
 import com.example.caravantest.GooglePlaceModel;
@@ -43,11 +45,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
 
 public class CurrentLocationsFragment extends Fragment implements CurrentLocationInterface {
 
-    private static final String TAG = "help";
+    private final String TAG = "help";
     private FragmentCurrentLocationsBinding binding;
     private FirebaseAuth firebaseAuth;
     private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
@@ -158,7 +161,7 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
                 if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
 
                 }
-                startActivity(intent);
+                //startActivity(intent);
 
             } else {
                 Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
@@ -190,26 +193,32 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
 
     }
 
-
+    @Override
     public void onStartClick() {
 
-        Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0) );
-        if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
-            Intent intent = new Intent(requireContext(), DirectionActivity.class);
-            intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
-            intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
-            intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
 
+
+
+            while (!currentLocationModelArrayList.isEmpty()) {
+            Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0));
             if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+                Intent intent = new Intent(requireContext(), DirectionActivity.class);
+                intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
+                intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
+                intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
 
+                if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+
+                }
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
             }
-            startActivity(intent);
 
-        } else {
-            Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
+            currentLocationModelArrayList.remove(0);
+
         }
-
-
 
         }
     }
