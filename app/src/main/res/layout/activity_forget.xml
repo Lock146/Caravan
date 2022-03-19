@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.6"
+        android:alpha="0"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_gas_station" />
 
@@ -34,13 +34,14 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:backgroundTint="@color/white"
-            android:drawableStart="@drawable/ic_gas_station"
+            android:drawableStart="@drawable/ic_email"
             android:drawablePadding="10dp"
             android:drawableTint="@color/white"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnForgetPassword"
@@ -48,8 +49,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
             android:padding="15dp"
             android:text="Done"
+            android:textColor="@color/primaryDarkColor"
             android:textStyle="bold"
             app:cornerRadius="20dp"
             app:elevation="10dp" />
