@@ -74,26 +74,26 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private static RetrofitAPI retrofitAPI;
     private LoadingDialog loadingDialog;
     private static Location currentLocation;
-    private static Double endLat;
-    private static Double endLng;
+    private Double endLat;
+    private Double endLng;
     private Double endLat2;
     private Double endLng2;
-    private static String placeId;
-    private String placeId2;
+    private String placeId;
+    private static String placeId2;
     private int currentMode;
     private boolean moreStops;
     private static DirectionStepAdapter adapter;
     private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
 
-    public void getList(ArrayList<CurrentLocationModel> currentLocationModelArrayList) {
-        Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
+    public static void getList(ArrayList<CurrentLocationModel> currentLocationModelArrayList) {
+
         while (!currentLocationModelArrayList.isEmpty()) {
             if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
-
-                placeId = currentLocationModelArrayList.get(0).getPlaceId();
-                endLat = currentLocationModelArrayList.get(0).getLat();
-                endLng = currentLocationModelArrayList.get(0).getLng();
-                getDirection("driving");
+                Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
+                placeId2 = currentLocationModelArrayList.get(0).getPlaceId();
+                //endLat = currentLocationModelArrayList.get(0).getLat();
+                //endLng = currentLocationModelArrayList.get(0).getLng();
+               // getDirection("driving");
 
             } else {
 
@@ -102,6 +102,8 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             currentLocationModelArrayList.remove(0);
         }
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,7 +284,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    getDirection2("driving");
+                   // getDirection2("driving");
                 }
             }, 5000);   //5 seconds
 

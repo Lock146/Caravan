@@ -196,21 +196,21 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
     @Override
     public void onStartClick() {
 
-
+        DirectionActivity.getList(currentLocationModelArrayList);
 
 
             while (!currentLocationModelArrayList.isEmpty()) {
-            Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0));
+            //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0));
             if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
-                Intent intent = new Intent(requireContext(), DirectionActivity.class);
-                intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
-                intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
-                intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
+                //Intent intent = new Intent(requireContext(), DirectionActivity.class);
+                //intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
+                //intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
+               // intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
 
-                if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+                //if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
 
-                }
-                startActivity(intent);
+               // }
+                //startActivity(intent);
 
             } else {
                 Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
