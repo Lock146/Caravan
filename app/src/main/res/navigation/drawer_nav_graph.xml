@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/btnHome"
-        android:name="com.example.caravantest.Fragments.HomeFragment"
+        android:name="com.example.caravan.Fragments.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/btnSetting"
-        android:name="com.example.caravantest.Fragments.SettingsFragment"
+        android:name="com.example.caravan.Fragments.SettingsFragment"
         android:label="Saved Places"
         tools:layout="@layout/fragment_settings">
         <action
@@ -21,12 +21,12 @@
     </fragment>
     <fragment
         android:id="@+id/btnSavedPlaces"
-        android:name="com.example.caravantest.Fragments.SavedPlacesFragment"
+        android:name="com.example.caravan.Fragments.SavedPlacesFragment"
         android:label="fragment_saved_places"
         tools:layout="@layout/fragment_saved_places" />
     <fragment
         android:id="@+id/emailConfirmationFragment"
-        android:name="com.example.caravantest.Fragments.EmailConfirmationFragment"
+        android:name="com.example.caravan.Fragments.EmailConfirmationFragment"
         android:label="fragment_email_confirmation"
         tools:layout="@layout/fragment_email_confirmation">
 
@@ -45,12 +45,12 @@
     </fragment>
     <fragment
         android:id="@+id/emailChangeFragment"
-        android:name="com.example.caravantest.Fragments.EmailChangeFragment"
+        android:name="com.example.caravan.Fragments.EmailChangeFragment"
         android:label="fragment_email_change"
         tools:layout="@layout/fragment_email_change" />
     <fragment
         android:id="@+id/passwordChangeFragment"
-        android:name="com.example.caravantest.Fragments.PasswordChangeFragment"
+        android:name="com.example.caravan.Fragments.PasswordChangeFragment"
         android:label="fragment_password_change"
         tools:layout="@layout/fragment_password_change" />
 </navigation>

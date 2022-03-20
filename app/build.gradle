@@ -11,7 +11,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.example.caravantest"
+        applicationId "com.example.caravan"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

@@ -6,11 +6,11 @@
 
         <variable
             name="googlePlaceModel"
-            type="com.example.caravantest.GooglePlaceModel" />
+            type="com.example.caravan.GooglePlaceModel" />
 
         <variable
             name="listener"
-            type="com.example.caravantest.NearLocationInterface" />
+            type="com.example.caravan.NearLocationInterface" />
 
 
     </data>
