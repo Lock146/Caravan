@@ -123,9 +123,9 @@ public class SignUpActivity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> singUp) {
+            public void onComplete(@NonNull Task<AuthResult> signUp) {
 
-                if (singUp.isSuccessful()) {
+                if (signUp.isSuccessful()) {
 
                     storageReference.child(firebaseAuth.getUid() + AllConstant.IMAGE_PATH).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -190,8 +190,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                 } else {
                     loadingDialog.stopLoading();
-                    Log.d("TAG", "onComplete: Create user" + singUp.getException());
-                    Toast.makeText(SignUpActivity.this, "" + singUp.getException(), Toast.LENGTH_SHORT).show();
+                    Log.d("TAG", "onComplete: Create user" + signUp.getException());
+                    Toast.makeText(SignUpActivity.this, "" + signUp.getException(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
