@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,7 +13,7 @@
             type="com.example.caravantest.CurrentLocationInterface" />
     </data>
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -21,6 +22,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/backgroundColor"
             android:padding="15dp">
 
             <LinearLayout
@@ -61,7 +63,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{currentLocationModel.address,default=Address}"
-                android:textColor="@color/itemTextColor"
+                android:textColor="?android:textColor"
                 android:textSize="15dp" />
 
         </RelativeLayout>

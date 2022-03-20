@@ -29,8 +29,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/empty"
-        android:scaleType="fitCenter"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
         app:srcCompat="@drawable/ic_caravan_logo_v"
         tools:ignore="ImageContrastCheck" />
 

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/backgroundColor"
     android:padding="20dp">
 
     <TextView
@@ -9,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Turn Left"
-        android:textColor="@color/quantum_black_text"
+        android:textColor="?android:textColorPrimary"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -20,6 +21,7 @@
         android:layout_below="@+id/txtStepHtml"
         android:layout_marginTop="10dp"
         android:text="12 min"
+        android:textColor="?android:textColorPrimary"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -31,6 +33,7 @@
         android:layout_below="@+id/txtStepTime"
         android:layout_marginTop="5dp"
         android:text="15 Km"
+        android:textColor="?android:textColorPrimary"
         android:textSize="20dp"
         android:textStyle="bold" />
 
