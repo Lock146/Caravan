@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.example.caravantest.Activity.DirectionActivity;
 import com.example.caravantest.CurrentLocationInterface;
 import com.example.caravantest.CurrentLocationModel;
+import com.example.caravantest.GooglePlaceModel;
 import com.example.caravantest.R;
 import com.example.caravantest.SavedLocationInterface;
 import com.example.caravantest.SavedPlaceModel;
@@ -146,6 +147,21 @@ public class GroupMembersFragment extends Fragment implements CurrentLocationInt
         } else {
             Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    @Override
+    public void onLocationClick2(GooglePlaceModel googlePlaceModel) {
+
+    }
+
+    @Override
+    public void onConfirmationClick(CurrentLocationModel currentLocationModel) {
+
+    }
+
+    @Override
+    public void onStartClick() {
 
     }
 
