@@ -196,27 +196,39 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
     @Override
     public void onStartClick() {
 
-        DirectionActivity.getList(currentLocationModelArrayList);
+       // DirectionActivity.getList(currentLocationModelArrayList);
 
 
             while (!currentLocationModelArrayList.isEmpty()) {
             //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0));
+                Intent intent = new Intent(requireContext(), DirectionActivity.class);
             if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
                 //Intent intent = new Intent(requireContext(), DirectionActivity.class);
-                //intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
-                //intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
-               // intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
+                intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
+                intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
+                intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
+                currentLocationModelArrayList.remove(0);
+                if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+                    intent.putExtra("placeId2", currentLocationModelArrayList.get(0).getPlaceId());
+                    intent.putExtra("lat2", currentLocationModelArrayList.get(0).getLat());
+                    intent.putExtra("lng2", currentLocationModelArrayList.get(0).getLng());
+                    currentLocationModelArrayList.remove(0);
+                    if (!currentLocationModelArrayList.isEmpty()) {
+                        intent.putExtra("placeId3", currentLocationModelArrayList.get(0).getPlaceId());
+                        intent.putExtra("lat3", currentLocationModelArrayList.get(0).getLat());
+                        intent.putExtra("lng3", currentLocationModelArrayList.get(0).getLng());
+                    } else {
 
-                //if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+                    }
 
-               // }
-                //startActivity(intent);
+                }
+
 
             } else {
                 Toast.makeText(requireContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
             }
+            startActivity(intent);
 
-            currentLocationModelArrayList.remove(0);
 
         }
 
