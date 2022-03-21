@@ -36,7 +36,7 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_gas_station"
+                    android:src="@drawable/ic_person_outline"
                     android:translationY="70sp" />
 
                 <TextView

@@ -9,6 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="@color/backgroundColor"
         android:padding="10dp">
 
         <TextView
@@ -18,7 +19,7 @@
             android:gravity="center_horizontal"
             android:maxLines="1"
             android:text="Prince Oizza"
-            android:textColor="@color/black"
+            android:textColor="?android:textColor"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -34,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Distance : "
-                android:textColor="@color/itemTextColor"
+                android:textColor="?android:textColor"
                 android:textStyle="bold" />
 
             <TextView
@@ -43,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="2.5 KM"
-                android:textColor="@color/itemTextColor"
+                android:textColor="?android:textColor"
                 android:textStyle="bold" />
 
 
@@ -61,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Estimated Time : "
-                android:textColor="@color/itemTextColor"
+                android:textColor="?android:textColor"
                 android:textStyle="bold" />
 
             <TextView
@@ -70,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="5 sec"
-                android:textColor="@color/itemTextColor"
+                android:textColor="?android:textColor"
                 android:textStyle="bold" />
 
 

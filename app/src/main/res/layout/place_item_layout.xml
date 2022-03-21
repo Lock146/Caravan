@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -15,8 +16,7 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{googlePlaceModel.rating!=null?String.valueOf(googlePlaceModel.rating):`New`,default=3.4}"
-                        android:textColor="@color/black"
+                        android:textColor="?android:textColor"
                         android:textStyle="bold"
                         app:drawableStartCompat="@drawable/ic_gas_station"
                         app:drawableTint="@color/primaryColor" />
@@ -67,7 +67,7 @@
                         android:paddingStart="5dp"
                         android:paddingEnd="1dp"
                         android:text="@{googlePlaceModel.userRatingsTotal!=null?`(`+String.valueOf(googlePlaceModel.userRatingsTotal)+`)`:``,default=`(123)`}"
-                        android:textColor="@color/itemTextColor" />
+                        android:textColor="@color/black" />
 
                     <ImageView
                         android:id="@+id/imgSaveLocation"
@@ -95,7 +95,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@{googlePlaceModel.name!=null?googlePlaceModel.name:`No Name`,default=`Place Name`}"
-                    android:textColor="@color/black"
+                    android:textColor="?android:textColor"
                     android:textStyle="bold" />
 
                 <TextView
@@ -106,7 +106,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@{googlePlaceModel.vicinity!=null?googlePlaceModel.vicinity:`No Address`,default=`Place Address`}"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:textColor" />
 
             </LinearLayout>
         </LinearLayout>

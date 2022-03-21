@@ -10,7 +10,7 @@
     <string name="open_map">Open Map</string>
     <string name="dialog_add">Add</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="API_KEY">AIzaSyBnGZQyK1mve6UG_amzaWhyaW0fFIXJo7c</string>
+    <string name="API_KEY">"AIzaSyBnGZQyK1mve6UG_amzaWhyaW0fFIXJo7c"</string>
     <string name="empty"> </string>
     <string name="about">About</string>
     <string name="team_description">Caravan is an app developed by the \nA New Dawn is Daying senior design team at Louisiana Tech University (Louisiana). \nCameron Mitchell: Networking \nKyler Parker: Back-end and Maps\nColby Boyd: Messaging and Back-end\nLuke Jobe: UI/UX and Back-end</string>

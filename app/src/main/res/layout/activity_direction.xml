@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:layout_marginEnd="15dp"
-        android:src="@drawable/ic_gas_station"
+        android:src="@drawable/ic_traffic"
         app:backgroundTint="@color/white"
         app:fabCustomSize="40dp"
         app:tint="@color/itemTextColor" />
@@ -53,6 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_gas_station"
+                    app:srcCompat="@drawable/ic_here"
                     app:tint="@color/primaryColor" />
 
                 <TextView
@@ -94,6 +95,7 @@
                     android:layout_below="@+id/view"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ic_gas_station"
+                    app:srcCompat="@drawable/ic_directions"
                     app:tint="@color/quantum_googred500" />
 
                 <TextView

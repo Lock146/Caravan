@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+
         Places.initialize(getApplicationContext(), getString(R.string.API_KEY));
         navDrawerLayoutBinding = NavDrawerLayoutBinding.inflate(getLayoutInflater());
         setContentView(navDrawerLayoutBinding.getRoot());

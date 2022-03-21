@@ -3,33 +3,50 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/btnGroups"
+            android:icon="@drawable/ic_groups"
+            android:title="Groups"
+            android:backgroundTint="@color/backgroundColor"
+            android:textColor="?android:textColorPrimary"
+            />
+
+        <item
             android:id="@+id/btnHome"
             android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:title="Home"
+            android:backgroundTint="@color/backgroundColor"
+            android:textColor="?android:textColorPrimary"
+            />
 
         <item
             android:id="@+id/btnCurrentLocations"
-            android:icon="@drawable/ic_gas_station"
+            android:backgroundTint="@color/backgroundColor"
+            android:icon="@drawable/ic_directions"
+            android:textColor="?android:textColorPrimary"
             android:title="CurrentLocations" />
 
         <item
             android:id="@+id/btnSavedPlaces"
             android:icon="@drawable/ic_bookmark"
-            android:title="Saved Places" />
+            android:title="Saved Places"
+            android:backgroundTint="@color/backgroundColor"
+            android:textColor="?android:textColorPrimary"
+            />
 
     </group>
 
     <item android:title="">
         <menu>
-
             <item
                 android:id="@+id/btnAbout"
                 android:icon="@drawable/ic_info"
-                android:title="About" />
+                android:title="About"
+                android:textColor="?android:textColorPrimary"/>
             <item
                 android:id="@+id/btnSetting"
                 android:icon="@drawable/ic_settings"
-                android:title="Settings" />
+                android:title="Settings"
+                android:textColor="?android:textColorPrimary"/>
         </menu>
     </item>
 

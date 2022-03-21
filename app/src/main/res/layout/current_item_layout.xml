@@ -26,6 +26,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/backgroundColor"
             android:padding="15dp">
 
             <LinearLayout
@@ -73,7 +74,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{currentLocationModel.address,default=Address}"
-                android:textColor="@color/itemTextColor"
+                android:textColor="?android:textColor"
                 android:textSize="15dp" />
 
         </RelativeLayout>
