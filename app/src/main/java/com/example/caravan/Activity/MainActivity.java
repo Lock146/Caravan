@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         getUserData();
 
         Database database = new Database();
-        database.publish_message("This is another test message");
-        String email = database.get_userID("kyler.parker.spam@gmail.com");
+        //database.publish_message("This is another test message");
+        database.create_group();
     }
 
     @Override

@@ -14,6 +14,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -52,10 +58,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     if (firebaseAuth.getCurrentUser().isEmailVerified()) {
                         loadingDialog.stopLoading();
+                        DocumentReference ref = FirebaseFirestore.getInstance()
+                                .collection("Users")
+                                .document(FirebaseAuth.getInstance().getUid());
+                        Map<String, String> userEmail = new HashMap<>();
+                        userEmail.put("email", email);
+                        ref.set(userEmail);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
-
                     } else {
 
                         firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {

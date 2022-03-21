@@ -26,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -120,17 +122,14 @@ public class SignUpActivity extends AppCompatActivity {
     private void signUp() {
         loadingDialog.startLoading();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        CollectionReference databaseReference = FirebaseFirestore.getInstance().collection("Users");
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> signUp) {
-
                 if (signUp.isSuccessful()) {
-
                     storageReference.child(firebaseAuth.getUid() + AllConstant.IMAGE_PATH).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                             Task<Uri> image = taskSnapshot.getStorage().getDownloadUrl();
                             image.addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
@@ -143,17 +142,15 @@ public class SignUpActivity extends AppCompatActivity {
                                                 .setDisplayName(username)
                                                 .setPhotoUri(Uri.parse(url))
                                                 .build();
-
                                         firebaseAuth.getCurrentUser().updateProfile(profileChangeRequest).
                                                 addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-
                                                         if (task.isSuccessful()) {
                                                             UserModel userModel = new UserModel(email,
                                                                     username, url, true);
-                                                            databaseReference.child(firebaseAuth.getUid())
-                                                                    .setValue(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            databaseReference.document(firebaseAuth.getUid())
+                                                                    .set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void aVoid) {
                                                                     firebaseAuth.getCurrentUser().sendEmailVerification()
@@ -167,7 +164,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                                             });
 
                                                                 }
-
                                                             });
                                                         } else {
                                                             loadingDialog.stopLoading();
