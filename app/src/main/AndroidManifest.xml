@@ -18,10 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Caravan">
         <activity
-            android:name=".GroupChatActivity"
-            android:exported="false"
-            android:label="@string/title_activity_group_chat"
-            android:theme="@style/Theme.Caravan.NoActionBar" />
+            android:name=".GroupChat"
+            android:exported="false" />
         <activity
             android:name=".Activity.DirectionActivity"
             android:theme="@style/ActionBarTheme" />

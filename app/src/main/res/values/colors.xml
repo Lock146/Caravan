@@ -13,4 +13,8 @@
     <color name="textColor">#FFFFFF</color>
     <color name="itemTextColor">#707070</color>
     <color name="transparentColor" >#00FFFFFF</color>
+    <color name="green">#3DDC84</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="red">#FF0000</color>
+    <color name="peach">#F98B88</color>
 </resources>
