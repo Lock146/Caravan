@@ -1,6 +1,9 @@
-package com.example.caravan.Activity;
+package com.example.caravantest.Activity;
+
+import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,18 +16,24 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
-import com.example.caravan.Database;
-import com.example.caravan.R;
-import com.example.caravan.UserModel;
-import com.example.caravan.databinding.ActivityMainBinding;
-import com.example.caravan.databinding.NavDrawerLayoutBinding;
-import com.example.caravan.databinding.ToolbarLayoutBinding;
+import com.example.caravantest.R;
+import com.example.caravantest.UserModel;
+import com.example.caravantest.databinding.ActivityMainBinding;
+import com.example.caravantest.databinding.NavDrawerLayoutBinding;
+import com.example.caravantest.databinding.ToolbarLayoutBinding;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Arrays;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,10 +49,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+        Places.initialize(getApplicationContext(), getString(R.string.API_KEY));
         navDrawerLayoutBinding = NavDrawerLayoutBinding.inflate(getLayoutInflater());
         setContentView(navDrawerLayoutBinding.getRoot());
         activityMainBinding = navDrawerLayoutBinding.mainActivity;
         toolbarLayoutBinding = activityMainBinding.toolbar;
+
+
+
 
         setSupportActionBar(toolbarLayoutBinding.toolbar);
 
@@ -73,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
 
         getUserData();
+
+
     }
 
     @Override
@@ -90,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 if (snapshot.exists()) {
+
                     UserModel userModel = snapshot.getValue(UserModel.class);
                     Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
                     txtName.setText(userModel.getUsername());

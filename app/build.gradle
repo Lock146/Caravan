@@ -11,7 +11,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.example.caravan"
+        applicationId "com.example.caravantest"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -65,20 +65,19 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // Firebase Library Auth,RealTime, Storage and UI
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
     implementation 'com.google.firebase:firebase-database:20.0.0'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
-    implementation 'com.google.firebase:firebase-firestore'
 
 
     // google map dependenies
 
-    implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.google.android.libraries.places:places:2.5.0'
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.maps:google-maps-services:0.2.9'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
 

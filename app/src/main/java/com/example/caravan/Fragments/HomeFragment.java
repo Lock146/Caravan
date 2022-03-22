@@ -1,4 +1,6 @@
-package com.example.caravan.Fragments;
+package com.example.caravantest.Fragments;
+
+import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -29,21 +31,23 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.example.caravan.Activity.DirectionActivity;
-import com.example.caravan.Adapter.GooglePlaceAdapter;
-import com.example.caravan.Adapter.InfoWindowAdapter;
-import com.example.caravan.Constant.AllConstant;
-import com.example.caravan.GooglePlaceModel;
-import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
-import com.example.caravan.NearLocationInterface;
-import com.example.caravan.Permissions.AppPermissions;
-import com.example.caravan.PlaceModel;
-import com.example.caravan.R;
-import com.example.caravan.SavedPlaceModel;
-import com.example.caravan.Utility.LoadingDialog;
-import com.example.caravan.WebServices.RetrofitAPI;
-import com.example.caravan.WebServices.RetrofitClient;
-import com.example.caravan.databinding.FragmentHomeBinding;
+import com.example.caravantest.Activity.DirectionActivity;
+import com.example.caravantest.Adapter.GooglePlaceAdapter;
+import com.example.caravantest.Adapter.InfoWindowAdapter;
+import com.example.caravantest.Constant.AllConstant;
+import com.example.caravantest.CurrentLocationModel;
+import com.example.caravantest.GooglePlaceModel;
+import com.example.caravantest.Model.GooglePlaceModel.GoogleResponseModel;
+import com.example.caravantest.NearLocationInterface;
+import com.example.caravantest.Permissions.AppPermissions;
+import com.example.caravantest.PlaceModel;
+import com.example.caravantest.R;
+import com.example.caravantest.SavedPlaceModel;
+import com.example.caravantest.Utility.LoadingDialog;
+import com.example.caravantest.WebServices.RetrofitAPI;
+import com.example.caravantest.WebServices.RetrofitClient;
+import com.example.caravantest.databinding.FragmentHomeBinding;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -62,6 +66,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -75,7 +83,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,7 +113,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private GooglePlaceAdapter googlePlaceAdapter;
     private InfoWindowAdapter infoWindowAdapter;
     private ArrayList<String> userSavedLocationId;
-    private DatabaseReference locationReference, userLocationReference;
+    private ArrayList<String> userCurrentLocationId;
+    private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
+    public LatLng testLocation;
 
     public HomeFragment() {
     }
@@ -119,13 +131,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         retrofitAPI = RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
         googlePlaceModelList = new ArrayList<>();
         userSavedLocationId = new ArrayList<>();
+        userCurrentLocationId = new ArrayList<>();
         locationReference = FirebaseDatabase.getInstance().getReference("Places");
         userLocationReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Saved Locations");
+        locationCurrentReference = FirebaseDatabase.getInstance().getReference("Locations");
+        userCurrentReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseAuth.getUid()).child("Current Locations");
 
         binding.btnMapType.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(requireContext(), view);
             popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
+
+
 
 
             popupMenu.setOnMenuItemClickListener(item -> {
@@ -161,13 +179,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
 
 
+
         binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
 
                 if (checkedId != -1) {
                     PlaceModel placeModel = AllConstant.placesName.get(checkedId - 1);
-                    binding.edtPlaceName.setText(placeModel.getName());
+                    //binding.edtPlaceName.setText(placeModel.getName());
                     selectedPlaceModel = placeModel;
                     getPlaces(placeModel.getPlaceType());
                 }
@@ -185,6 +204,58 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
+
+
+
+
+        Places.initialize(getActivity().getApplicationContext(), getString(R.string.API_KEY));
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        autocompleteFragment.setHint("Search a location...");
+
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+
+
+                final LatLng location = place.getLatLng();
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                testLocation = location;
+
+                //String placeId = place.getId();
+                //Double lat = location.latitude;
+                //Double lng = location.longitude;
+
+                //Intent intent = new Intent(requireContext(), DirectionActivity.class);
+                //intent.putExtra("placeId", placeId);
+                //intent.putExtra("lat", lat);
+                //intent.putExtra("lng", lng);
+
+                //startActivity(intent);
+
+            }
+
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
+
 
         for (PlaceModel placeModel : AllConstant.placesName) {
 
@@ -205,6 +276,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         setUpRecyclerView();
         getUserSavedLocations();
+        getUserCurrentLocations();
     }
 
     @Override
@@ -219,7 +291,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Location Permission")
-                    .setMessage("Near me required location permission to show you near by places")
+                    .setMessage("Caravan required location permission to show you near by places")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -321,6 +393,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             isLocationPermissionOk = false;
             return;
         }
+
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -330,8 +403,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 mGoogleMap.setInfoWindowAdapter(infoWindowAdapter);
                 moveCameraToLocation(location);
 
+                 final double currentLatitude = location.getLatitude();
+                 final double currentLongitude = location.getLongitude();
+
+                 testLocation = new LatLng(currentLatitude,currentLongitude);
+
 
             }
+
         });
     }
 
@@ -375,12 +454,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         if (fusedLocationProviderClient != null) {
 
-            startLocationUpdates();
+            //startLocationUpdates();
             if (currentMarker != null) {
                 currentMarker.remove();
             }
         }
     }
+
+
 
     private void getPlaces(String placeName) {
 
@@ -388,11 +469,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
 
             loadingDialog.startLoading();
-            String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
-                    + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
-                    + "&radius=" + radius + "&type=" + placeName + "&key=" +
-                    getResources().getString(R.string.API_KEY);
-
+            String url;
+            if (testLocation == null) {
+                 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
+                        + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
+                        + "&radius=" + radius + "&type=" + placeName + "&key=" +
+                        getResources().getString(R.string.API_KEY);
+            }
+            else {
+                url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
+                        //+ currentLocation.getLatitude() + "," + currentLocation.getLongitude()
+                        + testLocation.latitude + ',' + testLocation.longitude
+                        + "&radius=" + radius + "&type=" + placeName + "&key=" +
+                        getResources().getString(R.string.API_KEY);
+            }
             if (currentLocation != null) {
 
 
@@ -412,6 +502,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                                         if (userSavedLocationId.contains(response.body().getGooglePlaceModelList().get(i).getPlaceId())) {
                                             response.body().getGooglePlaceModelList().get(i).setSaved(true);
+                                        }
+                                        if (userCurrentLocationId.contains(response.body().getGooglePlaceModelList().get(i).getPlaceId())) {
+                                            response.body().getGooglePlaceModelList().get(i).setCurrentLocation(true);
                                         }
                                         googlePlaceModelList.add(response.body().getGooglePlaceModelList().get(i));
                                         addMarker(response.body().getGooglePlaceModelList().get(i), i);
@@ -574,6 +667,61 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
+
+    public void onLocationClick(GooglePlaceModel googlePlaceModel) {
+
+        if (userSavedLocationId.contains(googlePlaceModel.getPlaceId())) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Remove Place")
+                    .setMessage("Are you sure to remove this place?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            removePlace(googlePlaceModel);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .create().show();
+        } else {
+            loadingDialog.startLoading();
+
+            locationCurrentReference.child(googlePlaceModel.getPlaceId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!snapshot.exists()) {
+
+                        CurrentLocationModel currentLocationModel = new CurrentLocationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
+                                googlePlaceModel.getPlaceId(), googlePlaceModel.getRating(),
+                                googlePlaceModel.getUserRatingsTotal(),
+                                googlePlaceModel.getGeometry().getLocation().getLat(),
+                                googlePlaceModel.getGeometry().getLocation().getLng());
+
+                        saveCurrentLocation(currentLocationModel);
+                    }
+
+                    saveUserCurrentLocation(googlePlaceModel.getPlaceId());
+
+                    int index = googlePlaceModelList.indexOf(googlePlaceModel);
+                    googlePlaceModelList.get(index).setCurrentLocation(true);
+                    googlePlaceAdapter.notifyDataSetChanged();
+                    loadingDialog.stopLoading();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+
+    }
+
     private void removePlace(GooglePlaceModel googlePlaceModel) {
 
         userSavedLocationId.remove(googlePlaceModel.getPlaceId());
@@ -602,6 +750,34 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
+    private void removeCurrentPlace(GooglePlaceModel googlePlaceModel) {
+
+        userCurrentLocationId.remove(googlePlaceModel.getPlaceId());
+        int index = googlePlaceModelList.indexOf(googlePlaceModel);
+        googlePlaceModelList.get(index).setCurrentLocation(false);
+        googlePlaceAdapter.notifyDataSetChanged();
+
+        Snackbar.make(binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        userCurrentLocationId.add(googlePlaceModel.getPlaceId());
+                        googlePlaceModelList.get(index).setCurrentLocation(true);
+                        googlePlaceAdapter.notifyDataSetChanged();
+
+                    }
+                })
+                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        super.onDismissed(transientBottomBar, event);
+
+                        userCurrentReference.setValue(userCurrentLocationId);
+                    }
+                }).show();
+
+    }
+
     private void saveUserLocation(String placeId) {
 
         userSavedLocationId.add(placeId);
@@ -609,29 +785,92 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         Snackbar.make(binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
     }
 
+    private void saveUserCurrentLocation(String placeId) {
+
+        userCurrentLocationId.add(placeId);
+        userCurrentReference.setValue(userCurrentLocationId);
+        Snackbar.make(binding.getRoot(), "Location Saved", Snackbar.LENGTH_LONG).show();
+    }
+
     private void saveLocation(SavedPlaceModel savedPlaceModel) {
         locationReference.child(savedPlaceModel.getPlaceId()).setValue(savedPlaceModel);
+    }
+
+    private void saveCurrentLocation(CurrentLocationModel currentLocationModel) {
+        locationCurrentReference.child(currentLocationModel.getPlaceId()).setValue(currentLocationModel);
     }
 
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
 
-        String placeId = googlePlaceModel.getPlaceId();
-        Double lat = googlePlaceModel.getGeometry().getLocation().getLat();
-        Double lng = googlePlaceModel.getGeometry().getLocation().getLng();
+       // String placeId = googlePlaceModel.getPlaceId();
+        //Double lat = googlePlaceModel.getGeometry().getLocation().getLat();
+        //Double lng = googlePlaceModel.getGeometry().getLocation().getLng();
 
-        Intent intent = new Intent(requireContext(), DirectionActivity.class);
-        intent.putExtra("placeId", placeId);
-        intent.putExtra("lat", lat);
-        intent.putExtra("lng", lng);
+        //Intent intent = new Intent(requireContext(), DirectionActivity.class);
+       // intent.putExtra("placeId", placeId);
+       // intent.putExtra("lat", lat);
+        //intent.putExtra("lng", lng);
 
-        startActivity(intent);
+        //startActivity(intent);
+
+        if (userSavedLocationId.contains(googlePlaceModel.getPlaceId())) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Remove Place")
+                    .setMessage("Are you sure to remove this place?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            removePlace(googlePlaceModel);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .create().show();
+        } else {
+            loadingDialog.startLoading();
+
+            locationCurrentReference.child(googlePlaceModel.getPlaceId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!snapshot.exists()) {
+
+                        CurrentLocationModel currentLocationModel = new CurrentLocationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
+                                googlePlaceModel.getPlaceId(), googlePlaceModel.getRating(),
+                                googlePlaceModel.getUserRatingsTotal(),
+                                googlePlaceModel.getGeometry().getLocation().getLat(),
+                                googlePlaceModel.getGeometry().getLocation().getLng());
+
+                        saveCurrentLocation(currentLocationModel);
+                    }
+
+                    saveUserCurrentLocation(googlePlaceModel.getPlaceId());
+
+                    int index = googlePlaceModelList.indexOf(googlePlaceModel);
+                    googlePlaceModelList.get(index).setCurrentLocation(true);
+                    googlePlaceAdapter.notifyDataSetChanged();
+                    loadingDialog.stopLoading();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
 
     }
 
     private void getUserSavedLocations() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Saved Locations");
+
+
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -640,6 +879,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         String placeId = ds.getValue(String.class);
                         userSavedLocationId.add(placeId);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getUserCurrentLocations() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseAuth.getUid()).child("Current Locations");
+
+
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        String placeId = ds.getValue(String.class);
+                        userCurrentLocationId.add(placeId);
 
                     }
                 }
