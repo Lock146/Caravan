@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/btnGroups"
-        android:name="com.example.caravantest.Fragments.GroupMembersFragment"
+        android:name="com.example.caravan.Fragments.GroupMembersFragment"
         android:label="Groups"
         tools:layout="@layout/fragment_groups" />
     <fragment
@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/btnAbout"
-        android:name="com.example.caravantest.About"
+        android:name="com.example.caravan.About"
         android:label="About"
         tools:layout="@layout/fragment_about" />
     <fragment
@@ -36,7 +36,7 @@
         tools:layout="@layout/fragment_saved_places" />
     <fragment
         android:id="@+id/btnCurrentLocations"
-        android:name="com.example.caravantest.Fragments.CurrentLocationsFragment"
+        android:name="com.example.caravan.Fragments.CurrentLocationsFragment"
         android:label="fragment_current_locations"
         tools:layout="@layout/fragment_current_locations" />
     <fragment

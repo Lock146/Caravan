@@ -8,15 +8,15 @@
 
         <variable
             name="currentLocationModel"
-            type="com.example.caravantest.CurrentLocationModel" />
+            type="com.example.caravan.CurrentLocationModel" />
 
         <variable
             name="googlePlaceModel"
-            type="com.example.caravantest.GooglePlaceModel" />
+            type="com.example.caravan.GooglePlaceModel" />
 
         <variable
             name="listener"
-            type="com.example.caravantest.CurrentLocationInterface" />
+            type="com.example.caravan.CurrentLocationInterface" />
     </data>
 
 <RelativeLayout

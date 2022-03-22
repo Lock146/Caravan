@@ -1,9 +1,6 @@
-package com.example.caravantest.Activity;
-
-import static android.content.ContentValues.TAG;
+package com.example.caravan.Activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,16 +13,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
-import com.example.caravantest.R;
-import com.example.caravantest.UserModel;
-import com.example.caravantest.databinding.ActivityMainBinding;
-import com.example.caravantest.databinding.NavDrawerLayoutBinding;
-import com.example.caravantest.databinding.ToolbarLayoutBinding;
-import com.google.android.gms.common.api.Status;
+import com.example.caravan.CurrentLocationUpdateTask;
+import com.example.caravan.Database;
+import com.example.caravan.R;
+import com.example.caravan.UserModel;
+import com.example.caravan.databinding.ActivityMainBinding;
+import com.example.caravan.databinding.NavDrawerLayoutBinding;
+import com.example.caravan.databinding.ToolbarLayoutBinding;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
+import java.util.Timer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private CircleImageView imgHeader;
     private TextView txtName, txtEmail;
+    private Timer m_currentLocationUpdater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
         getUserData();
 
+        Database database = Database.get_instance();
+        database.create_group();
 
+        m_currentLocationUpdater = new Timer();
+        m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(), 0, 1000);
     }
 
     @Override
@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
             navDrawerLayoutBinding.navDrawer.closeDrawer(GravityCompat.START);
         else
             super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy(){
+        m_currentLocationUpdater.cancel();
+        super.onDestroy();
     }
 
     private void getUserData() {

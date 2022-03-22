@@ -1,4 +1,4 @@
-package com.example.caravantest;
+package com.example.caravan;
 
 public interface CurrentLocationInterface {
 

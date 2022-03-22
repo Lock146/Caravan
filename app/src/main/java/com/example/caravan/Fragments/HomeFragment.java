@@ -1,4 +1,4 @@
-package com.example.caravantest.Fragments;
+package com.example.caravan.Fragments;
 
 import static android.content.ContentValues.TAG;
 
@@ -31,22 +31,22 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.example.caravantest.Activity.DirectionActivity;
-import com.example.caravantest.Adapter.GooglePlaceAdapter;
-import com.example.caravantest.Adapter.InfoWindowAdapter;
-import com.example.caravantest.Constant.AllConstant;
-import com.example.caravantest.CurrentLocationModel;
-import com.example.caravantest.GooglePlaceModel;
-import com.example.caravantest.Model.GooglePlaceModel.GoogleResponseModel;
-import com.example.caravantest.NearLocationInterface;
-import com.example.caravantest.Permissions.AppPermissions;
-import com.example.caravantest.PlaceModel;
-import com.example.caravantest.R;
-import com.example.caravantest.SavedPlaceModel;
-import com.example.caravantest.Utility.LoadingDialog;
-import com.example.caravantest.WebServices.RetrofitAPI;
-import com.example.caravantest.WebServices.RetrofitClient;
-import com.example.caravantest.databinding.FragmentHomeBinding;
+import com.example.caravan.Activity.DirectionActivity;
+import com.example.caravan.Adapter.GooglePlaceAdapter;
+import com.example.caravan.Adapter.InfoWindowAdapter;
+import com.example.caravan.Constant.AllConstant;
+import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.GooglePlaceModel;
+import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
+import com.example.caravan.NearLocationInterface;
+import com.example.caravan.Permissions.AppPermissions;
+import com.example.caravan.PlaceModel;
+import com.example.caravan.R;
+import com.example.caravan.SavedPlaceModel;
+import com.example.caravan.Utility.LoadingDialog;
+import com.example.caravan.WebServices.RetrofitAPI;
+import com.example.caravan.WebServices.RetrofitClient;
+import com.example.caravan.databinding.FragmentHomeBinding;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;

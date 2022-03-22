@@ -1,4 +1,4 @@
-package com.example.caravantest.Fragments;
+package com.example.caravan.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,18 +17,18 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.example.caravantest.Activity.DirectionActivity;
-import com.example.caravantest.CurrentLocationInterface;
-import com.example.caravantest.CurrentLocationModel;
-import com.example.caravantest.GooglePlaceModel;
-import com.example.caravantest.R;
-import com.example.caravantest.SavedLocationInterface;
-import com.example.caravantest.SavedPlaceModel;
-import com.example.caravantest.Utility.LoadingDialog;
-import com.example.caravantest.databinding.CurrentItemLayoutBinding;
-import com.example.caravantest.databinding.FragmentCurrentLocationsBinding;
-import com.example.caravantest.databinding.FragmentSavedPlacesBinding;
-import com.example.caravantest.databinding.SavedItemLayoutBinding;
+import com.example.caravan.Activity.DirectionActivity;
+import com.example.caravan.CurrentLocationInterface;
+import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.GooglePlaceModel;
+import com.example.caravan.R;
+import com.example.caravan.SavedLocationInterface;
+import com.example.caravan.SavedPlaceModel;
+import com.example.caravan.Utility.LoadingDialog;
+import com.example.caravan.databinding.CurrentItemLayoutBinding;
+import com.example.caravan.databinding.FragmentCurrentLocationsBinding;
+import com.example.caravan.databinding.FragmentSavedPlacesBinding;
+import com.example.caravan.databinding.SavedItemLayoutBinding;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;

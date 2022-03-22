@@ -1,4 +1,4 @@
-package com.example.caravantest;
+package com.example.caravan;
 
 import android.os.Bundle;
 

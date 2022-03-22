@@ -11,7 +11,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.example.caravantest"
+        applicationId "com.example.caravan"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -71,6 +71,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.0'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-firestore'
 
 
     // google map dependenies
