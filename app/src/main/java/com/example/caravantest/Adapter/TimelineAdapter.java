@@ -3,23 +3,33 @@ package com.example.caravantest.Adapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravantest.R;
 
+import java.util.List;
+
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder> {
     private static final String TAG = "TimelineAdapter";
-    int count = 0;
+
+    List<String> destiList;
+
+    public TimelineAdapter(List<String> destiList) {
+        this.destiList = destiList;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        Log.i(TAG, "onCreateViewHolder: " + count++);
+
 
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -31,8 +41,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //TODO: Change textView to be able to present the name of the destination in the list
-        holder.textView.setText(String.valueOf(position));
+        holder.textView.setText(destiList.get(position));
 
         //TODO: Change rowCount to be able to present miles to the destination
         holder.rowCount.setText(String.valueOf(position));
@@ -40,10 +49,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return 20;
+        return destiList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView;
         TextView textView, rowCount;
 
@@ -53,6 +62,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             imageView = itemView.findViewById(R.id.imageView2);
             textView = itemView.findViewById(R.id.textView2);
             rowCount = itemView.findViewById(R.id.textView3);
+
+            itemView.setOnClickListener(this);
+
+            itemView.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    destiList.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(view.getContext(), destiList.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
         }
     }
 }
