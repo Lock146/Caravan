@@ -19,7 +19,7 @@
         android:theme="@style/Theme.Caravan">
         <activity
             android:name=".GroupChat"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activity.DirectionActivity"
             android:theme="@style/ActionBarTheme" />

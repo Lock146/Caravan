@@ -46,7 +46,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        if (getItemViewType(position) == VIEW_TYPE_SENT){
+            ((SentMessageViewHolder)holder).setData(chatMessages.get(position));
+        } else{
+            ((ReceivedMessageViewHolder)holder).setData(chatMessages.get(position),receiverProfileImage);
     }
 
     @Override
