@@ -4,11 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="100"
+    android:backgroundTint="@color/white"
     android:elevation="7dp"
     android:padding="20dp"
+    android:visibility="visible"
     app:behavior_hideable="false"
     app:behavior_peekHeight="100dp"
-    app:layout_behavior="@string/bottom_sheet_behavior">
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    tools:visibility="visible"
+    >
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="391dp"
+        android:layout_height="711dp"
+        app:srcCompat="@color/backgroundColor" />
 
     <LinearLayout
         android:id="@+id/timeLayout"
@@ -72,7 +83,9 @@
         android:layout_marginTop="20dp"
         android:overScrollMode="never"
         android:scrollbars="none"
-        tools:listitem="@layout/step_item_layout" />
+        tools:listitem="@layout/step_item_layout">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </RelativeLayout>

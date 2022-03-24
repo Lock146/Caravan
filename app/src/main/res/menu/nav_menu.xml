@@ -9,7 +9,14 @@
             android:backgroundTint="@color/backgroundColor"
             android:textColor="?android:textColorPrimary"
             />
-
+        <item
+            android:id="@+id/btnTimeline"
+            android:icon="@drawable/ic_traffic"
+            android:title="Timeline"
+            android:backgroundTint="@color/backgroundColor"
+            android:textColor="?android:textColorPrimary"
+            />
+        
         <item
             android:id="@+id/btnHome"
             android:icon="@drawable/ic_home"

@@ -10,11 +10,22 @@
         android:name="com.example.caravantest.Fragments.GroupMembersFragment"
         android:label="Groups"
         tools:layout="@layout/fragment_groups" />
+
+    <fragment
+        android:id="@+id/btnTimeline"
+        android:name="com.example.caravantest.Activity.TimelineActivity"
+        android:label="Timeline"
+        tools:layout="@layout/activity_timeline" />
+
     <fragment
         android:id="@+id/btnHome"
         android:name="com.example.caravantest.Fragments.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_btnHome_self"
+            app:destination="@id/btnHome" />
+    </fragment>
     <fragment
         android:id="@+id/btnAbout"
         android:name="com.example.caravantest.About"
