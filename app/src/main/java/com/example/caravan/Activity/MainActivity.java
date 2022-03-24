@@ -46,16 +46,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-        Places.initialize(getApplicationContext(), getString(R.string.API_KEY));
+        Places.initialize(getApplicationContext(), getResources().getString(R.string.MAPS_API_KEY));
         navDrawerLayoutBinding = NavDrawerLayoutBinding.inflate(getLayoutInflater());
         setContentView(navDrawerLayoutBinding.getRoot());
         activityMainBinding = navDrawerLayoutBinding.mainActivity;
         toolbarLayoutBinding = activityMainBinding.toolbar;
-
-
-
 
         setSupportActionBar(toolbarLayoutBinding.toolbar);
 

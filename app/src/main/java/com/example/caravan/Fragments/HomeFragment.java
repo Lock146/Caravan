@@ -208,7 +208,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
 
 
-        Places.initialize(getActivity().getApplicationContext(), getString(R.string.API_KEY));
+        Places.initialize(getActivity().getApplicationContext(), getString(R.string.MAPS_API_KEY));
 
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
@@ -474,14 +474,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                  url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
                         + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
                         + "&radius=" + radius + "&type=" + placeName + "&key=" +
-                        getResources().getString(R.string.API_KEY);
+                        getResources().getString(R.string.MAPS_API_KEY);
             }
             else {
                 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
                         //+ currentLocation.getLatitude() + "," + currentLocation.getLongitude()
                         + testLocation.latitude + ',' + testLocation.longitude
                         + "&radius=" + radius + "&type=" + placeName + "&key=" +
-                        getResources().getString(R.string.API_KEY);
+                        getResources().getString(R.string.MAPS_API_KEY);
             }
             if (currentLocation != null) {
 

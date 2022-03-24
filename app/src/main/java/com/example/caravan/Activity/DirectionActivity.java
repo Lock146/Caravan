@@ -199,7 +199,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                     "origin=" + currentLocation.getLatitude() + "," + currentLocation.getLongitude() +
                     "&destination=" + endLat + "," + endLng +
                     "&mode=" + mode +
-                    "&key=" + getResources().getString(R.string.API_KEY);
+                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
 
             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
                 @Override
@@ -317,7 +317,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                     "origin=" + endLat + "," + endLng +
                     "&destination=" + endLat2 + "," + endLng2 +
                     "&mode=" + mode +
-                    "&key=" + getResources().getString(R.string.API_KEY);
+                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
 
             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
                 @Override
@@ -437,7 +437,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                     "origin=" + endLat2 + "," + endLng2 +
                     "&destination=" + endLat3 + "," + endLng3 +
                     "&mode=" + mode +
-                    "&key=" + getResources().getString(R.string.API_KEY);
+                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
 
             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
                 @Override
