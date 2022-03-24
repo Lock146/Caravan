@@ -15,6 +15,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.bumptech.glide.Glide;
 import com.example.caravan.CurrentLocationUpdateTask;
 import com.example.caravan.Database;
+import com.example.caravan.DeviceInfo;
 import com.example.caravan.R;
 import com.example.caravan.UserModel;
 import com.example.caravan.databinding.ActivityMainBinding;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        m_currentLocationUpdater = new Timer();
+        long period = 5000;
+        m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(getApplicationContext(), period), 0, period);
 
         Places.initialize(getApplicationContext(), getResources().getString(R.string.MAPS_API_KEY));
         navDrawerLayoutBinding = NavDrawerLayoutBinding.inflate(getLayoutInflater());
@@ -83,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
         Database database = Database.get_instance();
         database.create_group();
-
-        m_currentLocationUpdater = new Timer();
-        m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(), 0, 1000);
     }
 
     @Override

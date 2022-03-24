@@ -1,5 +1,6 @@
 package com.example.caravan;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -52,15 +53,9 @@ public class Database {
                 .set(userInfo, SetOptions.merge());
     }
 
-    public void update_location(){
-        Task<Void> task = m_database.collection("Users")
+    public void update_location(Location location){
+        m_database.collection("Users")
                 .document(m_userID)
-                .update("currentLocation", "This is the current location");
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("Database", "Failed to update location: " + e.getMessage());
-            }
-        });
+                .update("currentLocation", location);
     }
 }

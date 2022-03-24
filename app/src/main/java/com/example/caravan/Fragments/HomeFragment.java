@@ -36,6 +36,7 @@ import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.DeviceInfo;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
 import com.example.caravan.NearLocationInterface;
@@ -334,7 +335,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         mGoogleMap.getUiSettings().setTiltGesturesEnabled(true);
         mGoogleMap.setOnMarkerClickListener(this::onMarkerClick);
 
-        setUpLocationUpdate();
+        //setUpLocationUpdate();
+        getCurrentLocation();
     }
 
     private void setUpLocationUpdate() {
@@ -403,24 +405,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 mGoogleMap.setInfoWindowAdapter(infoWindowAdapter);
                 moveCameraToLocation(location);
 
-                 final double currentLatitude = location.getLatitude();
-                 final double currentLongitude = location.getLongitude();
-
-                 testLocation = new LatLng(currentLatitude,currentLongitude);
-
-
+                double currentLatitude = 0.0;
+                double currentLongitude = 0.0;
+                if(location != null) {
+                    currentLatitude = location.getLatitude();
+                    currentLongitude = location.getLongitude();
+                }
+                testLocation = new LatLng(currentLatitude,currentLongitude);
             }
 
         });
     }
 
     private void moveCameraToLocation(Location location) {
+        double latitude = 0.0;
+        double longitude = 0.0;
+        if(location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new
-                LatLng(location.getLatitude(), location.getLongitude()), 17);
+                LatLng(latitude, longitude), 17);
 
         MarkerOptions markerOptions = new MarkerOptions()
-                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .position(new LatLng(latitude, longitude))
                 .title("Current Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .snippet(firebaseAuth.getCurrentUser().getDisplayName());
@@ -432,12 +441,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         currentMarker = mGoogleMap.addMarker(markerOptions);
         currentMarker.setTag(703);
         mGoogleMap.animateCamera(cameraUpdate);
-
     }
 
     private void stopLocationUpdate() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        Log.d("TAG", "stopLocationUpdate: Location Update stop");
+        //fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        //Log.d("TAG", "stopLocationUpdate: Location Update stop");
     }
 
     @Override
