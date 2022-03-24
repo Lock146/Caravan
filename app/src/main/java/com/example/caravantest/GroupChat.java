@@ -23,10 +23,10 @@ import java.util.Locale;
 public class GroupChat extends AppCompatActivity {
 
     private ActivityGroupChatBinding binding;
-    private User receiverUser;
-    private List<ChatMessage> chatMessages;
-    private ChatAdapter chatAdapter;
-    private FirebaseFirestore database;
+    private User m_receiverUser;
+    private List<ChatMessage> m_chatMessages;
+    private ChatAdapter m_chatAdapter;
+    private FirebaseFirestore m_database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
