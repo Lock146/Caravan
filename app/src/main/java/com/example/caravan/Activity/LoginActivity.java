@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+//                    if (firebaseAuth.getCurrentUser().isEmailVerified()) {
                         loadingDialog.stopLoading();
                         DocumentReference ref = FirebaseFirestore.getInstance()
                                 .collection("Users")
@@ -67,21 +67,20 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
-                    } else {
-
-                        firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> email) {
-                                if (email.isSuccessful()) {
-                                    loadingDialog.stopLoading();
-                                    Toast.makeText(LoginActivity.this, "Please verify email", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    loadingDialog.stopLoading();
-                                    Toast.makeText(LoginActivity.this, "Error : " + email.getException(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
+//                    } else {
+//                        firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> email) {
+//                                if (email.isSuccessful()) {
+//                                    loadingDialog.stopLoading();
+//                                    Toast.makeText(LoginActivity.this, "Please verify email", Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    loadingDialog.stopLoading();
+//                                    Toast.makeText(LoginActivity.this, "Error : " + email.getException(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+//                    }
 
                 } else {
                     loadingDialog.stopLoading();
