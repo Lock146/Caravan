@@ -7,10 +7,12 @@
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/drawable/background_content_top.xml" value="0.1135" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/drawable/background_received_messages.xml" value="0.1135" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/drawable/background_sent_message.xml" value="0.1135" />
+        <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/drawable/ic_send.xml" value="0.1925" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.12552083333333333" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/activity_display_message.xml" value="0.12552083333333333" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/activity_forget.xml" value="0.12552083333333333" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/activity_group_chat.xml" value="0.25" />
+        <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/activity_maps.xml" value="0.12552083333333333" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/content_scrolling.xml" value="0.16817864619678996" />
         <entry key="..\:/Users/13182/OneDrive/Desktop/Caravan/app/src/main/res/layout/item_container_received_message.xml" value="0.20416666666666666" />
