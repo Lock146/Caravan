@@ -80,6 +80,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-messaging:23.0.2'
 
 
     // google map dependenies
@@ -115,6 +116,14 @@ dependencies {
 
     // Circular Indicator library
     implementation 'com.victor:lib:1.0.4'
+
+    //Support for different screen sizes
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+    //rounded imageview used for chat screen
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
 
 
 }

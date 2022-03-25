@@ -14,4 +14,9 @@
     <color name="textColor">#FF000000</color>
     <color name="itemTextColor">#FF000000</color>
     <color name="transparentColor" >#00FFFFFF</color>
+    <color name="green">#3DDC84</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="red">#FF0000</color>
+    <color name="peach">#F98B88</color>
+    <color name = "lightBlue">#ADD8E6</color>
 </resources>
