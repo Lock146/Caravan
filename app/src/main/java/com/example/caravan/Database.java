@@ -47,6 +47,7 @@ public class Database {
         Map<String, Object> groupInfo = new HashMap<>();
         groupInfo.put("groupOwner", FirebaseAuth.getInstance().getUid());
         group.set(groupInfo);
+        m_groupID = group.getId();
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
@@ -58,6 +59,10 @@ public class Database {
 
     public void join_group(String groupID){
 
+    }
+
+    public Boolean in_group(){
+        return m_groupID != null;
     }
 
     public void update_location(Location location){
@@ -76,6 +81,10 @@ public class Database {
             data.put("sender", m_userID);
             data.put("text", message);
             data.put("timestamp", new Date());
+            ref.set(data)
+                    .addOnFailureListener( e -> {
+                        Log.d("Database", "Failed sending message: " + e.toString());
+                    });
         }
     }
 }

@@ -86,9 +86,6 @@ public class MainActivity extends AppCompatActivity {
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
 
         getUserData();
-
-        Database database = Database.get_instance();
-        database.create_group();
     }
 
     @Override

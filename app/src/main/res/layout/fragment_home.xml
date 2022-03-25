@@ -159,5 +159,15 @@
         android:paddingRight="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+    <Button
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentLocation"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:text="Button" />
+
 
 </RelativeLayout>

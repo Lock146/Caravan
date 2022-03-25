@@ -32,10 +32,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.caravan.Activity.DirectionActivity;
+import com.example.caravan.Activity.GroupChatActivity;
 import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.Database;
 import com.example.caravan.DeviceInfo;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
@@ -178,6 +180,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
 
         binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
+        binding.group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                open_group_activity();
+            }
+        });
 
 
 
@@ -924,5 +932,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         });
     }
 
-
+    private void open_group_activity(){
+        if(!Database.get_instance().in_group()){
+            Database.get_instance().create_group();
+        }
+        startActivity(new Intent(requireContext(), GroupChatActivity.class));
+    }
 }

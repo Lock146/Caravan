@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,50 +47,33 @@ public class GroupChatActivity extends AppCompatActivity {
 
     private void init() {
         m_chatMessages = new ArrayList<>();
-        m_chatAdapter = new ChatAdapter(m_chatMessages, getBitmapFromEncodedString(m_receiverUser.image));
+        //m_chatAdapter = new ChatAdapter(m_chatMessages, getBitmapFromEncodedString(m_receiverUser.image));
         //database = FirebaseFirestore.getInstance();
     }
     private void sendMessage() {
-        //HashMap<String, Object> message = new HashMap<>();
-        //message.put(Constants.KEY_SENDER_ID, m_preferenceManager.getString(Constants.KEY_USER_ID));
-        //message.put(Constants.KEY_RECEIVER_ID, m_receiverUser.id);
-        //message.put(Constants.KEY_MESSAGE, m_binding.message.getText().toString());
-        //message.put(Constants.KEY_TIMESTAMP, new Date());
-        //database.collection(Constants.KEY_COLLECTION_CHAT).add(messsage);
+        Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
         Database.get_instance().send_message(m_binding.message.getText().toString());
         m_binding.message.setText(null);
     }
-    private final EventListener<QuerySnapshot> eventListener = (value, error) -> {
-        if(error != null) { return; }
-        if(value != null){
-            int count = m_chatMessages.size();
-            for (DocumentChange documentChange : value.getDocumentChanges()){
-                if (documentChange.getType() == DocumentChange.Type.ADDED){
-                    ChatMessage chatMessage = new ChatMessage();
-                    chatMessage.senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
-                    chatMessage.receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
-                    chatMessage.message = documentChange.getDocument().getString(Constants.KEY_MESSAGE);
-                    chatMessage.dateTime = getReadableDateTime(documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP));
-                    chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
-                    m_chatMessages.add(chatMessage);
-                }
+    private void list_members(){
 
-            }
-        }
-    };
-    private Bitmap getBitmapFromEncodedString(String encodedImage) {
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-    return BitmapFactory.decodeByteArray(bytes,0, bytes.length); }
+    }
+
+//    private Bitmap getBitmapFromEncodedString(String encodedImage) {
+//        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+//        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//    }
 
     private void loadReceiverDetails() {
         m_receiverUser = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
-        m_binding.textName.setText(m_receiverUser.name);
+        //m_binding.textName.setText(m_receiverUser.name);
     }
     private void setListeners() {
         m_binding.imageBack.setOnClickListener(v -> onBackPressed());
         m_binding.layoutSend.setOnClickListener(v -> sendMessage());
+        m_binding.imageInfo.setOnClickListener(v -> list_members());
     }
-    private String getReadableDateTime(Date date) {
-        return new SimpleDateFormat("MMMM dd, yyyy - hh =:mm a", Locale.getDefault()).format(date);
-    }
+//    private String getReadableDateTime(Date date) {
+//        return new SimpleDateFormat("MMMM dd, yyyy - hh =:mm a", Locale.getDefault()).format(date);
+//    }
 }
