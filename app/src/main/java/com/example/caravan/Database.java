@@ -40,6 +40,14 @@ public class Database {
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    public String get_userID(){
+        return m_userID;
+    }
+
+    public String get_groupID(){
+        return m_groupID;
+    }
+
     public void create_group(){
         // Create group
         DocumentReference group = m_database.collection("Groups")
@@ -75,12 +83,12 @@ public class Database {
         if(m_groupID != null){
             DocumentReference ref = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                     .document(m_groupID)
-                    .collection(Constants.KEY_DOCUMENT_CHAT)
+                    .collection(Constants.KEY_CHAT)
                     .document();
             HashMap<String, Object> data = new HashMap<>();
-            data.put("sender", m_userID);
-            data.put("text", message);
-            data.put("timestamp", new Date());
+            data.put(Constants.KEY_SENDER_ID, m_userID);
+            data.put(Constants.KEY_MESSAGE, message);
+            data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> {
                         Log.d("Database", "Failed sending message: " + e.toString());

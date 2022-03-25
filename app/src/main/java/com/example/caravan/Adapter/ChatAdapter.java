@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.caravan.Database;
 import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.databinding.ItemContainerReceivedMessageBinding;
 import com.example.caravan.databinding.ItemContainerSentMessageBinding;
@@ -14,18 +15,15 @@ import com.example.caravan.databinding.ItemContainerSentMessageBinding;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
     private final List<ChatMessage> m_chatMessages;
-    private final Bitmap m_receiverProfileImage;
     private final String m_senderId;
 
     public static final int VIEW_TYPE_SENT = 1;
     public static final int VIEW_TYPE_RECEIVED = 2;
 
-    public ChatAdapter(List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
+    public ChatAdapter(List<ChatMessage> chatMessages) {
         m_chatMessages = chatMessages;
-        m_receiverProfileImage = receiverProfileImage;
-        m_senderId = senderId;
+        m_senderId = Database.get_instance().get_userID();
     }
 
     @NonNull
@@ -49,7 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (getItemViewType(position) == VIEW_TYPE_SENT) {
             ((SentMessageViewHolder) holder).setData(m_chatMessages.get(position));
         } else {
-            ((ReceiverMessageViewHolder) holder).setData(m_chatMessages.get(position), m_receiverProfileImage);
+            ((ReceiverMessageViewHolder) holder).setData(m_chatMessages.get(position));
         }
     }
 
@@ -58,14 +56,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return m_chatMessages.size();
     }
 
-        @Override
-        public int getItemViewType ( int position){
-            if (m_chatMessages.get(position).senderId.equals(m_senderId)) {
-                return VIEW_TYPE_SENT;
-            } else {
-                return VIEW_TYPE_RECEIVED;
-            }
+    @Override
+    public int getItemViewType(int position) {
+        if (m_chatMessages.get(position).senderId.equals(m_senderId)) {
+            return VIEW_TYPE_SENT;
+        } else {
+            return VIEW_TYPE_RECEIVED;
         }
+    }
 
 
     class SentMessageViewHolder extends RecyclerView.ViewHolder {
@@ -90,10 +88,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             binding = itemContainerReceivedMessageBinding;
         }
 
-        void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
+        void setData(ChatMessage chatMessage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
-            //binding.imageProfile  (receiverProfileImage);
         }
     }
 }

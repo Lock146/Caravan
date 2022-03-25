@@ -3,20 +3,53 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/drawable/ic_info.xml" value="1.8375" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.1" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_display_message.xml" value="0.23143115942028986" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_group_chat.xml" value="0.165" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_maps.xml" value="0.1" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_current_locations.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_groups.xml" value="0.1" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_home.xml" value="0.23143115942028986" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_group_chat.xml" value="0.1" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/item_container_received_message.xml" value="0.33" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/item_container_sent_message.xml" value="0.1" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.11503623188405797" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_display_message.xml" value="0.11503623188405797" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_forget.xml" value="0.11503623188405797" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_login.xml" value="0.11503623188405797" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/current_item_layout.xml" value="0.2" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_about.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_current_locations.xml" value="0.1" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.1265625" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_email_change.xml" value="0.11503623188405797" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_email_confirmation.xml" value="0.11503623188405797" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_home.xml" value="0.12771739130434784" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_password_change.xml" value="0.11503623188405797" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/toolbar_layout.xml" value="0.1265625" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2351851851851852" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/menu/map_type_menu.xml" value="0.1265625" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/menu/nav_menu.xml" value="0.2351851851851852" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/drawable/ic_gas_station.xml" value="0.2985" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_display_message.xml" value="0.358695652173913" />
         <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_maps.xml" value="0.14722222222222223" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_sign_up.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_splash.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/current_item_layout.xml" value="0.33" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/dialog_layout.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_about.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_current_locations.xml" value="0.33" />
         <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_home.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_password_change.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_saved_places.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_settings.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/header_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/info_window_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/nav_drawer_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/place_item_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/saved_item_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/step_item_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/toolbar_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/layout/username_dialog_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/menu/bottom_nav_menu.xml" value="0.14722222222222223" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/menu/map_type_menu.xml" value="0.14722222222222223" />
+        <entry key="..\:/Users/jimne/AndroidStudioProjects/Caravan/app/src/main/res/menu/nav_menu.xml" value="0.14722222222222223" />
         <entry key="..\:/Users/jimne/Documents/GitHub/Caravan/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/jimne/Documents/GitHub/Caravan/app/src/main/res/drawable/ic_af24239a1e3b57d72213f4d1ac5604d8.xml" value="0.1" />
         <entry key="..\:/Users/jimne/Documents/GitHub/Caravan/app/src/main/res/drawable/ic_baseline_bookmark_border_24.xml" value="0.1965" />

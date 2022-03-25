@@ -43,22 +43,22 @@ import java.util.List;
 //
 //    @Override
 //    public int getItemCount() { return users.size(); }
-////    class UserViewHolder extends RecyclerView.ViewHolder {
-////        ItemContainerUserBinding binding;
-////
-////        UserViewHolder(ItemContainerUserBinding itemContainerUserBinding){
-////            super(itemContainerUserBinding.getRoot());
-////            binding = itemContainerUserBinding;
-////        }
-////        void setUserData(User user){
-////            binding.textName.setText(user.name);
-////            binding.textEmail.setText(user.email);
-////            binding.imageProfile.setImageBitmap(getUserImage(user.image));
-////            binding.getRoot().setOnClickListener(v -> userListener.onUserClicked(user));
-////        }
-////    }
-////    private Bitmap getUserImage(String encodedImage){
-////        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-////        return BitmapFactory.decodeByteArray(bytes,0, bytes.length);
-////    }
+//    class UserViewHolder extends RecyclerView.ViewHolder {
+//        ItemContainerUserBinding binding;
+//
+//        UserViewHolder(ItemContainerUserBinding itemContainerUserBinding){
+//            super(itemContainerUserBinding.getRoot());
+//            binding = itemContainerUserBinding;
+//        }
+//        void setUserData(User user){
+//            binding.textName.setText(user.name);
+//            binding.textEmail.setText(user.email);
+//            binding.imageProfile.setImageBitmap(getUserImage(user.image));
+//            binding.getRoot().setOnClickListener(v -> userListener.onUserClicked(user));
+//        }
+//    }
+//    private Bitmap getUserImage(String encodedImage){
+//        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+//        return BitmapFactory.decodeByteArray(bytes,0, bytes.length);
+//    }
 //}
