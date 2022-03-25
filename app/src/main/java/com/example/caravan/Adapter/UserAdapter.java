@@ -1,4 +1,4 @@
-package com.example.caravantest.Adapter;
+package com.example.caravan.Adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.caravantest.User;
-import com.example.caravantest.listeners.UserListener;
+import com.example.caravan.User;
+import com.example.caravan.listeners.UserListener;
 
 import java.util.List;
 

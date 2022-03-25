@@ -1,4 +1,4 @@
-package com.example.caravantest.Adapter;
+package com.example.caravan.Adapter;
 
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.caravantest.Model.ChatMessage;
-import com.example.caravantest.databinding.ItemContainerReceivedMessageBinding;
-import com.example.caravantest.databinding.ItemContainerSentMessageBinding;
+import com.example.caravan.Model.ChatMessage;
+import com.example.caravan.databinding.ItemContainerReceivedMessageBinding;
+import com.example.caravan.databinding.ItemContainerSentMessageBinding;
 
 import java.util.List;
 

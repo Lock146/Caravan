@@ -1,4 +1,4 @@
-package com.example.caravantest.Model;
+package com.example.caravan.Model;
 
 import java.util.Date;
 

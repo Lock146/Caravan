@@ -1,6 +1,6 @@
-package com.example.caravantest.listeners;
+package com.example.caravan.listeners;
 
-import com.example.caravantest.User;
+import com.example.caravan.User;
 
 public interface UserListener {
     void onUserClicked(User user);

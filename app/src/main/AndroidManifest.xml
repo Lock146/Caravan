@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Caravan">
         <activity
-            android:name=".GroupChat"
+            android:name=".Activity.GroupChatActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activity.DirectionActivity"
