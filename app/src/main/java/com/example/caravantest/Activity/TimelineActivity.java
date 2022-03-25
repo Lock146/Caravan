@@ -20,22 +20,22 @@ public class TimelineActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TimelineAdapter timelineAdapter;
-    List<String> destiList;
+    List<String> destinationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        destiList = new ArrayList<>();
+        destinationList = new ArrayList<>();
 
         //TODO: Create a function that takes the name of a destination
         // on a route and input it onto the list
-        destiList.add("New Orleans");
-        destiList.add("Ruston");
+        destinationList.add("New Orleans");
+        destinationList.add("Ruston");
 
         recyclerView = findViewById(R.id.recyclerView);
-        timelineAdapter = new TimelineAdapter(destiList);
+        timelineAdapter = new TimelineAdapter(destinationList);
 
         recyclerView.setAdapter(timelineAdapter);
 
@@ -54,7 +54,7 @@ public class TimelineActivity extends AppCompatActivity {
             int fromPosition = viewHolder.getAdapterPosition();
             int toPosition = target.getAdapterPosition();
 
-            Collections.swap(destiList, fromPosition, toPosition);
+            Collections.swap(destinationList, fromPosition, toPosition);
 
             recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
 

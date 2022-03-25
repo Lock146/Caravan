@@ -25,7 +25,6 @@
     tools:context=".Fragments.CurrentLocationsFragment">
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedRecyclerView"
         android:layout_width="match_parent"

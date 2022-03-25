@@ -19,10 +19,10 @@ import java.util.List;
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder> {
     private static final String TAG = "TimelineAdapter";
 
-    List<String> destiList;
+    List<String> destinationList;
 
-    public TimelineAdapter(List<String> destiList) {
-        this.destiList = destiList;
+    public TimelineAdapter(List<String> destinationList) {
+        this.destinationList = destinationList;
     }
 
     @NonNull
@@ -41,7 +41,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(destiList.get(position));
+        holder.textView.setText(destinationList.get(position));
 
         //TODO: Change rowCount to be able to present miles to the destination
         holder.rowCount.setText(String.valueOf(position));
@@ -49,7 +49,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return destiList.size();
+        return destinationList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -68,7 +68,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             itemView.setOnLongClickListener(new OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    destiList.remove(getAdapterPosition());
+                    destinationList.remove(getAdapterPosition());
                     notifyItemRemoved(getAdapterPosition());
                     return true;
                 }
@@ -77,7 +77,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(view.getContext(), destiList.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), destinationList.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
         }
     }
 }

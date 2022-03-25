@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.caravantest.Activity.DirectionActivity;
 import com.example.caravantest.Activity.MainActivity;
+import com.example.caravantest.Activity.TimelineActivity;
 import com.example.caravantest.CurrentLocationInterface;
 import com.example.caravantest.CurrentLocationModel;
 import com.example.caravantest.GooglePlaceModel;
@@ -195,7 +196,7 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
 
     @Override
     public void onStartClick() {
-
+        startActivity(new Intent(requireContext(), TimelineActivity.class));
        // DirectionActivity.getList(currentLocationModelArrayList);
 
 
