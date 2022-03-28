@@ -53,4 +53,13 @@
 
     </style>
 
+    <style name="Theme.Caravan.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Caravan.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Caravan.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
