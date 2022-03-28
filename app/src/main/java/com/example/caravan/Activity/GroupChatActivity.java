@@ -67,10 +67,7 @@ public class GroupChatActivity extends AppCompatActivity {
     }
 
     private void listenMessages(){
-        FirebaseFirestore.getInstance().collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(Database.get_instance().get_groupID())
-                .collection(Constants.KEY_CHAT)
-                .addSnapshotListener(eventListener);
+        Database.get_instance().add_message_listener(eventListener);
     }
 
     private final EventListener<QuerySnapshot> eventListener = (value, error) ->{

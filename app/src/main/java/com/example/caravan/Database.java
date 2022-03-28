@@ -15,7 +15,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.Date;
@@ -94,5 +96,12 @@ public class Database {
                         Log.d("Database", "Failed sending message: " + e.toString());
                     });
         }
+    }
+
+    public void add_message_listener(EventListener<QuerySnapshot> listener){
+        FirebaseFirestore.getInstance().collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(Database.get_instance().get_groupID())
+                .collection(Constants.KEY_CHAT)
+                .addSnapshotListener(listener);
     }
 }
