@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.caravantest.Fragments.HomeFragment"
+        android:name="com.example.caravan.Fragments.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.caravantest.ui.dashboard.DashboardFragment"
+        android:name="com.example.caravan.ui.dashboard.DashboardFragment"
         android:label="Maps"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.caravantest.ui.notifications.NotificationsFragment"
+        android:name="com.example.caravan.ui.notifications.NotificationsFragment"
         android:label="Groups"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

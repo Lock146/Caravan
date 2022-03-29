@@ -34,35 +34,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:4380038455:android:37b35f347cb501d72676b2",
-        "android_client_info": {
-          "package_name": "com.example.caravantest"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "4380038455-dronn4hllpnau4vfql4rrs0s5lbj1r1k.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDeH5mgCwZ3r-6vUrstc5-07JkIL9kGnAo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "4380038455-dronn4hllpnau4vfql4rrs0s5lbj1r1k.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

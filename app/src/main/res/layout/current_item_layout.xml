@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="currentLocationModel"
+            type="com.example.caravan.CurrentLocationModel" />
+
+        <variable
+            name="googlePlaceModel"
+            type="com.example.caravan.GooglePlaceModel" />
+
+        <variable
+            name="listener"
+            type="com.example.caravan.CurrentLocationInterface" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:cardElevation="6dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/backgroundColor"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:id="@+id/placeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/txtPlaceName"
+                    android:layout_width="7dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{currentLocationModel.name,default=`Location Name`}"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.2"
+                    android:onClick="@{()->listener.onLocationClick2(googlePlaceModel)}"
+                    android:src="@drawable/ic_gas_station"
+                    app:tint="@color/primaryColor" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.2"
+                    android:onClick="@{()->listener.onLocationClick(currentLocationModel)}"
+                    android:src="@drawable/ic_gas_station"
+                    app:tint="@color/primaryColor" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtPlaceAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/placeLayout"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{currentLocationModel.address,default=Address}"
+                android:textColor="?android:textColor"
+                android:textSize="15dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

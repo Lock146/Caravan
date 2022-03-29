@@ -3,13 +3,17 @@
 
     <item
         android:id="@+id/btnNormal"
+        android:textColor="?android:textColorPrimary"
         android:title="Default" />
 
     <item
         android:id="@+id/btnSatellite"
+        android:textColor="?android:textColorPrimary"
         android:title="Satellite" />
 
     <item
         android:id="@+id/btnTerrain"
-        android:title="Terrain" />
+        android:title="Terrain"
+        android:textColor="?android:textColorPrimary"
+        />
 </menu>

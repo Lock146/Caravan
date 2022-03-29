@@ -4,12 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:elevation="7dp"
     android:padding="20dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="100dp"
-    app:layout_behavior="@string/bottom_sheet_behavior">
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    tools:backgroundTint="@color/primaryColor">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="391dp"
+        android:layout_height="711dp"
+        tools:srcCompat="@color/backgroundColor" />
 
     <LinearLayout
         android:id="@+id/timeLayout"
@@ -21,7 +27,7 @@
             android:id="@+id/txtSheetTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/quantum_black_100"
+            android:textColor="@color/itemTextColor"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -30,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textColor="@color/quantum_grey500"
+            android:textColor="@color/itemTextColor"
             android:textSize="20dp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -42,7 +48,7 @@
         android:layout_below="@+id/timeLayout"
         android:layout_marginTop="10dp"
         android:text="Fastest route"
-        android:textColor="@color/quantum_grey600"
+        android:textColor="?android:textColor"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -61,7 +67,7 @@
         android:layout_below="@+id/view"
         android:layout_marginTop="20dp"
         android:text="Steps"
-        android:textColor="@color/quantum_black_text"
+        android:textColor="@color/itemTextColor"
         android:textSize="20dp"
         android:textStyle="bold" />
 
