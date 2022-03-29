@@ -6,11 +6,11 @@
 
         <variable
             name="savedPlaceModel"
-            type="com.example.caravantest.SavedPlaceModel" />
+            type="com.example.caravan.SavedPlaceModel" />
 
         <variable
             name="listener"
-            type="com.example.caravantest.SavedLocationInterface" />
+            type="com.example.caravan.SavedLocationInterface" />
     </data>
 
     <androidx.cardview.widget.CardView

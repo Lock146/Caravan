@@ -5,15 +5,20 @@ plugins {
 
 }
 
+def localProperties = new Properties()
+localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
-    compileSdkVersion 30
+    compileSdkVersion 29
     buildToolsVersion "30.0.3"
 
 
     defaultConfig {
-        applicationId "com.example.caravantest"
+        manifestPlaceholders = [MAPS_API_KEY: "${localProperties.getProperty('MAPS_API_KEY')}"]
+
+        applicationId "com.example.caravan"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -21,6 +26,9 @@ android {
     }
 
     buildTypes {
+        debug{
+            resValue("string", "MAPS_API_KEY", localProperties['MAPS_API_KEY'])
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -65,12 +73,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // Firebase Library Auth,RealTime, Storage and UI
-    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation platform('com.google.firebase:firebase-bom:29.2.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
     implementation 'com.google.firebase:firebase-database:20.0.0'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-messaging:23.0.2'
 
 
     // google map dependenies
@@ -106,6 +116,14 @@ dependencies {
 
     // Circular Indicator library
     implementation 'com.victor:lib:1.0.4'
+
+    //Support for different screen sizes
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+    //rounded imageview used for chat screen
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
 
 
 }
