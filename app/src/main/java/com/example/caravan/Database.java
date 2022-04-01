@@ -1,5 +1,11 @@
 package com.example.caravan;
 
+import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
+import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
+import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
+import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
+import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
+
 import android.location.Location;
 import android.util.Log;
 
@@ -52,17 +58,17 @@ public class Database {
 
     public void create_group(){
         // Create group
-        DocumentReference group = m_database.collection("Groups")
+        DocumentReference group = m_database.collection(KEY_COLLECTION_GROUPS)
                 .document();
         Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupOwner", FirebaseAuth.getInstance().getUid());
+        groupInfo.put(KEY_GROUP_OWNER, FirebaseAuth.getInstance().getUid());
         group.set(groupInfo);
         m_groupID = group.getId();
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("groupID", group.getId());
-        Task<Void> user = m_database.collection("Users")
+        userInfo.put(KEY_GROUP_ID, group.getId());
+        Task<Void> user = m_database.collection(KEY_COLLECTION_USERS)
                 .document(FirebaseAuth.getInstance().getUid())
                 .set(userInfo, SetOptions.merge());
     }
@@ -76,14 +82,14 @@ public class Database {
     }
 
     public void update_location(Location location){
-        m_database.collection("Users")
+        m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
-                .update("currentLocation", location);
+                .update(KEY_CURRENT_LOCATION, location);
     }
 
     public void send_message(String message){
         if(m_groupID != null){
-            DocumentReference ref = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+            DocumentReference ref = m_database.collection(KEY_COLLECTION_GROUPS)
                     .document(m_groupID)
                     .collection(Constants.KEY_CHAT)
                     .document();
@@ -99,7 +105,7 @@ public class Database {
     }
 
     public void add_message_listener(EventListener<QuerySnapshot> listener){
-        FirebaseFirestore.getInstance().collection(Constants.KEY_COLLECTION_GROUPS)
+        FirebaseFirestore.getInstance().collection(KEY_COLLECTION_GROUPS)
                 .document(Database.get_instance().get_groupID())
                 .collection(Constants.KEY_CHAT)
                 .addSnapshotListener(listener);
