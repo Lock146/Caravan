@@ -9,7 +9,7 @@ def localProperties = new Properties()
 localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
 
@@ -18,7 +18,7 @@ android {
 
         applicationId "com.example.caravan"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
