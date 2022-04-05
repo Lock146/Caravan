@@ -10,6 +10,7 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.caravan.Constant.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
@@ -39,6 +41,7 @@ public class Database {
     private String m_userID;
     private String m_groupID;
     private String m_email;
+    private EventListener<DocumentSnapshot> m_dbUserListener;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -51,6 +54,17 @@ public class Database {
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        m_dbUserListener = new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value.get(KEY_GROUP_ID) != null) {
+                    m_groupID = value.get(KEY_GROUP_ID).toString();
+                }
+            }
+        };
+        m_database.collection(Constants.KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .addSnapshotListener(m_dbUserListener);
     }
 
     public String get_userID(){
