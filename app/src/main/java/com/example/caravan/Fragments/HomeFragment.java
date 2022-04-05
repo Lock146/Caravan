@@ -38,6 +38,7 @@ import com.example.caravan.Activity.GroupChatActivity;
 import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.CurrentLocationModel;
 import com.example.caravan.Database;
 import com.example.caravan.DeviceInfo;
@@ -86,6 +87,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -121,6 +125,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userSavedLocationId;
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
+    private EventListener<DocumentSnapshot> onGroupChange;
     public LatLng testLocation;
 
     public HomeFragment() {
@@ -208,6 +213,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.group.setOnClickListener(view -> open_group_activity());
         binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
                 Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
+
+        onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                requireContext(),
+                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
+        ));
+        Database.get_instance().add_group_join_listener(onGroupChange);
+
         return binding.getRoot();
     }
 

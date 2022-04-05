@@ -168,8 +168,14 @@ public class Database {
 
     public void add_message_listener(EventListener<QuerySnapshot> listener){
         FirebaseFirestore.getInstance().collection(KEY_COLLECTION_GROUPS)
-                .document(Database.get_instance().get_groupID())
+                .document(m_groupID)
                 .collection(Constants.KEY_CHAT)
+                .addSnapshotListener(listener);
+    }
+
+    public void add_group_join_listener(EventListener<DocumentSnapshot> listener){
+        m_database.collection(Constants.KEY_COLLECTION_USERS)
+                .document(m_userID)
                 .addSnapshotListener(listener);
     }
 }
