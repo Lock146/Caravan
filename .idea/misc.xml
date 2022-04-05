@@ -4,7 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/drawable/ic_af24239a1e3b57d72213f4d1ac5604d8.xml" value="0.21" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.31521739130434784" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_group.xml" value="0.31521739130434784" />
         <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_group_chat.xml" value="0.1" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_maps.xml" value="0.31521739130434784" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_current_locations.xml" value="0.31521739130434784" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_home.xml" value="0.31521739130434784" />
         <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/item_container_received_message.xml" value="0.33" />
         <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/item_container_sent_message.xml" value="0.1" />
         <entry key="..\:/Users/Acer/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.11503623188405797" />

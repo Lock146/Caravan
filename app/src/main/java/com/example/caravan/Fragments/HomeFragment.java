@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.caravan.Activity.DirectionActivity;
+import com.example.caravan.Activity.GroupActivity;
 import com.example.caravan.Activity.GroupChatActivity;
 import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
@@ -50,6 +52,7 @@ import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.WebServices.RetrofitAPI;
 import com.example.caravan.WebServices.RetrofitClient;
 import com.example.caravan.databinding.FragmentHomeBinding;
+import com.example.caravan.generated.callback.OnClickListener;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -201,6 +204,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 }
             }
         });
+
+        binding.group.setOnClickListener(view -> open_group_activity());
+        binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
+                Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
         return binding.getRoot();
     }
 
@@ -934,8 +941,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     private void open_group_activity(){
         if(!Database.get_instance().in_group()){
+            binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_groups));
             Database.get_instance().create_group();
         }
-        startActivity(new Intent(requireContext(), GroupChatActivity.class));
+        startActivity(new Intent(requireContext(), GroupActivity.class));
     }
 }

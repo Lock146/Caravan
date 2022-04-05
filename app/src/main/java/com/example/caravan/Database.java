@@ -73,30 +73,15 @@ public class Database {
         Map<String, Object> groupMember = new HashMap<>();
         groupMember.put(m_email, m_userID);
         groupMembers.add(groupMember)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("Database", "Successfully added group owner as member.");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Database", "Unable to add group owner as member. Error: " + e.toString());
-                    }
-                })
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        Log.d("Database", "Completed task adding group owner as member.");
-                    }
-                });
+                .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
+                .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
+                .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
         m_groupID = group.getId();
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put(KEY_GROUP_ID, group.getId());
-        Task<Void> user = m_database.collection(KEY_COLLECTION_USERS)
+        m_database.collection(KEY_COLLECTION_USERS)
                 .document(FirebaseAuth.getInstance().getUid())
                 .set(userInfo, SetOptions.merge());
     }
@@ -106,22 +91,24 @@ public class Database {
     }
 
     public void add_user(String email){
-        //String newUserID = find_user(email);
         try {
             CollectionReference userCollection = m_database.collection(KEY_COLLECTION_USERS);
             Task<QuerySnapshot> userTask = userCollection.get();
-            userTask.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot users) {
-                    for (DocumentSnapshot user : users.getDocuments()) {
-                        if(user.get(Constants.KEY_EMAIL) == email){
-                            CollectionReference groupMembers = m_database.collection(KEY_COLLECTION_GROUPS)
-                                    .document(m_groupID)
-                                    .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
-                            groupMembers.add(user.getId());
-                        }
-                        Log.d("Database", "User: " + user.toString());
+            userTask.addOnSuccessListener(users ->
+            {
+                for (DocumentSnapshot user : users.getDocuments()) {
+                    if(email.equals(user.get(Constants.KEY_EMAIL).toString())){
+                        CollectionReference groupMembers = m_database.collection(KEY_COLLECTION_GROUPS)
+                                .document(m_groupID)
+                                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
+                        Map<String, Object> newMember = new HashMap<>();
+                        newMember.put(email, user.getId());
+                        groupMembers.add(newMember)
+                                .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added user " + email))
+                                .addOnFailureListener(e -> Log.d("Database", "Failed adding user " + email + ". Error: " + e.toString()))
+                                .addOnCompleteListener(task -> Log.d("Database", "Completed operation trying to add user " + email));
                     }
+                    Log.d("Database", "User: " + user.toString());
                 }
             });
         }
