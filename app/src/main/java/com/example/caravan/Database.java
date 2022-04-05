@@ -12,7 +12,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.caravan.Constant.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +23,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -35,6 +38,7 @@ public class Database {
     private FirebaseFirestore m_database;
     private String m_userID;
     private String m_groupID;
+    private String m_email;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -46,6 +50,7 @@ public class Database {
     private Database(){
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
 
     public String get_userID(){
@@ -63,6 +68,29 @@ public class Database {
         Map<String, Object> groupInfo = new HashMap<>();
         groupInfo.put(KEY_GROUP_OWNER, FirebaseAuth.getInstance().getUid());
         group.set(groupInfo);
+        CollectionReference groupMembers = group.collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
+        FirebaseFirestore instance = FirebaseFirestore.getInstance();
+        Map<String, Object> groupMember = new HashMap<>();
+        groupMember.put(m_email, m_userID);
+        groupMembers.add(groupMember)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Database", "Successfully added group owner as member.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Database", "Unable to add group owner as member. Error: " + e.toString());
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        Log.d("Database", "Completed task adding group owner as member.");
+                    }
+                });
         m_groupID = group.getId();
 
         // Update user info
@@ -75,6 +103,48 @@ public class Database {
 
     public void join_group(String groupID){
 
+    }
+
+    public void add_user(String email){
+        //String newUserID = find_user(email);
+        try {
+            CollectionReference userCollection = m_database.collection(KEY_COLLECTION_USERS);
+            Task<QuerySnapshot> userTask = userCollection.get();
+            userTask.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot users) {
+                    for (DocumentSnapshot user : users.getDocuments()) {
+                        if(user.get(Constants.KEY_EMAIL) == email){
+                            CollectionReference groupMembers = m_database.collection(KEY_COLLECTION_GROUPS)
+                                    .document(m_groupID)
+                                    .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
+                            groupMembers.add(user.getId());
+                        }
+                        Log.d("Database", "User: " + user.toString());
+                    }
+                }
+            });
+        }
+        catch(Exception e){
+            Log.d("Database", "Exception: " + e.toString());
+        }
+    }
+
+    private String find_user(String email){
+//        try {
+//            CollectionReference userCollection = m_database.collection(KEY_COLLECTION_USERS);
+//            Task<QuerySnapshot> userTask = userCollection.get();
+//            while(!userTask.isComplete());
+//            QuerySnapshot users = userTask.getResult();
+//            for (DocumentSnapshot user : users.getDocuments()) {
+//
+//                Log.d("Database", "User: " + user.toString());
+//            }
+//        }
+//        catch(Exception e){
+//            Log.d("Database", "Exception: " + e.toString());
+//        }
+        return "";
     }
 
     public Boolean in_group(){

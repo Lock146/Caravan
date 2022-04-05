@@ -46,6 +46,7 @@ public class GroupChatActivity extends AppCompatActivity {
         loadReceiverDetails();
         init();
         listenMessages();
+        Database.get_instance().add_user("dummy1@gmail.com");
     }
 
     private void init() {

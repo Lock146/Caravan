@@ -3,10 +3,12 @@ package com.example.caravan.Constant;
 public class Constants {
     public static final String KEY_COLLECTION_USERS = "users";
     public static final String KEY_COLLECTION_GROUPS = "groups";
+    public static final String KEY_COLLECTION_GROUP_MEMBERS = "members";
     public static final String KEY_GROUP_ID = "groupID";
     public static final String KEY_GROUP_OWNER = "groupOwner";
     public static final String KEY_CHAT = "chat";
     public static final String KEY_USER = "user";
+    public static final String KEY_EMAIL = "email";
     public static final String KEY_CURRENT_LOCATION = "currentLocation";
     public static final String KEY_SENDER_ID = "senderId";
     public static final String KEY_RECEIVER_ID = "receiverId";
