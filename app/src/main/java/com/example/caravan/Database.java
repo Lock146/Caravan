@@ -98,6 +98,7 @@ public class Database {
             {
                 for (DocumentSnapshot user : users.getDocuments()) {
                     if(email.equals(user.get(Constants.KEY_EMAIL).toString())){
+                        // Add user to group
                         CollectionReference groupMembers = m_database.collection(KEY_COLLECTION_GROUPS)
                                 .document(m_groupID)
                                 .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
@@ -107,6 +108,11 @@ public class Database {
                                 .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added user " + email))
                                 .addOnFailureListener(e -> Log.d("Database", "Failed adding user " + email + ". Error: " + e.toString()))
                                 .addOnCompleteListener(task -> Log.d("Database", "Completed operation trying to add user " + email));
+
+                        // Update user's group info
+                        m_database.collection(Constants.KEY_COLLECTION_USERS)
+                                .document(user.getId())
+                                .update(Constants.KEY_GROUP_ID, m_groupID);
                     }
                 }
             });
