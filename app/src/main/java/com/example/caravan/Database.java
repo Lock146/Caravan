@@ -108,7 +108,6 @@ public class Database {
                                 .addOnFailureListener(e -> Log.d("Database", "Failed adding user " + email + ". Error: " + e.toString()))
                                 .addOnCompleteListener(task -> Log.d("Database", "Completed operation trying to add user " + email));
                     }
-                    Log.d("Database", "User: " + user.toString());
                 }
             });
         }
