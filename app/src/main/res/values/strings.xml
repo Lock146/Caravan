@@ -15,7 +15,6 @@
     <string name="team_description">Caravan is an app developed by the \nA New Dawn is Daying senior design team at Louisiana Tech University (Louisiana). \nCameron Mitchell: Networking \nKyler Parker: Back-end and Maps\nColby Boyd: Messaging and Back-end\nLuke Jobe: UI/UX and Back-end</string>
 
 
-
     <string name="login_string">Already have an account? <b>Login here</b></string>
 
     <string name="open_navigation_drawer">Open Drawer</string>

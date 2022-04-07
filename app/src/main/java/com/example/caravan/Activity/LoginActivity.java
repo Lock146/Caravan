@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,10 +60,10 @@ public class LoginActivity extends AppCompatActivity {
 //                    if (firebaseAuth.getCurrentUser().isEmailVerified()) {
                         loadingDialog.stopLoading();
                         DocumentReference ref = FirebaseFirestore.getInstance()
-                                .collection("Users")
+                                .collection(Constants.KEY_COLLECTION_USERS)
                                 .document(FirebaseAuth.getInstance().getUid());
                         Map<String, String> userEmail = new HashMap<>();
-                        userEmail.put("email", email);
+                        userEmail.put(Constants.KEY_EMAIL, email);
                         ref.set(userEmail);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
