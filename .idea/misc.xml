@@ -11,7 +11,7 @@
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/splash_image.xml" value="0.2703125" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/font/playfair_display.xml" value="0.2265625" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_direction.xml" value="0.264" />
-        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_display_message.xml" value="0.176" />
+        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_display_message.xml" value="0.152" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_forget.xml" value="0.2" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_main.xml" value="0.38928067700987307" />
@@ -54,6 +54,9 @@
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_home.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_notifications.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layout/activity_routetimeline.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/row_item.xml" value="0.16614583333333333" />
       </map>
     </option>
   </component>
