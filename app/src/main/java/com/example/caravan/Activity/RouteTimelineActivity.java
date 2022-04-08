@@ -42,6 +42,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
         CurrentRoute = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setFitsSystemWindows(true);
         //recyclerAdapter = new RecyclerAdapter(Routes,Miles);
         routeTimelineAdapter = new RouteTimelineAdapter(CurrentRoute);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
