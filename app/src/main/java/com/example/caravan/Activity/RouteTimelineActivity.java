@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.caravan.Adapter.RecyclerAdapter;
+import com.example.caravan.Adapter.RouteTimelineAdapter;
 import com.example.caravan.R;
 import com.example.caravan.RouteInfo;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,7 +23,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
 
 
     RecyclerView recyclerView;
-    RecyclerAdapter recyclerAdapter;
+    RouteTimelineAdapter routeTimelineAdapter;
 
     //List<String> Routes;
     //List<Double> Miles;
@@ -43,10 +43,10 @@ public class RouteTimelineActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         //recyclerAdapter = new RecyclerAdapter(Routes,Miles);
-        recyclerAdapter = new RecyclerAdapter(CurrentRoute);
+        routeTimelineAdapter = new RouteTimelineAdapter(CurrentRoute);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setAdapter(routeTimelineAdapter);
 
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
@@ -116,7 +116,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
 
             CurrentRoute.remove(position);
 
-            recyclerAdapter.notifyItemRemoved(position);
+            routeTimelineAdapter.notifyItemRemoved(position);
             Snackbar.make(recyclerView, deletedRoute.getRouteName(), Snackbar.LENGTH_LONG)
                     .setAction("Undo", new View.OnClickListener() {
                         @Override
@@ -126,7 +126,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
                             //Miles.add(position, deletedMiles);
                             CurrentRoute.add(position, deletedRoute);
 
-                            recyclerAdapter.notifyItemInserted(position);
+                            routeTimelineAdapter.notifyItemInserted(position);
                         }
                     }).show();
 

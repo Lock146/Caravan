@@ -15,7 +15,7 @@ import com.example.caravan.RouteInfo;
 
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
+public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdapter.ViewHolder>{
     private static final String TAG = "RecyclerAdapter";
 
 
@@ -24,7 +24,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     List<String> Routes;
     List<Double> Miles;
     List<RouteInfo> Route;
-    public RecyclerAdapter(List<RouteInfo> route) {//List<String> routes, List<Double> miles) {
+    public RouteTimelineAdapter(List<RouteInfo> route) {//List<String> routes, List<Double> miles) {
         //Routes = routes;
         //Miles = miles;
         Route = route;
