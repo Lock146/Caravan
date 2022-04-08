@@ -4,6 +4,7 @@ import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
 import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
+import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
 
 import android.location.Location;
@@ -40,6 +41,7 @@ public class Database {
     private FirebaseFirestore m_database;
     private String m_userID;
     private String m_groupID;
+    private String m_memberID;
     private String m_email;
     private EventListener<DocumentSnapshot> m_dbUserListener;
 
@@ -59,6 +61,7 @@ public class Database {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(value.get(KEY_GROUP_ID) != null) {
                     m_groupID = value.get(KEY_GROUP_ID).toString();
+                    get_member_id();
                 }
             }
         };
@@ -81,11 +84,13 @@ public class Database {
                 .document();
         Map<String, Object> groupInfo = new HashMap<>();
         groupInfo.put(KEY_GROUP_OWNER, FirebaseAuth.getInstance().getUid());
+        groupInfo.put(KEY_GROUP_NAME, null);
         group.set(groupInfo);
         CollectionReference groupMembers = group.collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
         FirebaseFirestore instance = FirebaseFirestore.getInstance();
         Map<String, Object> groupMember = new HashMap<>();
-        groupMember.put(m_email, m_userID);
+        groupMember.put(Constants.KEY_EMAIL, m_email);
+        groupMember.put(Constants.KEY_USER_ID, m_userID);
         groupMembers.add(groupMember)
                 .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
                 .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
@@ -100,8 +105,63 @@ public class Database {
                 .set(userInfo, SetOptions.merge());
     }
 
+    private void get_member_id(){
+        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for(DocumentSnapshot member : queryDocumentSnapshots){
+                            String email = member.get("email").toString();
+                            if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+                                m_memberID = member.getId();
+                                return;
+                            }
+                        }
+                    }
+                });
+    }
+
     public void join_group(String groupID){
 
+    }
+
+    public void leave_group(){
+        Log.d("Database", "leave_group called");
+        if(!(m_groupID == null || m_groupID.equals(""))){
+            // Remove from members list
+            DocumentReference group = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                    .document(m_groupID);
+            group.collection(Constants.KEY_COLLECTION_GROUP_MEMBERS)
+                    .document(m_memberID)
+                    .delete();
+            group.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            String groupOwner = documentSnapshot.get(KEY_GROUP_OWNER, String.class);
+                            if(groupOwner.equals(m_userID)){
+                                group.update(Constants.KEY_GROUP_OWNER, null);
+                            }
+                        }
+                    });
+//            members.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                @Override
+//                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                    for(DocumentSnapshot member : queryDocumentSnapshots){
+//                        if(member.getId().equals(m_memberID)){
+//
+//                            return;
+//                        }
+//                    }
+//                }
+//            });
+            m_database.collection(Constants.KEY_COLLECTION_USERS)
+                    .document(m_userID)
+                    .update(Constants.KEY_GROUP_ID, null);
+        }
     }
 
     public void add_user(String email){
@@ -191,5 +251,11 @@ public class Database {
         m_database.collection(Constants.KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .addSnapshotListener(listener);
+    }
+
+    public void update_group_name(String newName){
+        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .update(Constants.KEY_GROUP_NAME, newName);
     }
 }
