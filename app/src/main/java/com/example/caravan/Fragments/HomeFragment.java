@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.example.caravan.Activity.DirectionActivity;
 import com.example.caravan.Activity.GroupActivity;
 import com.example.caravan.Activity.GroupChatActivity;
+import com.example.caravan.Activity.RouteTimelineActivity;
 import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
@@ -185,6 +186,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 }
             }
 
+        });
+
+        binding.enableTraffic.setOnLongClickListener(view -> {
+            open_timeline();
+            return true;
         });
 
 
@@ -958,5 +964,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             Database.get_instance().create_group();
         }
         startActivity(new Intent(requireContext(), GroupActivity.class));
+    }
+
+    private void open_timeline(){
+        startActivity(new Intent(requireContext(), RouteTimelineActivity.class));
     }
 }
