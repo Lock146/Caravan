@@ -135,6 +135,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("HomeFragment", "onCreateView");
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -214,17 +215,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
                 Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
 
-        onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
-                requireContext(),
-                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
-        ));
-        Database.get_instance().add_group_join_listener(onGroupChange);
+//        onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
+//                requireContext(),
+//                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
+//        ));
+//        Database.get_instance().add_group_join_listener(onGroupChange);
 
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d("HomeFragment", "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -477,10 +479,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onPause() {
-        super.onPause();
-
         if (fusedLocationProviderClient != null)
             stopLocationUpdate();
+        super.onPause();
     }
 
     @Override

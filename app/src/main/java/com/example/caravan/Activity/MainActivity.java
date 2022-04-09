@@ -90,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume(){
+        Log.d("MainActivity", "onResume called");
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
 
         if (navDrawerLayoutBinding.navDrawer.isDrawerOpen(GravityCompat.START))
@@ -107,8 +113,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop(){
-        //Database.get_instance().leave_group();
+        Log.d("MainActivity", "onStop called");
         super.onStop();
+    }
+
+    @Override
+    protected void onPause(){
+        Log.d("MainActivity", "onPause called");
+        super.onPause();
     }
 
     private void getUserData() {
