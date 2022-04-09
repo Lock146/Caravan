@@ -18,7 +18,4 @@
         android:layout_below="@+id/toolbar"
         app:defaultNavHost="true"
         app:navGraph="@navigation/drawer_nav_graph" />
-
-
-
 </RelativeLayout>

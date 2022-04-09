@@ -118,6 +118,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState){
+        Log.d("MainActivity", "onSaveInstanceState called");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState){
+        Log.d("MainActivity", "onRestoreInstanceState called");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected void onPause(){
         Log.d("MainActivity", "onPause called");
         super.onPause();

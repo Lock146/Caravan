@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -126,16 +127,29 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private EventListener<DocumentSnapshot> onGroupChange;
+    private Context m_context;
     public LatLng testLocation;
 
     public HomeFragment() {
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState){
+        Log.d("HomeFragment", "onCreate called");
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        Log.d("HomeFragment", "onAttach called. Context is " + (context == null ? "null" : "not null"));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("HomeFragment", "onCreateView");
+        m_context = requireContext();
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -155,9 +169,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             PopupMenu popupMenu = new PopupMenu(requireContext(), view);
             popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
 
-
-
-
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.btnNormal:
@@ -172,7 +183,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         });
 
         binding.enableTraffic.setOnClickListener(view -> {
-
             if (isTrafficEnable) {
                 if (mGoogleMap != null) {
                     mGoogleMap.setTrafficEnabled(false);
@@ -184,19 +194,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     isTrafficEnable = true;
                 }
             }
-
         });
-
 
         binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
-        binding.group.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                open_group_activity();
-            }
-        });
-
-
 
         binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
@@ -211,15 +211,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             }
         });
 
+        binding.group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                open_group_activity();
+            }
+        });
         binding.group.setOnClickListener(view -> open_group_activity());
         binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
                 Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
 
-//        onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
-//                requireContext(),
-//                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
-//        ));
-//        Database.get_instance().add_group_join_listener(onGroupChange);
+        if(onGroupChange == null) {
+            onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                    requireActivity().getApplicationContext(),
+                    value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
+            ));
+            Database.get_instance().add_group_join_listener(onGroupChange);
+        }
 
         return binding.getRoot();
     }
@@ -234,9 +242,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-
-
-
 
         Places.initialize(getActivity().getApplicationContext(), getString(R.string.MAPS_API_KEY));
 
@@ -307,6 +312,63 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         setUpRecyclerView();
         getUserSavedLocations();
         getUserCurrentLocations();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState){
+        Log.d("HomeFragment", "onViewStateRestored called");
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onStart(){
+        Log.d("HomeFragment", "onStart called");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d("HomeFragment", "onResume called");
+        if (fusedLocationProviderClient != null) {
+
+            //startLocationUpdates();
+            if (currentMarker != null) {
+                currentMarker.remove();
+            }
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.d("HomeFragment", "onPause called");
+        if (fusedLocationProviderClient != null)
+            stopLocationUpdate();
+        super.onPause();
+    }
+
+    @Override
+    public void onStop(){
+        Log.d("HomeFragment", "onStop called");
+        super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState){
+        Log.d("HomeFragment", "onSaveInstanceState called");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroyView(){
+        Log.d("HomeFragment", "onDestroyView called");
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy(){
+        Log.d("HomeFragment", "onDestroy called");
+        super.onDestroy();
     }
 
     @Override
@@ -477,28 +539,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         //Log.d("TAG", "stopLocationUpdate: Location Update stop");
     }
 
-    @Override
-    public void onPause() {
-        if (fusedLocationProviderClient != null)
-            stopLocationUpdate();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (fusedLocationProviderClient != null) {
-
-            //startLocationUpdates();
-            if (currentMarker != null) {
-                currentMarker.remove();
-            }
-        }
-    }
-
-
-
     private void getPlaces(String placeName) {
 
         if (isLocationPermissionOk) {
@@ -637,7 +677,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-
     @Override
     public boolean onMarkerClick(Marker marker) {
 
@@ -702,7 +741,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
 
     }
-
 
     public void onLocationClick(GooglePlaceModel googlePlaceModel) {
 
