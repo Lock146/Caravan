@@ -49,6 +49,7 @@ import com.example.caravan.NearLocationInterface;
 import com.example.caravan.Permissions.AppPermissions;
 import com.example.caravan.PlaceModel;
 import com.example.caravan.R;
+import com.example.caravan.RouteInfo;
 import com.example.caravan.SavedPlaceModel;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.WebServices.RetrofitAPI;
@@ -127,6 +128,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private EventListener<DocumentSnapshot> onGroupChange;
+    private ArrayList<RouteInfo> m_stops;
     public LatLng testLocation;
 
     public HomeFragment() {
@@ -357,7 +359,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult != null) {
                     for (Location location : locationResult.getLocations()) {
-                        Log.d("TAG", "onLocationResult: " + location.getLongitude() + " " + location.getLatitude());
+                        Log.d("HomeFragment", "onLocationResult: " + location.getLongitude() + " " + location.getLatitude());
                     }
                 }
                 super.onLocationResult(locationResult);
@@ -447,7 +449,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     private void stopLocationUpdate() {
         //fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        //Log.d("TAG", "stopLocationUpdate: Location Update stop");
+        //Log.d("HomeFragment", "stopLocationUpdate: Location Update stop");
     }
 
     @Override
@@ -493,7 +495,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     public void onResponse(@NonNull Call<GoogleResponseModel> call, @NonNull Response<GoogleResponseModel> response) {
                         Gson gson = new Gson();
                         String res = gson.toJson(response.body());
-                        Log.d("TAG", "onResponse: " + res);
+                        Log.d("HomeFragment", "onResponse: " + res);
                         if (response.errorBody() == null) {
                             if (response.body() != null) {
                                 if (response.body().getGooglePlaceModelList() != null && response.body().getGooglePlaceModelList().size() > 0) {
@@ -524,13 +526,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                                     googlePlaceModelList.clear();
                                     googlePlaceAdapter.setGooglePlaceModels(googlePlaceModelList);
                                     radius += 1000;
-                                    Log.d("TAG", "onResponse: " + radius);
+                                    Log.d("HomeFragment", "onResponse: " + radius);
                                     getPlaces(placeName);
 
                                 }
                             }
                         } else {
-                            Log.d("TAG", "onResponse: " + response.errorBody());
+                            Log.d("HomeFragment", "onResponse: " + response.errorBody());
                             Toast.makeText(requireContext(), "Error : " + response.errorBody(), Toast.LENGTH_SHORT).show();
                         }
                         loadingDialog.stopLoading();
@@ -539,7 +541,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     @Override
                     public void onFailure(Call<GoogleResponseModel> call, Throwable t) {
 
-                        Log.d("TAG", "onFailure: " + t);
+                        Log.d("HomeFragment", "onFailure: " + t);
                         loadingDialog.stopLoading();
 
                     }
@@ -598,7 +600,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public boolean onMarkerClick(Marker marker) {
         int markerTag = (int) marker.getTag();
-        Log.d("TAG", "onMarkerClick: " + markerTag);
+        Log.d("HomeFragment", "onMarkerClick: " + markerTag);
 
         binding.placesRecyclerView.scrollToPosition(markerTag);
         return false;
