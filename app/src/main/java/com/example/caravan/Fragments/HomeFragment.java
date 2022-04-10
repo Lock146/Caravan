@@ -914,7 +914,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             stops.add(new StopInfo(stop, 0));
         }
         intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-        //intent.putExtra(Constants.KEY_STOPS, stops);
         startActivity(intent);
     }
 }
