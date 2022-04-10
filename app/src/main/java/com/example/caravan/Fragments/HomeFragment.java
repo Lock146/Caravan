@@ -608,6 +608,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
+        Log.d("HomeFragment", "onSaveClick called. GooglePlaceMode: " + googlePlaceModel.getName());
+
         if (userSavedLocationId.contains(googlePlaceModel.getPlaceId())) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Remove Place")
