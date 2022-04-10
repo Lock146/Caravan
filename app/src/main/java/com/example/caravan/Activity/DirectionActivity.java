@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.caravan.Adapter.DirectionStepAdapter;
 import com.example.caravan.Constant.AllConstant;
-import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.DestinationModel;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionLegModel;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionResponseModel;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionRouteModel;
@@ -86,23 +86,23 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private int currentMode;
     private boolean moreStops;
     private static DirectionStepAdapter adapter;
-    private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
+    private ArrayList<DestinationModel> destinationModelArrayList;
 
-    public static void getList(ArrayList<CurrentLocationModel> currentLocationModelArrayList) {
+    public static void getList(ArrayList<DestinationModel> destinationModelArrayList) {
 
-        while (!currentLocationModelArrayList.isEmpty()) {
-            if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
-                //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
-                //placeId2 = currentLocationModelArrayList.get(0).getPlaceId();
-                //endLat = currentLocationModelArrayList.get(0).getLat();
-                //endLng = currentLocationModelArrayList.get(0).getLng();
+        while (!destinationModelArrayList.isEmpty()) {
+            if (destinationModelArrayList.get(0).getLat() != null && destinationModelArrayList.get(0).getLng() != null) {
+                //Log.e(TAG, "onStartClick: " + destinationModelArrayList.get(0).getPlaceId());
+                //placeId2 = destinationModelArrayList.get(0).getPlaceId();
+                //endLat = destinationModelArrayList.get(0).getLat();
+                //endLng = destinationModelArrayList.get(0).getLng();
                // getDirection("driving");
 
             } else {
 
             }
 
-            currentLocationModelArrayList.remove(0);
+            destinationModelArrayList.remove(0);
         }
     }
 
@@ -120,7 +120,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         endLat = getIntent().getDoubleExtra("lat", 0.0);
         endLng = getIntent().getDoubleExtra("lng", 0.0);
         placeId = getIntent().getStringExtra("placeId");
-        //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
+        //Log.e(TAG, "onStartClick: " + destinationModelArrayList.get(0).getPlaceId());
 
         endLat2 = getIntent().getDoubleExtra("lat2", 0.0);
         endLng2 = getIntent().getDoubleExtra("lng2", 0.0);
@@ -635,8 +635,8 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     }
     
     
-    public ArrayList<CurrentLocationModel> getList() {
-        return currentLocationModelArrayList;
+    public ArrayList<DestinationModel> getList() {
+        return destinationModelArrayList;
     } 
 
     private List<com.google.maps.model.LatLng> decode(String points) {

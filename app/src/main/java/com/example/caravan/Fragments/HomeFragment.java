@@ -38,7 +38,7 @@ import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Constant.Constants;
-import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.DestinationModel;
 import com.example.caravan.Database;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
@@ -683,13 +683,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (!snapshot.exists()) {
 
-                        CurrentLocationModel currentLocationModel = new CurrentLocationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
+                        DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
                                 googlePlaceModel.getPlaceId(), googlePlaceModel.getRating(),
                                 googlePlaceModel.getUserRatingsTotal(),
                                 googlePlaceModel.getGeometry().getLocation().getLat(),
                                 googlePlaceModel.getGeometry().getLocation().getLng());
 
-                        saveCurrentLocation(currentLocationModel);
+                        saveCurrentLocation(destinationModel);
                     }
 
                     saveUserCurrentLocation(googlePlaceModel.getPlaceId());
@@ -777,8 +777,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         locationReference.child(savedPlaceModel.getPlaceId()).setValue(savedPlaceModel);
     }
 
-    private void saveCurrentLocation(CurrentLocationModel currentLocationModel) {
-        locationCurrentReference.child(currentLocationModel.getPlaceId()).setValue(currentLocationModel);
+    private void saveCurrentLocation(DestinationModel destinationModel) {
+        locationCurrentReference.child(destinationModel.getPlaceId()).setValue(destinationModel);
     }
 
     @Override
@@ -821,13 +821,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (!snapshot.exists()) {
 
-                        CurrentLocationModel currentLocationModel = new CurrentLocationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
+                        DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
                                 googlePlaceModel.getPlaceId(), googlePlaceModel.getRating(),
                                 googlePlaceModel.getUserRatingsTotal(),
                                 googlePlaceModel.getGeometry().getLocation().getLat(),
                                 googlePlaceModel.getGeometry().getLocation().getLng());
 
-                        saveCurrentLocation(currentLocationModel);
+                        saveCurrentLocation(destinationModel);
                     }
 
                     saveUserCurrentLocation(googlePlaceModel.getPlaceId());

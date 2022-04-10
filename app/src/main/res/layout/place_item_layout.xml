@@ -70,7 +70,7 @@
                         android:textColor="@color/black" />
 
                     <ImageView
-                        android:id="@+id/imgSaveLocation"
+                        android:id="@+id/addRemoveLocation"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_alignParentEnd="true"
@@ -79,10 +79,11 @@
                         app:tint="@color/primaryColor" />
 
                     <ImageView
+                        android:id="@+id/bookmarkLocation"
                         android:layout_marginRight="10dp"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:layout_toStartOf="@+id/imgSaveLocation"
+                        android:layout_toStartOf="@+id/addRemoveLocation"
                         android:onClick="@{()->listener.onDirectionClick(googlePlaceModel)}"
                         android:src="@drawable/ic_bookmark"
                         app:tint="@color/primaryColor" />
