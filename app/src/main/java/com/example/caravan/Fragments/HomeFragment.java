@@ -792,18 +792,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
-
-       // String placeId = googlePlaceModel.placeID();
-        //Double lat = googlePlaceModel.getGeometry().getLocation().getLat();
-        //Double lng = googlePlaceModel.getGeometry().getLocation().getLng();
-
-        //Intent intent = new Intent(requireContext(), DirectionActivity.class);
-       // intent.putExtra("placeId", placeId);
-       // intent.putExtra("lat", lat);
-        //intent.putExtra("lng", lng);
-
-        //startActivity(intent);
-
         if (userSavedLocationId.contains(googlePlaceModel.placeID())) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Remove Place")
