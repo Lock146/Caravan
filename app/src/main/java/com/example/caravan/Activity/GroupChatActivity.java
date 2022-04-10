@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,7 @@ import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.User;
 import com.example.caravan.databinding.ActivityGroupChatBinding;
 import com.example.caravan.Constant.Constants;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,6 +30,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import javax.security.auth.callback.Callback;
 
 public class GroupChatActivity extends AppCompatActivity {
 
@@ -108,4 +112,6 @@ public class GroupChatActivity extends AppCompatActivity {
     private String getReadableDateTime(Date date) {
         return new SimpleDateFormat("MMMM dd, yyyy - hh =:mm a", Locale.getDefault()).format(date);
     }
+
+
 }
