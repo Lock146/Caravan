@@ -33,13 +33,17 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         if (googlePlaceModels != null) {
             GooglePlaceModel placeModel = googlePlaceModels.get(position);
             holder.binding.setGooglePlaceModel(placeModel);
             holder.binding.setListener(nearLocationInterface);
+            if(placeModel.in_timeline()){
+                holder.binding.addRemoveLocation.setRotation(45);
+            }
+            else{
+                holder.binding.addRemoveLocation.setRotation(0);
+            }
         }
-
     }
 
     @Override
