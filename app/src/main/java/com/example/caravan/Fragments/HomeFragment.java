@@ -1,7 +1,5 @@
 package com.example.caravan.Fragments;
 
-import static android.content.ContentValues.TAG;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -100,7 +98,7 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, NearLocationInterface {
-
+    private static final String TAG = HomeFragment.class.getSimpleName();
     private FragmentHomeBinding binding;
     private GoogleMap mGoogleMap;
     private AppPermissions appPermissions;
@@ -614,55 +612,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             googlePlaceModel.in_timeline(true);
             m_stops.add(googlePlaceModel);
         }
-        if (userSavedLocationId.contains(googlePlaceModel.placeID())) {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Remove Place")
-                    .setMessage("Are you sure to remove this place?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            removePlace(googlePlaceModel);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .create().show();
-        }
-        else {
-            loadingDialog.startLoading();
-
-            locationReference.child(googlePlaceModel.placeID()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (!snapshot.exists()) {
-
-                        SavedPlaceModel savedPlaceModel = new SavedPlaceModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
-                                googlePlaceModel.placeID(), googlePlaceModel.getRating(),
-                                googlePlaceModel.getUserRatingsTotal(),
-                                googlePlaceModel.getGeometry().getLocation().getLat(),
-                                googlePlaceModel.getGeometry().getLocation().getLng());
-
-                        saveLocation(savedPlaceModel);
-                    }
-
-                    saveUserLocation(googlePlaceModel.placeID());
-
-                    int index = googlePlaceModelList.indexOf(googlePlaceModel);
-                    googlePlaceModelList.get(index).setSaved(true);
-                    googlePlaceAdapter.notifyDataSetChanged();
-                    loadingDialog.stopLoading();
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-        }
     }
 
 
@@ -792,55 +741,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
-        if (userSavedLocationId.contains(googlePlaceModel.placeID())) {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Remove Place")
-                    .setMessage("Are you sure to remove this place?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            removePlace(googlePlaceModel);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .create().show();
-        }
-        else {
-            loadingDialog.startLoading();
-
-            locationCurrentReference.child(googlePlaceModel.placeID()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (!snapshot.exists()) {
-
-                        DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
-                                googlePlaceModel.placeID(), googlePlaceModel.getRating(),
-                                googlePlaceModel.getUserRatingsTotal(),
-                                googlePlaceModel.getGeometry().getLocation().getLat(),
-                                googlePlaceModel.getGeometry().getLocation().getLng());
-
-                        saveCurrentLocation(destinationModel);
-                    }
-
-                    saveUserCurrentLocation(googlePlaceModel.placeID());
-
-                    int index = googlePlaceModelList.indexOf(googlePlaceModel);
-                    googlePlaceModelList.get(index).setCurrentLocation(true);
-                    googlePlaceAdapter.notifyDataSetChanged();
-                    loadingDialog.stopLoading();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
+        Log.d(TAG, "onDirectionClick: " + googlePlaceModel);
     }
 
     private void getUserSavedLocations() {
