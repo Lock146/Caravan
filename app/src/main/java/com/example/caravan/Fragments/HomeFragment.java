@@ -155,10 +155,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.btnMapType.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(requireContext(), view);
             popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
-
-
-
-
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.btnNormal:
@@ -168,7 +164,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 }
                 return true;
             });
-
             popupMenu.show();
         });
 
@@ -187,22 +182,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             }
 
         });
-
         binding.enableTraffic.setOnLongClickListener(view -> {
             open_timeline();
             return true;
         });
 
-
         binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
-        binding.group.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                open_group_activity();
-            }
-        });
-
-
 
         binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
@@ -220,12 +205,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.group.setOnClickListener(view -> open_group_activity());
         binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
                 Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
-
-//        onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
-//                requireContext(),
-//                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
-//        ));
-//        Database.get_instance().add_group_join_listener(onGroupChange);
+        onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                requireContext(),
+                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
+        ));
+        Database.get_instance().add_group_join_listener(onGroupChange);
 
         return binding.getRoot();
     }
@@ -241,9 +225,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-
-
-
         Places.initialize(getActivity().getApplicationContext(), getString(R.string.MAPS_API_KEY));
 
         // Initialize the AutocompleteSupportFragment.
@@ -253,10 +234,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
-
         autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
         autocompleteFragment.setHint("Search a location...");
-
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -280,9 +259,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 //intent.putExtra("lng", lng);
 
                 //startActivity(intent);
-
             }
-
 
             @Override
             public void onError(@NonNull Status status) {
@@ -290,8 +267,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
-
-
 
         for (PlaceModel placeModel : AllConstant.placesName) {
 
@@ -306,8 +281,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             chip.setCheckedIconVisible(false);
 
             binding.placesGroup.addView(chip);
-
-
         }
 
         setUpRecyclerView();
@@ -318,7 +291,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-
 
         if (appPermissions.isLocationOk(requireContext())) {
             isLocationPermissionOk = true;
@@ -338,7 +310,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         } else {
             requestLocation();
         }
-
     }
 
     private void requestLocation() {
@@ -395,12 +366,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         startLocationUpdates();
-
-
     }
 
     private void startLocationUpdates() {
-
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             isLocationPermissionOk = false;
@@ -422,7 +390,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void getCurrentLocation() {
-
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -503,13 +470,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-
-
     private void getPlaces(String placeName) {
-
         if (isLocationPermissionOk) {
-
-
             loadingDialog.startLoading();
             String url;
             if (testLocation == null) {
@@ -526,8 +488,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         getResources().getString(R.string.MAPS_API_KEY);
             }
             if (currentLocation != null) {
-
-
                 retrofitAPI.getNearByPlaces(url).enqueue(new Callback<GoogleResponseModel>() {
                     @Override
                     public void onResponse(@NonNull Call<GoogleResponseModel> call, @NonNull Response<GoogleResponseModel> response) {
@@ -569,14 +529,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                                 }
                             }
-
                         } else {
                             Log.d("TAG", "onResponse: " + response.errorBody());
                             Toast.makeText(requireContext(), "Error : " + response.errorBody(), Toast.LENGTH_SHORT).show();
                         }
-
                         loadingDialog.stopLoading();
-
                     }
 
                     @Override
@@ -589,11 +546,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 });
             }
         }
-
     }
 
     private void addMarker(GooglePlaceModel googlePlaceModel, int position) {
-
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
                         googlePlaceModel.getGeometry().getLocation().getLng()))
@@ -604,7 +559,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private BitmapDescriptor getCustomIcon() {
-
         Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_gas_station);
         background.setTint(getResources().getColor(R.color.quantum_googred900, null));
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
@@ -616,7 +570,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void setUpRecyclerView() {
-
         binding.placesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.placesRecyclerView.setHasFixedSize(false);
         googlePlaceAdapter = new GooglePlaceAdapter(this);
@@ -640,13 +593,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 }
             }
         });
-
     }
-
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-
         int markerTag = (int) marker.getTag();
         Log.d("TAG", "onMarkerClick: " + markerTag);
 
@@ -656,7 +606,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
-
         if (userSavedLocationId.contains(googlePlaceModel.getPlaceId())) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Remove Place")
@@ -674,7 +623,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         }
                     })
                     .create().show();
-        } else {
+        }
+        else {
             loadingDialog.startLoading();
 
             locationReference.child(googlePlaceModel.getPlaceId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -698,7 +648,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     googlePlaceAdapter.notifyDataSetChanged();
                     loadingDialog.stopLoading();
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -706,12 +655,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             });
 
         }
-
     }
 
 
     public void onLocationClick(GooglePlaceModel googlePlaceModel) {
-
         if (userSavedLocationId.contains(googlePlaceModel.getPlaceId())) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Remove Place")
@@ -729,7 +676,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         }
                     })
                     .create().show();
-        } else {
+        }
+        else {
             loadingDialog.startLoading();
 
             locationCurrentReference.child(googlePlaceModel.getPlaceId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -759,13 +707,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 }
             });
-
         }
-
     }
 
     private void removePlace(GooglePlaceModel googlePlaceModel) {
-
         userSavedLocationId.remove(googlePlaceModel.getPlaceId());
         int index = googlePlaceModelList.indexOf(googlePlaceModel);
         googlePlaceModelList.get(index).setSaved(false);
@@ -793,7 +738,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void removeCurrentPlace(GooglePlaceModel googlePlaceModel) {
-
         userCurrentLocationId.remove(googlePlaceModel.getPlaceId());
         int index = googlePlaceModelList.indexOf(googlePlaceModel);
         googlePlaceModelList.get(index).setCurrentLocation(false);
@@ -817,18 +761,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         userCurrentReference.setValue(userCurrentLocationId);
                     }
                 }).show();
-
     }
 
     private void saveUserLocation(String placeId) {
-
         userSavedLocationId.add(placeId);
         userLocationReference.setValue(userSavedLocationId);
         Snackbar.make(binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
     }
 
     private void saveUserCurrentLocation(String placeId) {
-
         userCurrentLocationId.add(placeId);
         userCurrentReference.setValue(userCurrentLocationId);
         Snackbar.make(binding.getRoot(), "Location Saved", Snackbar.LENGTH_LONG).show();
@@ -873,7 +814,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         }
                     })
                     .create().show();
-        } else {
+        }
+        else {
             loadingDialog.startLoading();
 
             locationCurrentReference.child(googlePlaceModel.getPlaceId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -903,17 +845,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 }
             });
-
         }
-
     }
 
     private void getUserSavedLocations() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Saved Locations");
-
-
-
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -937,8 +874,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Current Locations");
 
-
-
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -950,7 +885,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
