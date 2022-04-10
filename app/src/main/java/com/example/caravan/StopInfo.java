@@ -2,8 +2,8 @@ package com.example.caravan;
 
 public class StopInfo
 {
-    public GooglePlaceModel m_stop;
-    public double m_distance;
+    private GooglePlaceModel m_stop;
+    private double m_distance;
 
     public StopInfo(GooglePlaceModel stop, double distance) {
         m_stop = stop;
@@ -13,6 +13,11 @@ public class StopInfo
     public GooglePlaceModel stop()
     {
         return m_stop;
+    }
+
+    public String name()
+    {
+        return m_stop.getName();
     }
 
     public double distance()
