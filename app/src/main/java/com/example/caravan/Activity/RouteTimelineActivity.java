@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Adapter.RouteTimelineAdapter;
 import com.example.caravan.R;
-import com.example.caravan.RouteInfo;
+import com.example.caravan.StopInfo;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
     //List<String> Routes;
     //List<Double> Miles;
 
-    List<RouteInfo> CurrentRoute;
+    List<StopInfo> CurrentRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,8 @@ public class RouteTimelineActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
 
-        CurrentRoute.add(new RouteInfo("Ruston",1609.344));
-        CurrentRoute.add(new RouteInfo("New Orleans", 160934.000));
+        CurrentRoute.add(new StopInfo("Ruston",1609.344));
+        CurrentRoute.add(new StopInfo("New Orleans", 160934.000));
 
 
        /* Routes.add("Ruston");
@@ -98,7 +98,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
 
         //String deletedRoute = null;
         //double deletedMiles = 0.00;
-        RouteInfo deletedRoute;
+        StopInfo deletedRoute;
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {

@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.R;
-import com.example.caravan.RouteInfo;
+import com.example.caravan.StopInfo;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdap
 
     double MILES = 1609.344;
     double route_miles;
-    List<RouteInfo> Route;
-    public RouteTimelineAdapter(List<RouteInfo> route) {
+    List<StopInfo> Route;
+    public RouteTimelineAdapter(List<StopInfo> route) {
         Route = route;
     }
 

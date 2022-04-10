@@ -32,9 +32,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.example.caravan.Activity.DirectionActivity;
 import com.example.caravan.Activity.GroupActivity;
-import com.example.caravan.Activity.GroupChatActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
 import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
@@ -42,20 +40,18 @@ import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.CurrentLocationModel;
 import com.example.caravan.Database;
-import com.example.caravan.DeviceInfo;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
 import com.example.caravan.NearLocationInterface;
 import com.example.caravan.Permissions.AppPermissions;
 import com.example.caravan.PlaceModel;
 import com.example.caravan.R;
-import com.example.caravan.RouteInfo;
+import com.example.caravan.StopInfo;
 import com.example.caravan.SavedPlaceModel;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.WebServices.RetrofitAPI;
 import com.example.caravan.WebServices.RetrofitClient;
 import com.example.caravan.databinding.FragmentHomeBinding;
-import com.example.caravan.generated.callback.OnClickListener;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -91,13 +87,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -128,7 +122,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private EventListener<DocumentSnapshot> onGroupChange;
-    private ArrayList<RouteInfo> m_stops;
+    private ArrayList<StopInfo> m_stops;
     public LatLng testLocation;
 
     public HomeFragment() {
