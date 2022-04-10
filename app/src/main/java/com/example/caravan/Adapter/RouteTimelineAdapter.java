@@ -38,9 +38,9 @@ public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        route_miles = Route.get(position).getRouteMeters()/MILES;
+        route_miles = Route.get(position).distance()/MILES;
         holder.rowCountTextView.setText(String.valueOf(route_miles));
-        holder.textView.setText(Route.get(position).getRouteName());
+        holder.textView.setText(Route.get(position).name());
     }
 
     @Override
@@ -71,7 +71,7 @@ public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdap
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(view.getContext(), Route.get(getAdapterPosition()).getRouteName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), Route.get(getAdapterPosition()).name(), Toast.LENGTH_SHORT).show();
         }
     }
 }
