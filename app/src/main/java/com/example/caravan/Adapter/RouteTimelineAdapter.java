@@ -18,42 +18,29 @@ import java.util.List;
 public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdapter.ViewHolder>{
     private static final String TAG = "RecyclerAdapter";
 
-
     double MILES = 1609.344;
     double route_miles;
-    List<String> Routes;
-    List<Double> Miles;
     List<RouteInfo> Route;
-    public RouteTimelineAdapter(List<RouteInfo> route) {//List<String> routes, List<Double> miles) {
-        //Routes = routes;
-        //Miles = miles;
+    public RouteTimelineAdapter(List<RouteInfo> route) {
         Route = route;
     }
-
-
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.row_item,parent,false);
 
         ViewHolder viewHolder = new ViewHolder(view);
 
         return viewHolder;
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //holder.rowCountTextView.setText(String.valueOf(position));
-
-        //route_miles = Miles.get(position)/MILES;
         route_miles = Route.get(position).getRouteMeters()/MILES;
         holder.rowCountTextView.setText(String.valueOf(route_miles));
-        holder.textView.setText(Route.get(position).getRouteName());//Routes.get(position));
-
+        holder.textView.setText(Route.get(position).getRouteName());
     }
 
     @Override
@@ -62,18 +49,14 @@ public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdap
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         ImageView imageView;
         TextView textView, rowCountTextView;
-
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             textView = itemView.findViewById(R.id.textView);
             rowCountTextView = itemView.findViewById(R.id.rowCountTextView);
-
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -84,14 +67,10 @@ public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdap
                     return true;
                 }
             });
-
-
         }
 
         @Override
         public void onClick(View view) {
-            //Routes.remove(getAdapterPosition());
-            //notifyItemRemoved(getAdapterPosition());
             Toast.makeText(view.getContext(), Route.get(getAdapterPosition()).getRouteName(), Toast.LENGTH_SHORT).show();
         }
     }
