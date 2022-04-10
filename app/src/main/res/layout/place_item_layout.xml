@@ -71,19 +71,20 @@
 
                     <ImageView
                         android:id="@+id/imgSaveLocation"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentEnd="true"
                         android:onClick="@{()->listener.onSaveClick(googlePlaceModel)}"
-                        android:src="@{googlePlaceModel.saved?@drawable/ic_bookmarked:@drawable/ic_bookmark}"
+                        android:src="@drawable/ic_add"
                         app:tint="@color/primaryColor" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toStartOf="@+id/imgSaveLocation"
                         android:onClick="@{()->listener.onDirectionClick(googlePlaceModel)}"
-                        android:src="@drawable/ic_gas_station"
+                        android:src="@drawable/ic_bookmark"
                         app:tint="@color/primaryColor" />
                 </RelativeLayout>
 
@@ -91,7 +92,7 @@
                     android:id="@+id/txtPlaceName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="0dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@{googlePlaceModel.name!=null?googlePlaceModel.name:`No Name`,default=`Place Name`}"
