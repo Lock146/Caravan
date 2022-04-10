@@ -1,5 +1,6 @@
 package com.example.caravan.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Adapter.RouteTimelineAdapter;
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
 import com.google.android.material.snackbar.Snackbar;
@@ -22,14 +24,20 @@ import java.util.List;
 public class RouteTimelineActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RouteTimelineAdapter routeTimelineAdapter;
-    private List<StopInfo> CurrentRoute;
+    private ArrayList<StopInfo> CurrentRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routetimeline);
-
-        CurrentRoute = new ArrayList<>();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(extras.containsKey(Constants.KEY_STOPS)) {
+            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
+        }
+        else{
+            CurrentRoute = new ArrayList<>();
+        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
@@ -43,6 +51,8 @@ public class RouteTimelineActivity extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN  | ItemTouchHelper.START | ItemTouchHelper.END | ItemTouchHelper.LEFT , ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {

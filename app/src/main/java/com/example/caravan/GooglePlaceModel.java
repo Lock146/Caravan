@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class GooglePlaceModel {
+public class GooglePlaceModel extends Object {
 
     @SerializedName("business_status")
     @Expose
@@ -35,7 +35,7 @@ public class GooglePlaceModel {
 
     @SerializedName("place_id")
     @Expose
-    private String placeId;
+    private String m_placeID;
 
 
     @SerializedName("rating")
@@ -65,6 +65,30 @@ public class GooglePlaceModel {
     @Expose(serialize = false, deserialize = false)
     private boolean isSaved;
     private boolean isCurrentLocation;
+    private boolean m_inTimeline;
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof String){
+            String placeID = (String) obj;
+            return m_placeID.equals(placeID);
+        }
+        else if(obj instanceof GooglePlaceModel){
+            GooglePlaceModel other = (GooglePlaceModel)obj;
+            return m_placeID.equals(other.placeID());
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void in_timeline(boolean inTimeline){
+        m_inTimeline = inTimeline;
+    }
+
+    public boolean in_timeline(){
+        return m_inTimeline;
+    }
 
     public String getBusinessStatus() {
         return businessStatus;
@@ -106,7 +130,6 @@ public class GooglePlaceModel {
         this.obfuscatedType = obfuscatedType;
     }
 
-
     public List<PhotoModel> getPhotos() {
         return photos;
     }
@@ -115,14 +138,13 @@ public class GooglePlaceModel {
         this.photos = photos;
     }
 
-    public String getPlaceId() {
-        return placeId;
+    public String placeID() {
+        return m_placeID;
     }
 
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
+    public void placeID(String placeId) {
+        m_placeID = placeId;
     }
-
 
     public Double getRating() {
         return rating;
