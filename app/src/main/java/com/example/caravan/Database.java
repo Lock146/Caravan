@@ -229,26 +229,30 @@ public class Database {
     }
 
     public void update_route(ArrayList<String> placeIDs){
-        HashMap<String, Object> routeInfo = new HashMap<>();
-        routeInfo.put(Constants.KEY_ROUTE, placeIDs);
-        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID)
-                .set(routeInfo)
-                .addOnSuccessListener(result -> Log.d(TAG, "Successfully published route to group"))
-                .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
-                .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
+        if(in_group()) {
+            HashMap<String, Object> routeInfo = new HashMap<>();
+            routeInfo.put(Constants.KEY_ROUTE, placeIDs);
+            m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                    .document(m_groupID)
+                    .set(routeInfo)
+                    .addOnSuccessListener(result -> Log.d(TAG, "Successfully published route to group"))
+                    .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
+                    .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
+        }
     }
 
     private void add_user_info_to_group(String email, String userID){
-        CollectionReference groupMembers = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID)
-                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
-        Map<String, Object> groupMember = new HashMap<>();
-        groupMember.put(Constants.KEY_EMAIL, m_email);
-        groupMember.put(Constants.KEY_USER_ID, m_userID);
-        groupMembers.add(groupMember)
-                .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
-                .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
-                .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
+        if(in_group()) {
+            CollectionReference groupMembers = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                    .document(m_groupID)
+                    .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
+            Map<String, Object> groupMember = new HashMap<>();
+            groupMember.put(Constants.KEY_EMAIL, m_email);
+            groupMember.put(Constants.KEY_USER_ID, m_userID);
+            groupMembers.add(groupMember)
+                    .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
+                    .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
+                    .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
+        }
     }
 }

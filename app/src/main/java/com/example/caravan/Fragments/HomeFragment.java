@@ -233,12 +233,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         });
 
         binding.enableTraffic.setOnLongClickListener(view -> {
-            ArrayList<String> strings = new ArrayList<>();
-            strings.add("route1");
-            strings.add("route2");
-            strings.add("route3");
-            Database.get_instance().update_route(strings);
-            Database.get_instance().append_dest_to_route("route4");
             open_timeline();
             return true;
         });
@@ -932,9 +926,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private void open_timeline(){
         Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
         ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
+        ArrayList<String> placeIDs = new ArrayList<>();
         for(GooglePlaceModel stop : m_stops){
             stops.add(new StopInfo(stop, 0));
+            placeIDs.add(stop.placeID());
         }
+        Database.get_instance().update_route(placeIDs);
         intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
         m_timelineLauncher.launch(intent);
     }
