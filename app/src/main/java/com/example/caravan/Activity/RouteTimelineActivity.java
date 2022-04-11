@@ -51,8 +51,14 @@ public class RouteTimelineActivity extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
 
-
+    @Override
+    public void onBackPressed(){
+        Intent result = new Intent(Intent.ACTION_GET_CONTENT);
+        result.putParcelableArrayListExtra(Constants.KEY_STOPS, CurrentRoute);
+        setResult(RESULT_OK, result);
+        super.onBackPressed();
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN  | ItemTouchHelper.START | ItemTouchHelper.END | ItemTouchHelper.LEFT , ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {

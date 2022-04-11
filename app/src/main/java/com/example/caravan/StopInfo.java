@@ -23,6 +23,10 @@ public class StopInfo implements Parcelable
         return m_name;
     }
 
+    public String placeID(){
+        return m_placeID;
+    }
+
     public double distance()
     {
         return m_distance;

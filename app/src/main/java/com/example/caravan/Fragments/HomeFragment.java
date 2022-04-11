@@ -2,6 +2,7 @@ package com.example.caravan.Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -18,10 +20,16 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -121,16 +129,72 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private EventListener<DocumentSnapshot> onGroupChange;
     private ArrayList<GooglePlaceModel> m_stops;
+    private ActivityResultLauncher<Intent> m_timelineLauncher;
     public LatLng testLocation;
 
     public HomeFragment() {
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("HomeFragment", "onCreateView");
+        m_timelineLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        Intent intent = result.getData();
+                        ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
+                        ArrayList<GooglePlaceModel> updatedStops = new ArrayList<>();
+                        for(GooglePlaceModel stop : m_stops){
+                            int idx = get_index_of_stop(stops, stop.placeID());
+                            if(idx == -1){
+                                mark_as_removed(stop.placeID());
+                            }
+                            else{
+                                updatedStops.add(m_stops.get(idx));
+                            }
+                        }
+                        m_stops = updatedStops;
+                    }
+                });
+
+//                new ActivityResultLauncher<ArrayList<StopInfo>>() {
+//            @Override
+//            public void launch(ArrayList<StopInfo> input, @Nullable ActivityOptionsCompat options) {
+//
+//            }
+//
+//            @Override
+//            public void unregister() {
+//
+//            }
+//
+//            @NonNull
+//            @Override
+//            public ActivityResultContract<ArrayList<StopInfo>, ArrayList<StopInfo>> getContract() {
+//                return new ActivityResultContract<ArrayList<StopInfo>, ArrayList<StopInfo>>() {
+//                    @NonNull
+//                    @Override
+//                    public Intent createIntent(@NonNull Context context, ArrayList<StopInfo> input) {
+//                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                        intent.putParcelableArrayListExtra(Constants.KEY_STOPS, input);
+//                        return intent;
+//                    }
+//
+//                    @Override
+//                    public ArrayList<StopInfo> parseResult(int resultCode, @Nullable Intent intent) {
+//                        if(intent == null || !intent.getExtras().containsKey(Constants.KEY_STOPS)){
+//                            return null;
+//                        }
+//                        else{
+//                            return intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
+//                        }
+//                    }
+//                };
+//            }
+//        };
+
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -176,6 +240,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             }
 
         });
+
         binding.enableTraffic.setOnLongClickListener(view -> {
             open_timeline();
             return true;
@@ -285,6 +350,65 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState){
+        Log.d(TAG, "onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onStart(){
+        Log.d(TAG, "onStart called");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume called");
+        if (fusedLocationProviderClient != null) {
+
+            //startLocationUpdates();
+            if (currentMarker != null) {
+                currentMarker.remove();
+            }
+        }
+
+
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.d(TAG, "onPause called");
+        if (fusedLocationProviderClient != null)
+            stopLocationUpdate();
+        super.onPause();
+    }
+
+    @Override
+    public void onStop(){
+        Log.d(TAG, "onStop called");
+        super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState){
+        Log.d(TAG, "onSaveInstanceState called");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroyView(){
+        Log.d(TAG, "onDestroyView called");
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy(){
+        Log.d(TAG, "onDestroy called");
+        super.onDestroy();
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
@@ -305,6 +429,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     .create().show();
         } else {
             requestLocation();
+        }
+    }
+
+    private static int get_index_of_stop(ArrayList<StopInfo> stops, String placeID){
+        for(int idx = 0; idx < stops.size(); idx += 1){
+            if(stops.get(idx).placeID().equals(placeID)){
+                return idx;
+            }
+        }
+        return -1;
+    }
+
+    private void mark_as_removed(String placeID){
+        for(int idx = 0; idx < googlePlaceModelList.size(); idx += 1){
+            GooglePlaceModel place = googlePlaceModelList.get(idx);
+            if(place.placeID().equals(placeID)){
+                place.in_timeline(false);
+                googlePlaceAdapter.notifyItemChanged(idx);
+                return;
+            }
         }
     }
 
@@ -444,26 +588,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private void stopLocationUpdate() {
         //fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         //Log.d("HomeFragment", "stopLocationUpdate: Location Update stop");
-    }
-
-    @Override
-    public void onPause() {
-        if (fusedLocationProviderClient != null)
-            stopLocationUpdate();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (fusedLocationProviderClient != null) {
-
-            //startLocationUpdates();
-            if (currentMarker != null) {
-                currentMarker.remove();
-            }
-        }
     }
 
     private void getPlaces(String placeName) {
@@ -612,6 +736,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             googlePlaceModel.in_timeline(true);
             m_stops.add(googlePlaceModel);
         }
+        googlePlaceAdapter.notifyDataSetChanged();
     }
 
 
@@ -803,6 +928,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             stops.add(new StopInfo(stop, 0));
         }
         intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-        startActivity(intent);
+        m_timelineLauncher.launch(intent);
     }
 }
