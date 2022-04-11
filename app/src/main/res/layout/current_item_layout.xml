@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="currentLocationModel"
-            type="com.example.caravan.CurrentLocationModel" />
+            name="destinationModel"
+            type="com.example.caravan.DestinationModel" />
 
         <variable
             name="googlePlaceModel"
@@ -14,7 +14,7 @@
 
         <variable
             name="listener"
-            type="com.example.caravan.CurrentLocationInterface" />
+            type="com.example.caravan.DestinationInterface" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -43,7 +43,7 @@
                     android:layout_weight="1.6"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{currentLocationModel.name,default=`Location Name`}"
+                    android:text="@{destinationModel.name,default=`Location Name`}"
                     android:textColor="@color/primaryColor"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -59,7 +59,7 @@
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_weight="0.2"
-                    android:onClick="@{()->listener.onLocationClick(currentLocationModel)}"
+                    android:onClick="@{()->listener.onLocationClick(destinationModel)}"
                     android:src="@drawable/ic_gas_station"
                     app:tint="@color/primaryColor" />
 
@@ -73,7 +73,7 @@
                 android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{currentLocationModel.address,default=Address}"
+                android:text="@{destinationModel.address,default=Address}"
                 android:textColor="?android:textColor"
                 android:textSize="15dp" />
 

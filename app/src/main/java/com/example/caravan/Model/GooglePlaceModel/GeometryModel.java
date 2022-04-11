@@ -9,7 +9,6 @@ public class GeometryModel {
     @Expose
     private LocationModel location;
 
-
     public LocationModel getLocation() {
         return location;
     }
@@ -17,6 +16,4 @@ public class GeometryModel {
     public void setLocation(LocationModel location) {
         this.location = location;
     }
-
-
 }
