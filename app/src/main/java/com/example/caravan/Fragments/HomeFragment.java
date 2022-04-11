@@ -146,18 +146,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         Intent intent = result.getData();
-                        ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
-                        ArrayList<GooglePlaceModel> updatedStops = new ArrayList<>();
-                        for(GooglePlaceModel stop : m_stops){
-                            int idx = get_index_of_stop(stops, stop.placeID());
-                            if(idx == -1){
-                                mark_as_removed(stop.placeID());
+                        if(intent != null) {
+                            ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
+                            ArrayList<GooglePlaceModel> updatedStops = new ArrayList<>();
+                            for (GooglePlaceModel stop : m_stops) {
+                                int idx = get_index_of_stop(stops, stop.placeID());
+                                if (idx == -1) {
+                                    mark_as_removed(stop.placeID());
+                                } else {
+                                    updatedStops.add(m_stops.get(idx));
+                                }
                             }
-                            else{
-                                updatedStops.add(m_stops.get(idx));
-                            }
+                            m_stops = updatedStops;
                         }
-                        m_stops = updatedStops;
                     }
                 });
 
