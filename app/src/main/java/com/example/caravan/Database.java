@@ -213,6 +213,21 @@ public class Database {
                 .update(Constants.KEY_GROUP_NAME, newName);
     }
 
+    public void append_dest_to_route(String destination){
+        Task<DocumentSnapshot> groupInfo = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .get();
+        groupInfo.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot info) {
+                Object query = info.get(Constants.KEY_ROUTE);
+                ArrayList<String> route = (ArrayList<String>) query;
+                route.add(destination);
+                update_route(route);
+            }
+        });
+    }
+
     public void update_route(ArrayList<String> placeIDs){
         HashMap<String, Object> routeInfo = new HashMap<>();
         routeInfo.put(Constants.KEY_ROUTE, placeIDs);

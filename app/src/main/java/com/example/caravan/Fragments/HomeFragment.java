@@ -238,6 +238,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             strings.add("route2");
             strings.add("route3");
             Database.get_instance().update_route(strings);
+            Database.get_instance().append_dest_to_route("route4");
             open_timeline();
             return true;
         });
