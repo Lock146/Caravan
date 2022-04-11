@@ -116,10 +116,6 @@ public class Database {
                 });
     }
 
-    public void join_group(String groupID){
-
-    }
-
     public void leave_group(){
         Log.d("Database", "leave_group called");
         if(!(m_groupID == null || m_groupID.equals(""))){
@@ -139,17 +135,6 @@ public class Database {
                             }
                         }
                     });
-//            members.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                @Override
-//                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                    for(DocumentSnapshot member : queryDocumentSnapshots){
-//                        if(member.getId().equals(m_memberID)){
-//
-//                            return;
-//                        }
-//                    }
-//                }
-//            });
             m_database.collection(Constants.KEY_COLLECTION_USERS)
                     .document(m_userID)
                     .update(Constants.KEY_GROUP_ID, null);
@@ -178,23 +163,6 @@ public class Database {
         catch(Exception e){
             Log.d("Database", "Exception: " + e.toString());
         }
-    }
-
-    private String find_user(String email){
-//        try {
-//            CollectionReference userCollection = m_database.collection(KEY_COLLECTION_USERS);
-//            Task<QuerySnapshot> userTask = userCollection.get();
-//            while(!userTask.isComplete());
-//            QuerySnapshot users = userTask.getResult();
-//            for (DocumentSnapshot user : users.getDocuments()) {
-//
-//                Log.d("Database", "User: " + user.toString());
-//            }
-//        }
-//        catch(Exception e){
-//            Log.d("Database", "Exception: " + e.toString());
-//        }
-        return "";
     }
 
     public Boolean in_group(){
