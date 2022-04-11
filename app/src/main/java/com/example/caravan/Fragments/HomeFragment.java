@@ -672,9 +672,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void addMarker(GooglePlaceModel googlePlaceModel, int position) {
+        LatLng coordinates = new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
+                googlePlaceModel.getGeometry().getLocation().getLng());
         MarkerOptions markerOptions = new MarkerOptions()
-                .position(new LatLng(googlePlaceModel.location().getLat(),
-                        googlePlaceModel.location().getLng()))
+                .position(coordinates)
                 .title(googlePlaceModel.getName())
                 .snippet(googlePlaceModel.getVicinity());
         markerOptions.icon(getCustomIcon());
@@ -711,8 +712,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
                 if (position > -1) {
                     GooglePlaceModel googlePlaceModel = googlePlaceModelList.get(position);
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googlePlaceModel.location().getLat(),
-                            googlePlaceModel.location().getLng()), 20));
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
+                            googlePlaceModel.getGeometry().getLocation().getLng()), 20));
                 }
             }
         });
@@ -771,8 +772,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
                                 googlePlaceModel.placeID(), googlePlaceModel.getRating(),
                                 googlePlaceModel.getUserRatingsTotal(),
-                                googlePlaceModel.location().getLat(),
-                                googlePlaceModel.location().getLng());
+                                googlePlaceModel.getGeometry().getLocation().getLat(),
+                                googlePlaceModel.getGeometry().getLocation().getLng());
 
                         saveCurrentLocation(destinationModel);
                     }
@@ -927,7 +928,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
         ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
         for(GooglePlaceModel stop : m_stops){
-            destinations.add(new DestinationInfo(stop.placeID(), stop.location().getLat(), stop.location().getLng()));
+            destinations.add(new DestinationInfo(stop.placeID(), stop.getGeometry().getLocation().getLat(), stop.getGeometry().getLocation().getLng()));
         }
         intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
         startActivity(intent);

@@ -14,13 +14,13 @@ public class GooglePlaceModel extends Object {
     @Expose
     private String businessStatus;
 
-//    @SerializedName("geometry")
-//    @Expose
-//    private GeometryModel geometry;
-
-    @SerializedName("location")
+    @SerializedName("geometry")
     @Expose
-    private LocationModel m_location;
+    private GeometryModel geometry;
+
+//    @SerializedName("location")
+//    @Expose
+//    private LocationModel m_location;
 
     @SerializedName("icon")
     @Expose
@@ -103,21 +103,21 @@ public class GooglePlaceModel extends Object {
         this.businessStatus = businessStatus;
     }
 
-//    public GeometryModel getGeometry() {
-//        return geometry;
+    public GeometryModel getGeometry() {
+        return geometry;
+    }
+
+    public void setGeometry(GeometryModel geometry) {
+        this.geometry = geometry;
+    }
+
+//    public LocationModel location() {
+//        return m_location;
 //    }
 //
-//    public void setGeometry(GeometryModel geometry) {
-//        this.geometry = geometry;
+//    public void location(LocationModel location){
+//        m_location = location;
 //    }
-
-    public LocationModel location() {
-        return m_location;
-    }
-
-    public void location(LocationModel location){
-        m_location = location;
-    }
 
     public String getIcon() {
         return icon;
