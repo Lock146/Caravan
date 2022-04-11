@@ -229,18 +229,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         binding.enableTraffic.setOnClickListener(view -> {
             open_directions();
-//            if (isTrafficEnable) {
-//                if (mGoogleMap != null) {
-//                    mGoogleMap.setTrafficEnabled(false);
-//                    isTrafficEnable = false;
-//                }
-//            } else {
-//                if (mGoogleMap != null) {
-//                    mGoogleMap.setTrafficEnabled(true);
-//                    isTrafficEnable = true;
-//                }
-//            }
-
         });
 
         binding.enableTraffic.setOnLongClickListener(view -> {
