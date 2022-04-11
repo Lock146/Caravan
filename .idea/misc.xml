@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_group.xml" value="0.18" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_groups.xml" value="0.10207700101317123" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/drawable/ic_caravan_logo.xml" value="0.1235" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/drawable/ic_caravan_logo_v.xml" value="0.1235" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/drawable/ic_gas_station.xml" value="0.1235" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/layout/activity_group.xml" value="0.1" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/layout/activity_group_chat.xml" value="0.33" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/layout/activity_grouptry.xml" value="0.18" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/layout/activity_sign_up.xml" value="0.15" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/layout/item_container_received_message.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/layout/item_container_sent_message.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/ic_af24239a1e3b57d72213f4d1ac5604d8.xml" value="0.2703125" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/ic_bookmark.xml" value="1.621875" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/ic_bookmarked.xml" value="0.2703125" />

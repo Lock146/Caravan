@@ -1,6 +1,7 @@
 package com.example.caravan.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("MainActivity", "onCreate called");
         // TODO: Implement location update pausing
         m_currentLocationUpdater = new Timer();
         long period = 5000;
@@ -89,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume(){
+        Log.d("MainActivity", "onResume called");
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
 
         if (navDrawerLayoutBinding.navDrawer.isDrawerOpen(GravityCompat.START))
@@ -99,8 +106,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy(){
+        Database.get_instance().leave_group();
         m_currentLocationUpdater.cancel();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop(){
+        Log.d("MainActivity", "onStop called");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause(){
+        Log.d("MainActivity", "onPause called");
+        super.onPause();
     }
 
     private void getUserData() {

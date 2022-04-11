@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Caravan">
         <activity
+            android:name=".Activity.GroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.GroupChatActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -29,6 +32,7 @@
         <activity android:name=".Activity.SignUpActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.RouteTimelineActivity" />
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
