@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy(){
-        Database.get_instance().leave_group();
+        //Database.get_instance().leave_group();
         m_currentLocationUpdater.cancel();
         super.onDestroy();
     }
