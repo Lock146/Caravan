@@ -22,4 +22,5 @@ public class Constants {
     public static final String KEY_FCM_TOKEN = "fcmToken";
 
     public static final String KEY_STOPS = "stops";
+    public static final String KEY_DESTINATIONS = "destinations";
 }

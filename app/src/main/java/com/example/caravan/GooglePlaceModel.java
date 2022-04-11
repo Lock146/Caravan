@@ -1,6 +1,7 @@
 package com.example.caravan;
 
 import com.example.caravan.Model.GooglePlaceModel.GeometryModel;
+import com.example.caravan.Model.GooglePlaceModel.LocationModel;
 import com.example.caravan.Model.GooglePlaceModel.PhotoModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -13,9 +14,13 @@ public class GooglePlaceModel extends Object {
     @Expose
     private String businessStatus;
 
-    @SerializedName("geometry")
+//    @SerializedName("geometry")
+//    @Expose
+//    private GeometryModel geometry;
+
+    @SerializedName("location")
     @Expose
-    private GeometryModel geometry;
+    private LocationModel m_location;
 
     @SerializedName("icon")
     @Expose
@@ -98,12 +103,20 @@ public class GooglePlaceModel extends Object {
         this.businessStatus = businessStatus;
     }
 
-    public GeometryModel getGeometry() {
-        return geometry;
+//    public GeometryModel getGeometry() {
+//        return geometry;
+//    }
+//
+//    public void setGeometry(GeometryModel geometry) {
+//        this.geometry = geometry;
+//    }
+
+    public LocationModel location() {
+        return m_location;
     }
 
-    public void setGeometry(GeometryModel geometry) {
-        this.geometry = geometry;
+    public void location(LocationModel location){
+        m_location = location;
     }
 
     public String getIcon() {

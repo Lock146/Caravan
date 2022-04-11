@@ -38,12 +38,14 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.example.caravan.Activity.DirectionActivity;
 import com.example.caravan.Activity.GroupActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
 import com.example.caravan.Adapter.GooglePlaceAdapter;
 import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Constant.Constants;
+import com.example.caravan.DestinationInfo;
 import com.example.caravan.DestinationModel;
 import com.example.caravan.Database;
 import com.example.caravan.GooglePlaceModel;
@@ -226,18 +228,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         });
 
         binding.enableTraffic.setOnClickListener(view -> {
-
-            if (isTrafficEnable) {
-                if (mGoogleMap != null) {
-                    mGoogleMap.setTrafficEnabled(false);
-                    isTrafficEnable = false;
-                }
-            } else {
-                if (mGoogleMap != null) {
-                    mGoogleMap.setTrafficEnabled(true);
-                    isTrafficEnable = true;
-                }
-            }
+            open_directions();
+//            if (isTrafficEnable) {
+//                if (mGoogleMap != null) {
+//                    mGoogleMap.setTrafficEnabled(false);
+//                    isTrafficEnable = false;
+//                }
+//            } else {
+//                if (mGoogleMap != null) {
+//                    mGoogleMap.setTrafficEnabled(true);
+//                    isTrafficEnable = true;
+//                }
+//            }
 
         });
 
@@ -671,8 +673,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     private void addMarker(GooglePlaceModel googlePlaceModel, int position) {
         MarkerOptions markerOptions = new MarkerOptions()
-                .position(new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
-                        googlePlaceModel.getGeometry().getLocation().getLng()))
+                .position(new LatLng(googlePlaceModel.location().getLat(),
+                        googlePlaceModel.location().getLng()))
                 .title(googlePlaceModel.getName())
                 .snippet(googlePlaceModel.getVicinity());
         markerOptions.icon(getCustomIcon());
@@ -709,8 +711,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
                 if (position > -1) {
                     GooglePlaceModel googlePlaceModel = googlePlaceModelList.get(position);
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
-                            googlePlaceModel.getGeometry().getLocation().getLng()), 20));
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googlePlaceModel.location().getLat(),
+                            googlePlaceModel.location().getLng()), 20));
                 }
             }
         });
@@ -769,8 +771,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
                                 googlePlaceModel.placeID(), googlePlaceModel.getRating(),
                                 googlePlaceModel.getUserRatingsTotal(),
-                                googlePlaceModel.getGeometry().getLocation().getLat(),
-                                googlePlaceModel.getGeometry().getLocation().getLng());
+                                googlePlaceModel.location().getLat(),
+                                googlePlaceModel.location().getLng());
 
                         saveCurrentLocation(destinationModel);
                     }
@@ -919,6 +921,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             Database.get_instance().create_group();
         }
         startActivity(new Intent(requireContext(), GroupActivity.class));
+    }
+
+    private void open_directions(){
+        Intent intent = new Intent(requireContext(), DirectionActivity.class);
+        ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
+        for(GooglePlaceModel stop : m_stops){
+            destinations.add(new DestinationInfo(stop.placeID(), stop.location().getLat(), stop.location().getLng()));
+        }
+        intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
+        startActivity(intent);
     }
 
     private void open_timeline(){
