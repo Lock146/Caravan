@@ -23,4 +23,5 @@ public class Constants {
 
     public static final String KEY_STOPS = "stops";
     public static final String KEY_DESTINATIONS = "destinations";
+    public static final String KEY_ROUTE = "route";
 }

@@ -32,11 +32,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Database {
+    private static final String TAG = Database.class.getSimpleName();
     static private Database m_instance;
     private FirebaseFirestore m_database;
     private String m_userID;
@@ -209,6 +211,17 @@ public class Database {
         m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
                 .update(Constants.KEY_GROUP_NAME, newName);
+    }
+
+    public void update_route(ArrayList<String> placeIDs){
+        HashMap<String, Object> routeInfo = new HashMap<>();
+        routeInfo.put(Constants.KEY_ROUTE, placeIDs);
+        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .set(routeInfo)
+                .addOnSuccessListener(result -> Log.d(TAG, "Successfully published route to group"))
+                .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
+                .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
     }
 
     private void add_user_info_to_group(String email, String userID){

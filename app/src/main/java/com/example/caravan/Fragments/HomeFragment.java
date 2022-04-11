@@ -233,6 +233,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         });
 
         binding.enableTraffic.setOnLongClickListener(view -> {
+            ArrayList<String> strings = new ArrayList<>();
+            strings.add("route1");
+            strings.add("route2");
+            strings.add("route3");
+            Database.get_instance().update_route(strings);
             open_timeline();
             return true;
         });
