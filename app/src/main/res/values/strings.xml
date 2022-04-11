@@ -113,4 +113,5 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="type_a_message">Type a Message:</string>
+    <string name="default_notification_channel_id">notificationChannel</string>
 </resources>
