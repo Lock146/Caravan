@@ -82,20 +82,12 @@ public class Database {
         // Create group
         DocumentReference group = m_database.collection(KEY_COLLECTION_GROUPS)
                 .document();
+        m_groupID = group.getId();
         Map<String, Object> groupInfo = new HashMap<>();
         groupInfo.put(KEY_GROUP_OWNER, FirebaseAuth.getInstance().getUid());
         groupInfo.put(KEY_GROUP_NAME, null);
         group.set(groupInfo);
-        CollectionReference groupMembers = group.collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
-        FirebaseFirestore instance = FirebaseFirestore.getInstance();
-        Map<String, Object> groupMember = new HashMap<>();
-        groupMember.put(Constants.KEY_EMAIL, m_email);
-        groupMember.put(Constants.KEY_USER_ID, m_userID);
-        groupMembers.add(groupMember)
-                .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
-                .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
-                .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
-        m_groupID = group.getId();
+        add_user_info_to_group(m_email, m_userID);
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
@@ -113,13 +105,13 @@ public class Database {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                       // for(DocumentSnapshot member : queryDocumentSnapshots){
-                           // String email = member.get("email").toString();
-                           // if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
-                               // m_memberID = member.getId();
-                                //return;
-                           // }
-                       // }
+                        for(DocumentSnapshot member : queryDocumentSnapshots){
+                            String email = member.get("email").toString();
+                            if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+                                m_memberID = member.getId();
+                                return;
+                            }
+                        }
                     }
                 });
     }
@@ -173,15 +165,7 @@ public class Database {
                 for (DocumentSnapshot user : users.getDocuments()) {
                     if(email.equals(user.get(Constants.KEY_EMAIL).toString())){
                         // Add user to group
-                        CollectionReference groupMembers = m_database.collection(KEY_COLLECTION_GROUPS)
-                                .document(m_groupID)
-                                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
-                        Map<String, Object> newMember = new HashMap<>();
-                        newMember.put(email, user.getId());
-                        groupMembers.add(newMember)
-                                .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added user " + email))
-                                .addOnFailureListener(e -> Log.d("Database", "Failed adding user " + email + ". Error: " + e.toString()))
-                                .addOnCompleteListener(task -> Log.d("Database", "Completed operation trying to add user " + email));
+                        add_user_info_to_group(email, user.getId());
 
                         // Update user's group info
                         m_database.collection(Constants.KEY_COLLECTION_USERS)
@@ -257,5 +241,18 @@ public class Database {
         m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
                 .update(Constants.KEY_GROUP_NAME, newName);
+    }
+
+    private void add_user_info_to_group(String email, String userID){
+        CollectionReference groupMembers = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
+        Map<String, Object> groupMember = new HashMap<>();
+        groupMember.put(Constants.KEY_EMAIL, m_email);
+        groupMember.put(Constants.KEY_USER_ID, m_userID);
+        groupMembers.add(groupMember)
+                .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
+                .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
+                .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
     }
 }
