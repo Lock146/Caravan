@@ -113,13 +113,13 @@ public class Database {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for(DocumentSnapshot member : queryDocumentSnapshots){
-                            String email = member.get("email").toString();
-                            if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
-                                m_memberID = member.getId();
-                                return;
-                            }
-                        }
+                       // for(DocumentSnapshot member : queryDocumentSnapshots){
+                           // String email = member.get("email").toString();
+                           // if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+                               // m_memberID = member.getId();
+                                //return;
+                           // }
+                       // }
                     }
                 });
     }

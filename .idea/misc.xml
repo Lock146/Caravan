@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_group.xml" value="0.18" />
+        <entry key="..\:/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_groups.xml" value="0.10207700101317123" />
         <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/drawable/ic_caravan_logo.xml" value="0.1235" />
         <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/drawable/ic_caravan_logo_v.xml" value="0.1235" />
         <entry key="..\:/Users/13182/Documents/Caravan/app/src/main/res/drawable/ic_gas_station.xml" value="0.1235" />
@@ -57,14 +59,6 @@
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/menu/map_type_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/menu/nav_menu.xml" value="0.264" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/mipmap-anydpi-v26/ic_Google.xml" value="0.19427083333333334" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/drawable/ic_gas_station.xml" value="0.194" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/activity_main.xml" value="0.21041666666666667" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/current_item_layout.xml" value="0.1859375" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_current_locations.xml" value="0.1859375" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.1859375" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_home.xml" value="0.19610507246376813" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/fragment_notifications.xml" value="0.1859375" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/place_item_layout.xml" value="0.1859375" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/activity_display_message.xml" value="0.22" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/activity_maps.xml" value="0.20520833333333333" />
