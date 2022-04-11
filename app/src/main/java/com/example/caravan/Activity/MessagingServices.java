@@ -33,25 +33,31 @@ public class MessagingServices extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData()); }
+       // if (remoteMessage.getData().size() > 0) {
+           // Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+        // }
+        Log.d("FCM", "Message: " + remoteMessage.getNotification().getBody());
+        // }
 
         // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
+        //if (remoteMessage.getNotification() != null) {
+            //Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+       // }
     }
     @Override
     public void onNewToken(String token) {
-        Log.d(TAG, "Refreshed token: " + token);
-        sendRegistrationToServer(token); }
+        super.onNewToken(token);
 
-    private void sendRegistrationToServer(String token) {
-        Database.set_instance().sendRegistrationToServer(notification_key);
+        Log.d("FCM", "Token: " + token); }
+        //sendRegistrationToServer(token); }
 
-    }
+   // private void sendRegistrationToServer(String token) {
+        //Database.set_instance().sendRegistrationToServer(notification_key);
+
+   // }
 
 
     private void sendNotification(String messageBody) {
