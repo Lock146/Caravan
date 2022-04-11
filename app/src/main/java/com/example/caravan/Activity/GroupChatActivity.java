@@ -41,6 +41,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private ChatAdapter m_chatAdapter;
     private PreferenceManager m_preferenceManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

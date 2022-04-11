@@ -127,6 +127,8 @@ dependencies {
     //rounded imageview used for chat screen
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
+    implementation 'com.google.firebase:firebase-messaging-directboot:20.2.0'
+
 
 
 }

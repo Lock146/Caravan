@@ -18,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.caravan.Database;
 import com.example.caravan.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -25,6 +26,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MessagingServices extends FirebaseMessagingService {
 
@@ -32,8 +34,6 @@ public class MessagingServices extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "Message: " + remoteMessage.getFrom());
-
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData()); }
@@ -46,13 +46,13 @@ public class MessagingServices extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
-        // Sends the FCM registration token to app server.
-        sendRegistrationToServer(token);
-    }
+        sendRegistrationToServer(token); }
 
     private void sendRegistrationToServer(String token) {
+        Database.set_instance().sendRegistrationToServer(notification_key);
 
     }
+
 
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -76,7 +76,8 @@ public class MessagingServices extends FirebaseMessagingService {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
+                    "Channel readable title",
                     NotificationManager.IMPORTANCE_HIGH); }
         }
 }
+
