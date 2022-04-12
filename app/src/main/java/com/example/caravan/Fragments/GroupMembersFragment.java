@@ -57,7 +57,7 @@ public class GroupMembersFragment extends Fragment implements DestinationInterfa
         firebaseAuth = FirebaseAuth.getInstance();
         destinationModelArrayList = new ArrayList<>();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Group Members");
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Group Members");
         return binding.getRoot();
     }
 
@@ -69,6 +69,7 @@ public class GroupMembersFragment extends Fragment implements DestinationInterfa
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(binding.savedRecyclerView);
         getCurrentLocations();
+
     }
 
 
@@ -120,6 +121,7 @@ public class GroupMembersFragment extends Fragment implements DestinationInterfa
     @Override
     public void onResume() {
         super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Group Members");
         firebaseRecyclerAdapter.startListening();
     }
 
@@ -127,6 +129,12 @@ public class GroupMembersFragment extends Fragment implements DestinationInterfa
     public void onPause() {
         super.onPause();
         firebaseRecyclerAdapter.stopListening();
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        super.onDestroyView();
     }
 
     @Override

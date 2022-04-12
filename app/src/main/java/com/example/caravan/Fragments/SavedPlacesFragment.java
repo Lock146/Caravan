@@ -56,7 +56,7 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
         firebaseAuth = FirebaseAuth.getInstance();
         savedPlaceModelArrayList = new ArrayList<>();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Saved Places");
+
         return binding.getRoot();
     }
 
@@ -119,6 +119,7 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
     @Override
     public void onResume() {
         super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Saved Places");
         firebaseRecyclerAdapter.startListening();
     }
 
@@ -145,6 +146,11 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
 
     }
 
+    @Override
+    public void onDestroyView() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        super.onDestroyView();
+    }
     public class ViewHolder extends RecyclerView.ViewHolder {
         private SavedItemLayoutBinding binding;
 

@@ -108,7 +108,6 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
         binding.txtEmail.setText(firebaseAuth.getCurrentUser().getEmail());
         binding.txtUsername.setText(firebaseAuth.getCurrentUser().getDisplayName());
 
@@ -217,6 +216,19 @@ public class SettingsFragment extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        super.onDestroyView();
     }
 
     private void usernameDialog() {
