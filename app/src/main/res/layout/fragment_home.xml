@@ -55,7 +55,7 @@
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="43dp"
             android:layout_marginBottom="30dp"
             android:elevation="5dp" />
 
