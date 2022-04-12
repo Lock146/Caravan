@@ -18,12 +18,7 @@
             android:textColor="?android:textColorPrimary"
             />
 
-        <item
-            android:id="@+id/btnCurrentLocations"
-            android:backgroundTint="@color/backgroundColor"
-            android:icon="@drawable/ic_directions"
-            android:textColor="?android:textColorPrimary"
-            android:title="CurrentLocations" />
+
 
         <item
             android:id="@+id/btnSavedPlaces"
