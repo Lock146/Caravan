@@ -57,7 +57,7 @@
                         android:text="@{googlePlaceModel.rating!=null?String.valueOf(googlePlaceModel.rating):`New`,default=3.4}"
                         android:textColor="?android:textColor"
                         android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/ic_gas_station"
+                        app:drawableStartCompat="@drawable/ic_stars"
                         app:drawableTint="@color/primaryColor" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -67,7 +67,7 @@
                         android:paddingStart="5dp"
                         android:paddingEnd="1dp"
                         android:text="@{googlePlaceModel.userRatingsTotal!=null?`(`+String.valueOf(googlePlaceModel.userRatingsTotal)+`)`:``,default=`(123)`}"
-                        android:textColor="@color/black" />
+                        android:textColor="?android:textColorPrimary" />
 
                     <ImageView
                         android:id="@+id/addRemoveLocation"

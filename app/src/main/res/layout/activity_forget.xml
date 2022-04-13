@@ -48,10 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="?android:colorBackground"
             android:padding="15dp"
             android:text="Done"
-            android:textColor="@color/primaryDarkColor"
+            android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
             app:cornerRadius="20dp"
             app:elevation="10dp" />
