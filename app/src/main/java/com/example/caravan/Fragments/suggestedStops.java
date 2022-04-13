@@ -12,10 +12,10 @@ import com.example.caravan.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SuggestedStops#newInstance} factory method to
+ * Use the {@link suggestedStops#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SuggestedStops extends Fragment {
+public class suggestedStops extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class SuggestedStops extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SuggestedStops() {
+    public suggestedStops() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class SuggestedStops extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SuggestedStops.
+     * @return A new instance of fragment suggestedStops.
      */
     // TODO: Rename and change types and number of parameters
-    public static SuggestedStops newInstance(String param1, String param2) {
-        SuggestedStops fragment = new SuggestedStops();
+    public static suggestedStops newInstance(String param1, String param2) {
+        suggestedStops fragment = new suggestedStops();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
