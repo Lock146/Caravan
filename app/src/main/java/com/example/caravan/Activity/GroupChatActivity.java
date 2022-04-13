@@ -54,9 +54,11 @@ public class GroupChatActivity extends AppCompatActivity {
         m_binding.chatRecyclerView.setAdapter(m_chatAdapter);
     }
     private void sendMessage() {
-        Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
-        Database.get_instance().send_message(m_binding.message.getText().toString());
-        m_binding.message.setText(null);
+        if (!m_binding.message.getText().toString().equals("")) {
+            Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
+            Database.get_instance().send_message(m_binding.message.getText().toString());
+            m_binding.message.setText(null);
+        }
     }
     private void list_members(){
     }

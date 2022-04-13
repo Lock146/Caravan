@@ -17,8 +17,7 @@
 
     <include
         android:id="@+id/bottom_sheet"
-        layout="@layout/bottom_sheet_layout"
-        tools:foregroundTint="@color/backgroundColor" />
+        layout="@layout/bottom_sheet_layout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/enableTraffic"

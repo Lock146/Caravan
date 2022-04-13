@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:tint="?android:colorBackground"
-        tools:srcCompat="@color/backgroundColor" />
+        tools:srcCompat="?android:colorBackground" />
 
     <LinearLayout
         android:id="@+id/timeLayout"
