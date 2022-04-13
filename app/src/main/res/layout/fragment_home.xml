@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:elevation="10dp"
-            app:boxBackgroundColor="@color/backgroundColor"
+            app:boxBackgroundColor="?android:colorBackground"
             app:boxCornerRadiusBottomEnd="25dp"
             app:boxCornerRadiusBottomStart="25dp"
             app:boxCornerRadiusTopEnd="25dp"
@@ -41,6 +41,7 @@
                 android:id="@+id/edtPlaceName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="?android:colorBackground"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/primaryColor"
@@ -117,9 +118,9 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:src="@drawable/ic_map"
-        app:backgroundTint="@color/white"
-        app:tint="@color/primaryColor"
-        app:fabCustomSize="40dp" />
+        app:backgroundTint="?android:colorBackground"
+        app:fabCustomSize="40dp"
+        app:tint="@color/primaryColor" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/enableTraffic"
@@ -129,9 +130,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="15dp"
         android:src="@drawable/ic_traffic"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="?android:colorBackground"
         app:fabCustomSize="40dp"
-        app:tint="@color/itemTextColor" />
+        app:tint="?android:textColorPrimary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/currentLocation"
@@ -144,7 +145,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:src="@drawable/ic_here"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="?android:colorBackground"
         app:fabCustomSize="50dp"
         app:tint="@color/primaryColor" />
 
@@ -170,7 +171,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="?android:colorBackground"
         app:fabCustomSize="50dp"
         app:tint="@color/primaryColor" />
 

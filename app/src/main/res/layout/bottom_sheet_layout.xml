@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="7dp"
-    android:padding="20dp"
+    android:padding="0dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="100dp"
     app:layout_behavior="@string/bottom_sheet_behavior"
@@ -13,15 +13,18 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="391dp"
-        android:layout_height="711dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:tint="?android:colorBackground"
         tools:srcCompat="@color/backgroundColor" />
 
     <LinearLayout
         android:id="@+id/timeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
         <TextView
             android:id="@+id/txtSheetTime"
@@ -47,6 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeLayout"
         android:layout_marginTop="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:text="Fastest route"
         android:textColor="?android:textColor"
         android:textSize="20dp"
@@ -58,7 +63,9 @@
         android:layout_height="1dp"
         android:layout_below="@+id/txtSheetRoute"
         android:layout_marginTop="10dp"
-        android:background="@color/quantum_black_divider" />
+        android:background="@color/quantum_black_divider"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
 
     <TextView
         android:id="@+id/txtSheetSteps"
@@ -66,8 +73,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view"
         android:layout_marginTop="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:text="Steps"
-        android:textColor="@color/itemTextColor"
+        android:textColor="?android:textColorPrimary"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -78,6 +87,8 @@
         android:layout_below="@+id/txtSheetSteps"
         android:layout_marginTop="20dp"
         android:overScrollMode="never"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:scrollbars="none"
         tools:listitem="@layout/step_item_layout" />
 

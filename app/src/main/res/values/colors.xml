@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primaryColor">#79d2da</color>
+    <color name="colorPrimary">#FFFFFFFF</color>
     <color name="primaryDarkColor">#235864</color>
     <color name="backgroundColor">#FFFFFFFF</color>
     <color name="accentColor">#235869</color>
@@ -18,5 +19,11 @@
     <color name="yellow">#FFFF00</color>
     <color name="red">#FF0000</color>
     <color name="peach">#F98B88</color>
-    <color name = "lightBlue">#ADD8E6</color>
+    <color name ="lightBlue">#ADD8E6</color>
+    <color name ="textColorPrimary">#E1E1E1</color>
+    <color name ="textColorPrimaryInverse">#252525</color>
+    <color name="colorBackground">#393939</color>
+    <color name="midGray">#7E7E7E</color>
+
+
 </resources>
