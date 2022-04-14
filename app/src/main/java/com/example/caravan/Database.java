@@ -99,6 +99,11 @@ public class Database {
                 .set(userInfo, SetOptions.merge());
     }
 
+    public String get_user_email(String userID){
+        // Implementation
+        return "user's email";
+    }
+
     private void get_member_id(){
         m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)

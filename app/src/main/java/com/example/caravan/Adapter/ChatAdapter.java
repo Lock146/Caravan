@@ -11,6 +11,7 @@ import com.example.caravan.Database;
 import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.databinding.ItemContainerReceivedMessageBinding;
 import com.example.caravan.databinding.ItemContainerSentMessageBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -18,12 +19,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<ChatMessage> m_chatMessages;
     private final String m_senderId;
 
+
     public static final int VIEW_TYPE_SENT = 1;
     public static final int VIEW_TYPE_RECEIVED = 2;
 
     public ChatAdapter(List<ChatMessage> chatMessages) {
         m_chatMessages = chatMessages;
         m_senderId = Database.get_instance().get_userID();
+
     }
 
     @NonNull
@@ -89,6 +92,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void setData(ChatMessage chatMessage) {
+            binding.textUserName.setText(chatMessage.email);
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
         }
