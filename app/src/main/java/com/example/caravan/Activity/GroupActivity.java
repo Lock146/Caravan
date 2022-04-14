@@ -54,6 +54,7 @@ public class GroupActivity extends AppCompatActivity {
         });
 
         binding.groupMembership.setVisibility(View.INVISIBLE);
+        binding.groupMembership.setClickable(false);
     }
 
     private void create_group(){

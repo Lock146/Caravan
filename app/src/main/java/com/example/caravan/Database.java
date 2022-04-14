@@ -3,11 +3,13 @@ package com.example.caravan;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
 import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
+import static com.example.caravan.Constant.Constants.KEY_EMAIL;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
 
 import android.location.Location;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -97,6 +99,33 @@ public class Database {
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(FirebaseAuth.getInstance().getUid())
                 .set(userInfo, SetOptions.merge());
+    }
+
+    public String get_user_email(String userID){
+        // Implementation
+       // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
+                //.document(userID).collection(Constants.KEY_EMAIL));
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        return (email);
+
+    }
+
+    public Uri get_user_image(){
+        // Implementation
+        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
+        //.document(userID).collection(Constants.KEY_EMAIL));
+        Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+        return (image);
+
+    }
+
+    public String get_user_username(){
+        // Implementation
+        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
+        //.document(userID).collection(Constants.KEY_EMAIL));
+        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        return (username);
+
     }
 
     private void get_member_id(){
