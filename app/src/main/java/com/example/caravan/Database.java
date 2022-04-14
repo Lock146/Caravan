@@ -3,6 +3,7 @@ package com.example.caravan;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
 import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
+import static com.example.caravan.Constant.Constants.KEY_EMAIL;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
@@ -101,7 +102,12 @@ public class Database {
 
     public String get_user_email(String userID){
         // Implementation
-        return "user's email";
+       // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
+                //.document(userID).collection(Constants.KEY_EMAIL));
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        return (email);
+
+
     }
 
     private void get_member_id(){
