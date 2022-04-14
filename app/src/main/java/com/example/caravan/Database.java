@@ -9,6 +9,7 @@ import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
 
 import android.location.Location;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -107,6 +108,23 @@ public class Database {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         return (email);
 
+    }
+
+    public Uri get_user_image(){
+        // Implementation
+        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
+        //.document(userID).collection(Constants.KEY_EMAIL));
+        Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+        return (image);
+
+    }
+
+    public String get_user_username(){
+        // Implementation
+        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
+        //.document(userID).collection(Constants.KEY_EMAIL));
+        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        return (username);
 
     }
 
