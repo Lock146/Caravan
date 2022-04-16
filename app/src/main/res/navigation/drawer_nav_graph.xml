@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_nav_graph"
+    app:startDestination="@id/btnHome">
+
+    <fragment
+        android:id="@+id/btnGroups"
+        android:name="com.example.caravan.Fragments.GroupMembersFragment"
+        android:label="Groups"
+        tools:layout="@layout/fragment_groups" />
+    <fragment
+        android:id="@+id/btnHome"
+        android:name="com.example.caravan.Fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/btnAbout"
+        android:name="com.example.caravan.About"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/btnSetting"
+        android:name="com.example.caravan.Fragments.SettingsFragment"
+        android:label="Saved Places"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_btnSetting_to_emailConfirmationFragment"
+            app:destination="@id/emailConfirmationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/btnSavedPlaces"
+        android:name="com.example.caravan.Fragments.SavedPlacesFragment"
+        android:label="fragment_saved_places"
+        tools:layout="@layout/fragment_saved_places" />
+    <fragment
+        android:id="@+id/btnCurrentLocations"
+        android:name="com.example.caravan.Fragments.CurrentLocationsFragment"
+        android:label="fragment_current_locations"
+        tools:layout="@layout/fragment_current_locations" />
+    <fragment
+        android:id="@+id/emailConfirmationFragment"
+        android:name="com.example.caravan.Fragments.EmailConfirmationFragment"
+        android:label="fragment_email_confirmation"
+        tools:layout="@layout/fragment_email_confirmation">
+
+        <argument
+            android:name="isPassword"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_emailConfirmationFragment_to_passwordChangeFragment"
+            app:destination="@id/passwordChangeFragment"
+            app:popUpTo="@id/btnSetting" />
+        <action
+            android:id="@+id/action_emailConfirmationFragment_to_emailChangeFragment"
+            app:destination="@id/emailChangeFragment"
+            app:popUpTo="@id/btnSetting" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailChangeFragment"
+        android:name="com.example.caravan.Fragments.EmailChangeFragment"
+        android:label="fragment_email_change"
+        tools:layout="@layout/fragment_email_change" />
+    <fragment
+        android:id="@+id/passwordChangeFragment"
+        android:name="com.example.caravan.Fragments.PasswordChangeFragment"
+        android:label="fragment_password_change"
+        tools:layout="@layout/fragment_password_change" />
+</navigation>
