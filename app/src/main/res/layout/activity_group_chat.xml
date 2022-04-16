@@ -119,11 +119,11 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_8sdp"
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginLeft="@dimen/_4sdp"
+            android:padding="@dimen/_8sdp"
             android:src="@drawable/ic_send"
-            app:tint="@color/white" />
+            app:tint="@color/midGray" />
     </FrameLayout>
 
 
@@ -142,7 +142,7 @@
         android:paddingStart="@dimen/_16sdp"
         android:paddingEnd="@dimen/_16sdp"
         android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:textColorHint="@color/midGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/layoutSend"
         app:layout_constraintStart_toStartOf="parent" />

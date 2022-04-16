@@ -12,7 +12,7 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="empty"> </string>
     <string name="about">About</string>
-    <string name="team_description">Caravan is an app developed by the \nA New Dawn is Daying senior design team at Louisiana Tech University (Louisiana). \nCameron Mitchell: Networking \nKyler Parker: Back-end and Maps\nColby Boyd: Messaging and Back-end\nLuke Jobe: UI/UX and Back-end</string>
+    <string name="team_description">Caravan is an app developed by the \n\"A New Dawn is Daying\" senior design team at Louisiana Tech University (Louisiana). \nCameron Mitchell: Networking \nKyler Parker: Back-end and Maps\nColby Boyd: Messaging and Back-end\nLuke Jobe: UI/UX and Back-end.\nDawson Wunstell: Absorber of bad juju and route development.</string>
 
 
     <string name="login_string">Already have an account? <b>Login here</b></string>

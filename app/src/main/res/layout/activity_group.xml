@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryColor"
+    android:background="?android:colorPrimary"
     tools:context=".Activity.GroupActivity">
 
     <ImageView
@@ -43,7 +43,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="Create Group"
-                android:textColor="@color/white"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="40dp"
                 android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
                 android:hint="Group Name:"
                 android:inputType="text"
                 android:maxLines="1"
-                android:textColor="?android:textColor" />
+                android:textColor="@color/white" />
 
             <EditText
                 android:id="@+id/addEmail"
@@ -90,7 +90,7 @@
                 android:hint="Email Address: "
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColor="?android:textColor" />
+                android:textColor="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addUser"
@@ -103,7 +103,8 @@
                 android:backgroundTint="@color/primaryDarkColor"
                 android:textStyle="bold"
                 app:cornerRadius="20dp"
-                app:elevation="10dp" />
+                app:elevation="10dp"
+                android:textColor="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chat"
@@ -116,7 +117,8 @@
                 android:backgroundTint="@color/primaryDarkColor"
                 android:textStyle="bold"
                 app:cornerRadius="20dp"
-                app:elevation="10dp" />
+                app:elevation="10dp"
+                android:textColor="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/groupMembership"
@@ -128,7 +130,8 @@
                 android:padding="15dp"
                 android:textStyle="bold"
                 app:cornerRadius="20dp"
-                app:elevation="10dp" />
+                app:elevation="10dp"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 

@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
         View headerLayout = navDrawerLayoutBinding.navigationView.getHeaderView(0);
 
+        //getUserData();
+
         imgHeader = headerLayout.findViewById(R.id.imgHeader);
         txtName = headerLayout.findViewById(R.id.txtHeaderName);
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
@@ -151,28 +153,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getUserData() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (snapshot.exists()) {
+        String userID = Database.get_instance().get_userID();
+        txtName.setText(Database.get_instance().get_userID());
+        txtEmail.setText(Database.get_instance().get_user_email(userID));
+        //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                //.child(firebaseAuth.getUid());
+        //databaseReference.addValueEventListener(new ValueEventListener() {
+            //@Override
+            //public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    UserModel userModel = snapshot.getValue(UserModel.class);
-                    Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
-                    txtName.setText(userModel.getUsername());
-                    txtEmail.setText(userModel.getEmail());
+                //if (snapshot.exists()) {
+
+                    //UserModel userModel = snapshot.getValue(UserModel.class);
+                    //Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
+                    //txtName.setText(userModel.getUsername());
+                   // txtEmail.setText(userModel.getEmail());
 
 
-                }
+                //}
 
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            //@Override
+            //public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
+            //}
+        //});
+    //}
 }
