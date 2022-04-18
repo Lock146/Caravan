@@ -15,17 +15,6 @@
     tools:srcCompat="@android:drawable/screen_background_light"
     tools:visibility="visible">
 
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        app:tint="?android:colorBackground"
-        tools:backgroundTint="?android:colorBackground"
-        tools:srcCompat="@android:drawable/screen_background_light"
-        tools:visibility="visible" />
-
     <LinearLayout
         android:id="@+id/timeLayout"
         android:layout_width="match_parent"
@@ -35,7 +24,7 @@
         android:paddingEnd="20dp"
         android:textColor="?android:textColorPrimary"
         app:tint="?android:colorBackground"
-        tools:backgroundTint="?android:colorBackground"
+        tools:backgroundTint="@android:color/background_light"
         tools:srcCompat="@android:drawable/screen_background_light">
 
 
@@ -99,13 +88,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtSheetSteps"
         android:layout_marginTop="20dp"
+        android:backgroundTint="?android:colorBackground"
         android:overScrollMode="never"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:scrollbars="none"
         tools:listitem="@layout/step_item_layout"
-        android:backgroundTint="?android:colorBackground"
-        tools:srcCompat="@android:drawable/screen_background_light"/>
+        tools:srcCompat="@android:drawable/screen_background_light" />
 
 
 

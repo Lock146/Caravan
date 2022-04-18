@@ -40,7 +40,7 @@
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_email_change.xml" value="0.2" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_email_confirmation.xml" value="0.2" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_group_members.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_groups.xml" value="0.178125" />
+        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_groups.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_notifications.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/fragment_password_change.xml" value="0.2" />
@@ -68,17 +68,6 @@
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_home.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_notifications.xml" value="0.20520833333333333" />
-        <entry key="app/src/main/res/layout/activity_group.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/bottom_sheet_layout.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_email_change.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/fragment_groups.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.12273550724637682" />
-        <entry key="app/src/main/res/layout/fragment_suggested_stops.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/info_window_layout.xml" value="0.12273550724637682" />
-        <entry key="app/src/main/res/layout/item_container_received_message.xml" value="0.12273550724637682" />
-        <entry key="app/src/main/res/layout/toolbar_layout.xml" value="0.12273550724637682" />
-        <entry key="app/src/main/res/layout/username_dialog_layout.xml" value="0.12273550724637682" />
       </map>
     </option>
   </component>

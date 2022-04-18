@@ -10,7 +10,7 @@
         android:name="com.example.caravan.Fragments.GroupMembersFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="@color/backgroundColor"
+        android:backgroundTint="?android:colorBackground"
         android:overScrollMode="never"
         android:scrollbars="none"
         tools:listitem="@layout/saved_item_layout" />
