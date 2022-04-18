@@ -909,6 +909,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void open_group_activity(){
+
         if(!Database.get_instance().in_group()){
             binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_groups));
             Database.get_instance().create_group();

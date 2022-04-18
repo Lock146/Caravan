@@ -27,6 +27,8 @@ public class GroupActivity extends AppCompatActivity {
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setListeners();
+
         binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -47,7 +49,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private void leave_group(){
         Database.get_instance().leave_group();
-
+        //Database.get_instance();
+        Database.set_instance();
         binding.chat.setText(CREATE_GROUP);
         binding.chat.setOnClickListener(view -> {
             create_group();
@@ -81,5 +84,10 @@ public class GroupActivity extends AppCompatActivity {
 
     private void open_group_chat(){
         startActivity(new Intent(this, GroupChatActivity.class));
+    }
+
+    private void setListeners() {
+        binding.btnBack.setOnClickListener(v -> onBackPressed());
+
     }
 }

@@ -56,6 +56,11 @@ public class Database {
         return m_instance;
     }
 
+    public static Database set_instance(){
+        m_instance = new Database();
+        return m_instance;
+    }
+
     private Database(){
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -84,21 +89,54 @@ public class Database {
 
     public void create_group(){
         // Create group
-        DocumentReference group = m_database.collection(KEY_COLLECTION_GROUPS)
+       // DocumentReference group = m_database.collection(KEY_COLLECTION_GROUPS)
+               // .document();
+        //m_groupID = group.getId();
+        //Map<String, Object> groupInfo = new HashMap<>();
+        //groupInfo.put(KEY_GROUP_OWNER, FirebaseAuth.getInstance().getUid());
+        //groupInfo.put(KEY_GROUP_NAME, null);
+        //group.set(groupInfo);
+        //add_user_info_to_group(m_email, m_userID);
+
+        // Update user info
+        //Map<String, Object> userInfo = new HashMap<>();
+        //userInfo.put(KEY_GROUP_ID, group.getId());
+        //m_database.collection(KEY_COLLECTION_USERS)
+                //.document(FirebaseAuth.getInstance().getUid())
+               // .set(userInfo, SetOptions.merge());
+
+        // Create group
+        DocumentReference group = m_database.collection("groups")
                 .document();
-        m_groupID = group.getId();
         Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put(KEY_GROUP_OWNER, FirebaseAuth.getInstance().getUid());
-        groupInfo.put(KEY_GROUP_NAME, null);
+        groupInfo.put("groupOwner", FirebaseAuth.getInstance().getUid());
         group.set(groupInfo);
+        //add_user_info_to_group(m_email, m_userID);
+        m_groupID = group.getId();
         add_user_info_to_group(m_email, m_userID);
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put(KEY_GROUP_ID, group.getId());
-        m_database.collection(KEY_COLLECTION_USERS)
+        userInfo.put("groupID", group.getId());
+        Task<Void> user = m_database.collection("users")
                 .document(FirebaseAuth.getInstance().getUid())
                 .set(userInfo, SetOptions.merge());
+    }
+
+    private void add_user_info_to_group(String email, String userID){
+        //if(in_group()) {
+        DocumentReference groupMembers = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS)
+                .document();
+        Map<String, Object> groupMember = new HashMap<>();
+        groupMember.put(Constants.KEY_EMAIL, m_email);
+        groupMember.put(Constants.KEY_USER_ID, m_userID);
+        groupMembers.set(groupMember)
+                .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
+                .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
+                .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
+        // }
     }
 
     public String get_user_email(String userID){
@@ -161,8 +199,10 @@ public class Database {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             String groupOwner = documentSnapshot.get(KEY_GROUP_OWNER, String.class);
-                            if(groupOwner.equals(m_userID)){
-                                group.update(Constants.KEY_GROUP_OWNER, null);
+                            if (groupOwner != null) {
+                                if (groupOwner.equals(m_userID)) {
+                                    group.update(Constants.KEY_GROUP_OWNER, null);
+                                }
                             }
                         }
                     });
@@ -197,7 +237,12 @@ public class Database {
     }
 
     public Boolean in_group(){
-        return m_groupID != null;
+        if  (m_groupID != null) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public void update_location(Location location){
@@ -270,18 +315,4 @@ public class Database {
         }
     }
 
-    private void add_user_info_to_group(String email, String userID){
-        if(in_group()) {
-            CollectionReference groupMembers = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                    .document(m_groupID)
-                    .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
-            Map<String, Object> groupMember = new HashMap<>();
-            groupMember.put(Constants.KEY_EMAIL, m_email);
-            groupMember.put(Constants.KEY_USER_ID, m_userID);
-            groupMembers.add(groupMember)
-                    .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
-                    .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
-                    .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
-        }
-    }
 }
