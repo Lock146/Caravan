@@ -55,6 +55,7 @@
                     android:id="@+id/imgStartLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Starting Position pin"
                     android:src="@drawable/ic_gas_station"
                     app:srcCompat="@drawable/ic_here"
                     app:tint="?android:textColorPrimary" />
