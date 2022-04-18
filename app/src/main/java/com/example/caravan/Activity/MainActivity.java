@@ -1,9 +1,15 @@
 package com.example.caravan.Activity;
 
+import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,6 +28,8 @@ import com.example.caravan.UserModel;
 import com.example.caravan.databinding.ActivityMainBinding;
 import com.example.caravan.databinding.NavDrawerLayoutBinding;
 import com.example.caravan.databinding.ToolbarLayoutBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +37,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.Constants;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Timer;
 
@@ -82,11 +92,30 @@ public class MainActivity extends AppCompatActivity {
 
         View headerLayout = navDrawerLayoutBinding.navigationView.getHeaderView(0);
 
+        //getUserData();
+
         imgHeader = headerLayout.findViewById(R.id.imgHeader);
         txtName = headerLayout.findViewById(R.id.txtHeaderName);
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
 
         getUserData();
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                Log.d(TAG, "Key: " + key + " Value: " + value);
+            }
+        }
     }
 
     @Override
@@ -124,28 +153,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getUserData() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (snapshot.exists()) {
+        String userID = Database.get_instance().get_userID();
+        txtName.setText(Database.get_instance().get_userID());
+        txtEmail.setText(Database.get_instance().get_user_email(userID));
+        //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                //.child(firebaseAuth.getUid());
+        //databaseReference.addValueEventListener(new ValueEventListener() {
+            //@Override
+            //public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    UserModel userModel = snapshot.getValue(UserModel.class);
-                    Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
-                    txtName.setText(userModel.getUsername());
-                    txtEmail.setText(userModel.getEmail());
+                //if (snapshot.exists()) {
+
+                    //UserModel userModel = snapshot.getValue(UserModel.class);
+                    //Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
+                    //txtName.setText(userModel.getUsername());
+                   // txtEmail.setText(userModel.getEmail());
 
 
-                }
+                //}
 
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            //@Override
+            //public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
+            //}
+        //});
+    //}
 }
