@@ -89,16 +89,16 @@ public class Database {
                 .document();
         m_groupID = group.getId();
         Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put(KEY_GROUP_OWNER, FirebaseAuth.getInstance().getUid());
+        groupInfo.put(KEY_GROUP_OWNER, m_userID);
         groupInfo.put(KEY_GROUP_NAME, null);
         group.set(groupInfo);
         add_user_info_to_group(m_email, m_userID);
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put(KEY_GROUP_ID, group.getId());
+        userInfo.put(KEY_GROUP_ID, m_groupID);
         m_database.collection(KEY_COLLECTION_USERS)
-                .document(FirebaseAuth.getInstance().getUid())
+                .document(m_userID)
                 .set(userInfo, SetOptions.merge());
     }
 
@@ -106,9 +106,7 @@ public class Database {
         // Implementation
        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
                 //.document(userID).collection(Constants.KEY_EMAIL));
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        return (email);
-
+        return m_email;
     }
 
     public Uri get_user_image(){
@@ -117,7 +115,6 @@ public class Database {
         //.document(userID).collection(Constants.KEY_EMAIL));
         Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
         return (image);
-
     }
 
     public String get_user_username(){
@@ -126,7 +123,6 @@ public class Database {
         //.document(userID).collection(Constants.KEY_EMAIL));
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         return (username);
-
     }
 
     private void get_member_id(){
@@ -138,8 +134,8 @@ public class Database {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for(DocumentSnapshot member : queryDocumentSnapshots){
-                            String email = member.get("email").toString();
-                            if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+                            Object email = member.get("email");
+                            if(email != null && email.toString().equals(m_email)){
                                 m_memberID = member.getId();
                                 return;
                             }
@@ -162,7 +158,7 @@ public class Database {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             String groupOwner = documentSnapshot.get(KEY_GROUP_OWNER, String.class);
-                            if(groupOwner.equals(m_userID)){
+                            if(groupOwner != null && groupOwner.equals(m_userID)){
                                 group.update(Constants.KEY_GROUP_OWNER, null);
                             }
                         }
