@@ -176,7 +176,8 @@ public class Database {
             userTask.addOnSuccessListener(users ->
             {
                 for (DocumentSnapshot user : users.getDocuments()) {
-                    if(email.equals(user.get(Constants.KEY_EMAIL).toString())){
+                    Object userEmail = user.get(Constants.KEY_EMAIL);
+                    if(userEmail != null && userEmail.equals(email)){
                         // Add user to group
                         add_user_info_to_group(email, user.getId());
 
