@@ -4,6 +4,7 @@ import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         m_currentLocationUpdater = new Timer();
         long period = 5000;
         m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(getApplicationContext(), period), 0, period);
+
+
 
         Places.initialize(getApplicationContext(), getResources().getString(R.string.MAPS_API_KEY));
         navDrawerLayoutBinding = NavDrawerLayoutBinding.inflate(getLayoutInflater());
@@ -116,6 +120,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Key: " + key + " Value: " + value);
             }
         }
+        Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/ariel.jpg?alt=media&token=3536ee44-72c2-46cc-9727-70f3bc956d26");
+        //Uri imageUri = Uri.parse("android.resource://" + this.getPackageName() + R.drawable.ic_stars);
+        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(imageUri)
+                .build();
+
+        String nameUser = "Kyler Parker";
+        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                .setDisplayName(nameUser)
+                .build();
+        //FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
     }
 
     @Override
@@ -155,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
     private void getUserData() {
 
         String userID = Database.get_instance().get_userID();
-        txtName.setText(Database.get_instance().get_userID());
+        Glide.with(this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).into(imgHeader);
+        imgHeader.setImageURI(Database.get_instance().get_user_image());
+        txtName.setText(Database.get_instance().get_user_username());
         txtEmail.setText(Database.get_instance().get_user_email(userID));
         //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 //.child(firebaseAuth.getUid());
