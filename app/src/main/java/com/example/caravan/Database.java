@@ -249,6 +249,7 @@ public class Database {
             public void onSuccess(DocumentSnapshot info) {
                 Object query = info.get(Constants.KEY_ROUTE);
                 ArrayList<String> route = (ArrayList<String>) query;
+                assert route != null;
                 route.add(destination);
                 update_route(route);
             }
