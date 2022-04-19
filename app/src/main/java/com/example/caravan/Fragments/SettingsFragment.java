@@ -91,6 +91,11 @@ public class SettingsFragment extends Fragment {
             Navigation.findNavController(getView()).navigate(directions);
         });
 
+        binding.cardPicture.setOnClickListener(view -> {
+            // Add thing for
+
+        });
+
         binding.cardPassword.setOnClickListener(view -> {
 
             SettingsFragmentDirections.ActionBtnSettingToEmailConfirmationFragment directions =
