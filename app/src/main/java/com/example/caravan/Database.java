@@ -56,6 +56,11 @@ public class Database {
         return m_instance;
     }
 
+    public static Database set_instance(){
+        m_instance = new Database();
+        return m_instance;
+    }
+
     private Database(){
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -106,7 +111,9 @@ public class Database {
         // Implementation
        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
                 //.document(userID).collection(Constants.KEY_EMAIL));
-        return m_email;
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        return (email);
+
     }
 
     public Uri get_user_image(){
@@ -115,6 +122,7 @@ public class Database {
         //.document(userID).collection(Constants.KEY_EMAIL));
         Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
         return (image);
+
     }
 
     public String get_user_username(){
@@ -123,6 +131,7 @@ public class Database {
         //.document(userID).collection(Constants.KEY_EMAIL));
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         return (username);
+
     }
 
     private void get_member_id(){
@@ -158,8 +167,10 @@ public class Database {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             String groupOwner = documentSnapshot.get(KEY_GROUP_OWNER, String.class);
-                            if(groupOwner != null && groupOwner.equals(m_userID)){
-                                group.update(Constants.KEY_GROUP_OWNER, null);
+                            if (groupOwner != null) {
+                                if (groupOwner.equals(m_userID)) {
+                                    group.update(Constants.KEY_GROUP_OWNER, null);
+                                }
                             }
                         }
                     });
@@ -195,7 +206,12 @@ public class Database {
     }
 
     public Boolean in_group(){
-        return m_groupID != null;
+        if  (m_groupID != null) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public void update_location(Location location){

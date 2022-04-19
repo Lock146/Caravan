@@ -28,6 +28,8 @@ public class GroupActivity extends AppCompatActivity {
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setListeners();
+
         binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -48,6 +50,15 @@ public class GroupActivity extends AppCompatActivity {
 
     private void leave_group(){
         Database.get_instance().leave_group();
+        //Database.get_instance();
+        Database.set_instance();
+        binding.chat.setText(CREATE_GROUP);
+        binding.chat.setOnClickListener(view -> {
+            create_group();
+        });
+
+        binding.groupMembership.setVisibility(View.INVISIBLE);
+        binding.groupMembership.setClickable(false);
 
         disable_group_functionality();
     }
@@ -94,5 +105,10 @@ public class GroupActivity extends AppCompatActivity {
         binding.chat.setClickable(true);
         binding.groupMembership.setVisibility(View.VISIBLE);
         binding.groupMembership.setClickable(true);
+    }
+
+    private void setListeners() {
+        binding.btnBack.setOnClickListener(v -> onBackPressed());
+
     }
 }

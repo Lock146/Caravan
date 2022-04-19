@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("HomeFragment", "onCreateView");
+
         m_timelineLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -198,7 +199,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //                };
 //            }
 //        };
-
+        //m_stops = null;
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -229,9 +230,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             popupMenu.show();
         });
 
-        binding.enableTraffic.setOnClickListener(view -> {
-            open_directions();
-        });
+        binding.enableTraffic.setOnClickListener(enableTraffic ->
+
+                open_directions()
+
+        );
 
         binding.enableTraffic.setOnLongClickListener(view -> {
             open_timeline();
@@ -341,6 +344,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         setUpRecyclerView();
         getUserSavedLocations();
         getUserCurrentLocations();
+
     }
 
     @Override
@@ -909,6 +913,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void open_group_activity(){
+
         if(!Database.get_instance().in_group()){
             binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_groups));
             Database.get_instance().create_group();
@@ -919,11 +924,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private void open_directions(){
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
         ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
-        for(GooglePlaceModel stop : m_stops){
-            destinations.add(new DestinationInfo(stop.placeID(), stop.getGeometry().getLocation().getLat(), stop.getGeometry().getLocation().getLng()));
+
+
+            for (GooglePlaceModel stop : m_stops) {
+                destinations.add(new DestinationInfo(stop.placeID(), stop.getGeometry().getLocation().getLat(), stop.getGeometry().getLocation().getLng()));
+            }
+        //if (m_stops != null) {
+        if (destinations.size() != 0) {
+            intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
+
+            startActivity(intent);
         }
-        intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
-        startActivity(intent);
+        //}
     }
 
     private void open_timeline(){
