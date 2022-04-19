@@ -1,8 +1,10 @@
 package com.example.caravan.Activity;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.CurrentLocationUpdateTask;
 import com.example.caravan.Database;
 import com.example.caravan.DeviceInfo;
@@ -28,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -45,12 +50,17 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView imgHeader;
     private TextView txtName, txtEmail;
     private Timer m_currentLocationUpdater;
-    private static final String TAG = "MainActivity";
+    private PreferenceManager preferenceManager;
+
+    //private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // TODO: Implement location update pausing
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
         m_currentLocationUpdater = new Timer();
         long period = 5000;
         m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(getApplicationContext(), period), 0, period);
@@ -89,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
 
         getUserData();
+        getToken();
     }
 
     @Override
@@ -137,27 +148,47 @@ public class MainActivity extends AppCompatActivity {
         // [END fcm_runtime_enable_auto_init]
     }
 
-    public void deviceGroupUpstream() {
+    //public void deviceGroupUpstream() {
         // [START fcm_device_group_upstream]
-        String to = "a_unique_key"; // the notification key
-        AtomicInteger msgId = new AtomicInteger();
-        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(to)
-                .setMessageId(String.valueOf(msgId.get()))
-                .addData("hello", "world")
-                .build());
+        //String to = "a_unique_key"; // the notification key
+        //AtomicInteger msgId = new AtomicInteger();
+        //FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(to)
+                //.setMessageId(String.valueOf(msgId.get()))
+                //.addData("hello", "world")
+                //.build());
         // [END fcm_device_group_upstream]
+    //}
+
+    //public void sendUpstream() {
+       // final String SENDER_ID = "YOUR_SENDER_ID";
+        //final int messageId = 0; // Increment for each
+        // [START fcm_send_upstream]
+       // FirebaseMessaging fm = FirebaseMessaging.getInstance();
+        //fm.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
+               // .setMessageId(Integer.toString(messageId))
+               // .addData("my_message", "Hello World")
+                //.addData("my_action","SAY_HELLO")
+               //.build());
+        // [END fcm_send_upstream]
+    //}
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
 
-    public void sendUpstream() {
-        final String SENDER_ID = "YOUR_SENDER_ID";
-        final int messageId = 0; // Increment for each
-        // [START fcm_send_upstream]
-        FirebaseMessaging fm = FirebaseMessaging.getInstance();
-        fm.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
-                .setMessageId(Integer.toString(messageId))
-                .addData("my_message", "Hello World")
-                .addData("my_action","SAY_HELLO")
-                .build());
-        // [END fcm_send_upstream]
+    private void getToken(){
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
+
+
     }
+
+    public void updateToken(String token){
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
+                preferenceManager.getString(Constants.KEY_USER));
+        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
+                .addOnFailureListener(e -> showToast("Unable to update token"));
+    }
+
 }

@@ -113,5 +113,7 @@ public class GroupChatActivity extends AppCompatActivity {
         return new SimpleDateFormat("MMMM dd, yyyy - hh =:mm a", Locale.getDefault()).format(date);
     }
 
+    //added based on video
+    //private void getToken(String message, String)
 
 }
