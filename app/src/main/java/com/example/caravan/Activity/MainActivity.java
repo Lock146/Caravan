@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Key: " + key + " Value: " + value);
             }
         }
+       /*
         Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/ariel.jpg?alt=media&token=3536ee44-72c2-46cc-9727-70f3bc956d26");
         //Uri imageUri = Uri.parse("android.resource://" + this.getPackageName() + R.drawable.ic_stars);
         UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
@@ -130,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                 .setDisplayName(nameUser)
                 .build();
-        //FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate);
         FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
-    }
+  */  }
 
     @Override
     protected void onResume(){
