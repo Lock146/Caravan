@@ -20,6 +20,7 @@ public class GroupActivity extends AppCompatActivity {
     private static final CharSequence LEAVE_GROUP = "Leave group";
     private static final CharSequence CREATE_GROUP = "Create group";
     private static final CharSequence ADD_USER = "Add user";
+    private static final CharSequence OPEN_CHAT = "Open Chat";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,24 +49,12 @@ public class GroupActivity extends AppCompatActivity {
     private void leave_group(){
         Database.get_instance().leave_group();
 
-        binding.chat.setText(CREATE_GROUP);
-        binding.chat.setOnClickListener(view -> {
-            create_group();
-        });
-
-        binding.groupMembership.setVisibility(View.INVISIBLE);
-        binding.groupMembership.setClickable(false);
+        disable_group_functionality();
     }
 
     private void create_group(){
         Database.get_instance().create_group();
-
-        binding.chat.setText(ADD_USER);
-        binding.chat.setOnClickListener(view -> {
-            add_user();
-        });
-
-        binding.groupMembership.setVisibility(View.VISIBLE);
+        enable_group_functionality();
     }
 
     private void add_user(){
@@ -81,5 +70,29 @@ public class GroupActivity extends AppCompatActivity {
 
     private void open_group_chat(){
         startActivity(new Intent(this, GroupChatActivity.class));
+    }
+
+    private void disable_group_functionality(){
+        binding.addUser.setText(CREATE_GROUP);
+        binding.addUser.setOnClickListener(view -> {
+            create_group();
+        });
+
+        binding.chat.setVisibility(View.INVISIBLE);
+        binding.chat.setClickable(false);
+        binding.groupMembership.setVisibility(View.INVISIBLE);
+        binding.groupMembership.setClickable(false);
+    }
+
+    private void enable_group_functionality(){
+        binding.addUser.setText(ADD_USER);
+        binding.addUser.setOnClickListener(view -> {
+            add_user();
+        });
+
+        binding.chat.setVisibility(View.VISIBLE);
+        binding.chat.setClickable(true);
+        binding.groupMembership.setVisibility(View.VISIBLE);
+        binding.groupMembership.setClickable(true);
     }
 }
