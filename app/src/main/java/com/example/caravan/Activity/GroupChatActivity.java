@@ -41,6 +41,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private ChatAdapter m_chatAdapter;
     private PreferenceManager m_preferenceManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +59,11 @@ public class GroupChatActivity extends AppCompatActivity {
         m_binding.chatRecyclerView.setAdapter(m_chatAdapter);
     }
     private void sendMessage() {
-        Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
-        Database.get_instance().send_message(m_binding.message.getText().toString());
-        m_binding.message.setText(null);
+        if (!m_binding.message.getText().toString().equals("")) {
+            Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
+            Database.get_instance().send_message(m_binding.message.getText().toString());
+            m_binding.message.setText(null);
+        }
     }
     private void list_members(){
     }
@@ -84,6 +87,7 @@ public class GroupChatActivity extends AppCompatActivity {
                 if(change.getType() == DocumentChange.Type.ADDED) {
                     ChatMessage message = new ChatMessage();
                     message.senderId = change.getDocument().getString(Constants.KEY_SENDER_ID);
+                    message.email = Database.get_instance().get_user_email(message.senderId);
                     message.message = change.getDocument().getString(Constants.KEY_MESSAGE);
                     message.dateTime = getReadableDateTime(change.getDocument().getDate(Constants.KEY_TIMESTAMP));
                     message.dateObject = change.getDocument().getDate(Constants.KEY_TIMESTAMP);
@@ -110,7 +114,7 @@ public class GroupChatActivity extends AppCompatActivity {
     }
 
     private String getReadableDateTime(Date date) {
-        return new SimpleDateFormat("MMMM dd, yyyy - hh =:mm a", Locale.getDefault()).format(date);
+        return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
     }
 
     //added based on video

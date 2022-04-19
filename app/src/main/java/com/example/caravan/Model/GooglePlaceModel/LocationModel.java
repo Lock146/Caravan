@@ -1,5 +1,7 @@
 package com.example.caravan.Model.GooglePlaceModel;
 
+import android.location.Location;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

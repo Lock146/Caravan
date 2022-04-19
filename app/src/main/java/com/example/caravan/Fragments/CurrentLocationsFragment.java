@@ -2,8 +2,6 @@ package com.example.caravan.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.caravan.Activity.DirectionActivity;
-import com.example.caravan.Activity.MainActivity;
-import com.example.caravan.CurrentLocationInterface;
-import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.DestinationInterface;
+import com.example.caravan.DestinationModel;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.R;
-import com.example.caravan.SavedLocationInterface;
-import com.example.caravan.SavedPlaceModel;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.databinding.CurrentItemLayoutBinding;
 import com.example.caravan.databinding.FragmentCurrentLocationsBinding;
-import com.example.caravan.databinding.FragmentSavedPlacesBinding;
-import com.example.caravan.databinding.SavedItemLayoutBinding;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,21 +36,19 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.io.Serializable;
 
 
-public class CurrentLocationsFragment extends Fragment implements CurrentLocationInterface {
+public class CurrentLocationsFragment extends Fragment implements DestinationInterface {
 
     private final String TAG = "help";
     private FragmentCurrentLocationsBinding binding;
     private FirebaseAuth firebaseAuth;
-    private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
+    private ArrayList<DestinationModel> destinationModelArrayList;
     private LoadingDialog loadingDialog;
     private FirebaseRecyclerAdapter<String, ViewHolder> firebaseRecyclerAdapter;
-    private CurrentLocationInterface currentLocationInterface;
-    private List<CurrentLocationModel> currentLocationModelList;
+    private DestinationInterface destinationInterface;
+    private List<DestinationModel> destinationModelList;
     private DatabaseReference locationCurrentReference, userCurrentReference;
 
 
@@ -66,9 +57,9 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
                              Bundle savedInstanceState) {
 
         binding = FragmentCurrentLocationsBinding.inflate(inflater, container, false);
-        currentLocationInterface = this;
+        destinationInterface = this;
         firebaseAuth = FirebaseAuth.getInstance();
-        currentLocationModelArrayList = new ArrayList<>();
+        destinationModelArrayList = new ArrayList<>();
 
         binding.currentLocation.setOnClickListener(currentLocation -> onStartClick());
 
@@ -107,11 +98,11 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
 
-                            CurrentLocationModel currentLocationModel = snapshot.getValue(CurrentLocationModel.class);
-                            currentLocationModelArrayList.add(currentLocationModel);
+                            DestinationModel destinationModel = snapshot.getValue(DestinationModel.class);
+                            destinationModelArrayList.add(destinationModel);
 
-                            holder.binding.setCurrentLocationModel(currentLocationModel);
-                            holder.binding.setListener(currentLocationInterface);
+                            holder.binding.setDestinationModel(destinationModel);
+                            holder.binding.setListener(destinationInterface);
                         }
                     }
 
@@ -149,16 +140,16 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
     }
 
     @Override
-    public void onLocationClick(CurrentLocationModel currentLocationModel) {
+    public void onLocationClick(DestinationModel destinationModel) {
 
 
-            if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+            if (destinationModel.getLat() != null && destinationModel.getLng() != null) {
                 Intent intent = new Intent(requireContext(), DirectionActivity.class);
-                intent.putExtra("placeId", currentLocationModel.getPlaceId());
-                intent.putExtra("lat", currentLocationModel.getLat());
-                intent.putExtra("lng", currentLocationModel.getLng());
+                intent.putExtra("placeId", destinationModel.getPlaceId());
+                intent.putExtra("lat", destinationModel.getLat());
+                intent.putExtra("lng", destinationModel.getLng());
 
-                if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+                if (destinationModel.getLat() != null && destinationModel.getLng() != null) {
 
                 }
                 //startActivity(intent);
@@ -177,13 +168,13 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
     }
 
     @Override
-    public void onConfirmationClick(CurrentLocationModel currentLocationModel) {
+    public void onConfirmationClick(DestinationModel destinationModel) {
 
-        if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+        if (destinationModel.getLat() != null && destinationModel.getLng() != null) {
             Intent intent = new Intent(requireContext(), DirectionActivity.class);
-            intent.putExtra("placeId", currentLocationModel.getPlaceId());
-            intent.putExtra("lat", currentLocationModel.getLat());
-            intent.putExtra("lng", currentLocationModel.getLng());
+            intent.putExtra("placeId", destinationModel.getPlaceId());
+            intent.putExtra("lat", destinationModel.getLat());
+            intent.putExtra("lng", destinationModel.getLng());
 
             startActivity(intent);
 
@@ -196,27 +187,27 @@ public class CurrentLocationsFragment extends Fragment implements CurrentLocatio
     @Override
     public void onStartClick() {
 
-       // DirectionActivity.getList(currentLocationModelArrayList);
+       // DirectionActivity.getList(destinationModelArrayList);
 
 
-            while (!currentLocationModelArrayList.isEmpty()) {
-            //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0));
+            while (!destinationModelArrayList.isEmpty()) {
+            //Log.e(TAG, "onStartClick: " + destinationModelArrayList.get(0));
                 Intent intent = new Intent(requireContext(), DirectionActivity.class);
-            if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
+            if (destinationModelArrayList.get(0).getLat() != null && destinationModelArrayList.get(0).getLng() != null) {
                 //Intent intent = new Intent(requireContext(), DirectionActivity.class);
-                intent.putExtra("placeId", currentLocationModelArrayList.get(0).getPlaceId());
-                intent.putExtra("lat", currentLocationModelArrayList.get(0).getLat());
-                intent.putExtra("lng", currentLocationModelArrayList.get(0).getLng());
-                currentLocationModelArrayList.remove(0);
-                if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
-                    intent.putExtra("placeId2", currentLocationModelArrayList.get(0).getPlaceId());
-                    intent.putExtra("lat2", currentLocationModelArrayList.get(0).getLat());
-                    intent.putExtra("lng2", currentLocationModelArrayList.get(0).getLng());
-                    currentLocationModelArrayList.remove(0);
-                    if (!currentLocationModelArrayList.isEmpty()) {
-                        intent.putExtra("placeId3", currentLocationModelArrayList.get(0).getPlaceId());
-                        intent.putExtra("lat3", currentLocationModelArrayList.get(0).getLat());
-                        intent.putExtra("lng3", currentLocationModelArrayList.get(0).getLng());
+                intent.putExtra("placeId", destinationModelArrayList.get(0).getPlaceId());
+                intent.putExtra("lat", destinationModelArrayList.get(0).getLat());
+                intent.putExtra("lng", destinationModelArrayList.get(0).getLng());
+                destinationModelArrayList.remove(0);
+                if (destinationModelArrayList.get(0).getLat() != null && destinationModelArrayList.get(0).getLng() != null) {
+                    intent.putExtra("placeId2", destinationModelArrayList.get(0).getPlaceId());
+                    intent.putExtra("lat2", destinationModelArrayList.get(0).getLat());
+                    intent.putExtra("lng2", destinationModelArrayList.get(0).getLng());
+                    destinationModelArrayList.remove(0);
+                    if (!destinationModelArrayList.isEmpty()) {
+                        intent.putExtra("placeId3", destinationModelArrayList.get(0).getPlaceId());
+                        intent.putExtra("lat3", destinationModelArrayList.get(0).getLat());
+                        intent.putExtra("lng3", destinationModelArrayList.get(0).getLng());
                     } else {
 
                     }

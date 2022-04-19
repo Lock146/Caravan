@@ -1,14 +1,14 @@
 package com.example.caravan;
 
-public class CurrentLocationModel {
+public class DestinationModel {
     String name, address, placeId;
     int totalRating;
     Double rating, lat, lng;
 
-    public CurrentLocationModel() {
+    public DestinationModel() {
     }
 
-    public CurrentLocationModel(String name, String address, String placeId, Double rating, int totalRating, Double lat, Double lng) {
+    public DestinationModel(String name, String address, String placeId, Double rating, int totalRating, Double lat, Double lng) {
         this.name = name;
         this.address = address;
         this.placeId = placeId;

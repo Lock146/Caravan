@@ -1,8 +1,12 @@
 package com.example.caravan.Fragments;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +25,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
+import com.example.caravan.Activity.LoginActivity;
+import com.example.caravan.Activity.MainActivity;
+import com.example.caravan.Activity.RouteTimelineActivity;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Permissions.AppPermissions;
 import com.example.caravan.R;
@@ -51,6 +58,7 @@ public class SettingsFragment extends Fragment {
     private LoadingDialog loadingDialog;
     private AppPermissions appPermissions;
     private Uri imageUri;
+    private static final String KEY_RESTART_INTENT = "phoenix_restart_intents";
 
 
     @Override
@@ -93,8 +101,42 @@ public class SettingsFragment extends Fragment {
 
         });
 
+        binding.cardLogout.setOnClickListener(view -> {
+            firebaseAuth.signOut();
+            Intent intent = new Intent(requireContext(), LoginActivity.class);
+            startActivity(intent);
+            Activity activity = new MainActivity();
+            restartApplication(activity);
+
+
+
+        });
+
 
         return binding.getRoot();
+    }
+    public void restartApplication(final @NonNull Activity activity) {
+        // Systems at 29/Q and later don't allow relaunch, but System.exit(0) on
+        // all supported systems will relaunch ... but by killing the process, then
+        // restarting the process with the back stack intact. We must make sure that
+        // the launch activity is the only thing in the back stack before exiting.
+        final PackageManager pm = activity.getPackageManager();
+        final Intent intent = pm.getLaunchIntentForPackage(activity.getPackageName());
+        activity.finishAffinity(); // Finishes all activities.
+        activity.startActivity(intent);    // Start the launch activity
+        System.exit(0);    // System finishes and automatically relaunches us.
+    }
+
+
+
+
+    public static void triggerRebirth(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        ComponentName componentName = intent.getComponent();
+        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+        context.startActivity(mainIntent);
+        Runtime.getRuntime().exit(0);
     }
 
     private void pickImage() {
@@ -108,31 +150,14 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
         binding.txtEmail.setText(firebaseAuth.getCurrentUser().getEmail());
         binding.txtUsername.setText(firebaseAuth.getCurrentUser().getDisplayName());
 
         Glide.with(requireContext()).load(firebaseAuth.getCurrentUser().getPhotoUrl()).into(binding.imgProfile);
 
-        if (firebaseAuth.getCurrentUser().isEmailVerified()) {
-            binding.txtEEmail.setVisibility(View.GONE);
-        } else {
-            binding.txtEEmail.setVisibility(View.VISIBLE);
-        }
 
-        binding.txtEEmail.setOnClickListener(verify -> {
-            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Mail sent verify the email", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), "" + task.getException(), Toast.LENGTH_SHORT).show();
-                        Log.d("TAG", "onComplete: profile email " + task.getException());
-                    }
-                }
-            });
-        });
+
+
 
 
     }
@@ -217,6 +242,19 @@ public class SettingsFragment extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        super.onDestroyView();
     }
 
     private void usernameDialog() {

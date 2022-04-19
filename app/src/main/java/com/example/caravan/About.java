@@ -59,9 +59,22 @@ public class About extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("About");
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about, container, false);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("About");
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        super.onDestroyView();
     }
 }

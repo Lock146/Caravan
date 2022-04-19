@@ -1,13 +1,14 @@
 package com.example.caravan;
 
 import com.example.caravan.Model.GooglePlaceModel.GeometryModel;
+import com.example.caravan.Model.GooglePlaceModel.LocationModel;
 import com.example.caravan.Model.GooglePlaceModel.PhotoModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class GooglePlaceModel {
+public class GooglePlaceModel extends Object {
 
     @SerializedName("business_status")
     @Expose
@@ -16,6 +17,10 @@ public class GooglePlaceModel {
     @SerializedName("geometry")
     @Expose
     private GeometryModel geometry;
+
+//    @SerializedName("location")
+//    @Expose
+//    private LocationModel m_location;
 
     @SerializedName("icon")
     @Expose
@@ -35,7 +40,7 @@ public class GooglePlaceModel {
 
     @SerializedName("place_id")
     @Expose
-    private String placeId;
+    private String m_placeID;
 
 
     @SerializedName("rating")
@@ -65,6 +70,30 @@ public class GooglePlaceModel {
     @Expose(serialize = false, deserialize = false)
     private boolean isSaved;
     private boolean isCurrentLocation;
+    private boolean m_inTimeline;
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof String){
+            String placeID = (String) obj;
+            return m_placeID.equals(placeID);
+        }
+        else if(obj instanceof GooglePlaceModel){
+            GooglePlaceModel other = (GooglePlaceModel)obj;
+            return m_placeID.equals(other.placeID());
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void in_timeline(boolean inTimeline){
+        m_inTimeline = inTimeline;
+    }
+
+    public boolean in_timeline(){
+        return m_inTimeline;
+    }
 
     public String getBusinessStatus() {
         return businessStatus;
@@ -81,6 +110,14 @@ public class GooglePlaceModel {
     public void setGeometry(GeometryModel geometry) {
         this.geometry = geometry;
     }
+
+//    public LocationModel location() {
+//        return m_location;
+//    }
+//
+//    public void location(LocationModel location){
+//        m_location = location;
+//    }
 
     public String getIcon() {
         return icon;
@@ -106,7 +143,6 @@ public class GooglePlaceModel {
         this.obfuscatedType = obfuscatedType;
     }
 
-
     public List<PhotoModel> getPhotos() {
         return photos;
     }
@@ -115,14 +151,13 @@ public class GooglePlaceModel {
         this.photos = photos;
     }
 
-    public String getPlaceId() {
-        return placeId;
+    public String placeID() {
+        return m_placeID;
     }
 
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
+    public void placeID(String placeId) {
+        m_placeID = placeId;
     }
-
 
     public Double getRating() {
         return rating;

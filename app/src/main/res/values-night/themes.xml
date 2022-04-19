@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Caravan" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorPrimary">#37889A</item>
+        <item name="colorPrimaryVariant">#1E4B55</item>
         <item name="colorOnPrimary">@color/black</item>
         <item name="android:textColor">@color/white</item>
         <!-- Secondary brand color. -->
@@ -14,8 +14,46 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">#E1E1E1</item>
+        <item name="android:textColorPrimaryInverse">#252525</item>
+        <item name="android:colorBackground">#232323</item>
 
     </style>
-    <!-- dark application theme. -->
+
+    <style name="ActionBarTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#37889A</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="android:colorPrimaryDark">@color/primaryColor</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="itemTextColor">@color/black</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/primaryColor</item>
+        <item name="colorSecondaryVariant">@color/primaryColor</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <item name="android:textColorHint">@color/textColor</item>
+        <item name="fontFamily">@font/playfair_display</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor">@color/primaryColor</item>
+        <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:colorBackground">#232323</item>
+
+
+    </style>
+
+    <style name="Theme.Caravan.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Caravan.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Caravan.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

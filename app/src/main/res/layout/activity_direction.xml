@@ -17,8 +17,7 @@
 
     <include
         android:id="@+id/bottom_sheet"
-        layout="@layout/bottom_sheet_layout"
-        tools:foregroundTint="@color/backgroundColor" />
+        layout="@layout/bottom_sheet_layout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/enableTraffic"
@@ -43,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
+            android:backgroundTint="?android:colorBackground"
             app:cardCornerRadius="10dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -55,9 +55,10 @@
                     android:id="@+id/imgStartLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Starting Position pin"
                     android:src="@drawable/ic_gas_station"
                     app:srcCompat="@drawable/ic_here"
-                    app:tint="@color/primaryColor" />
+                    app:tint="?android:textColorPrimary" />
 
                 <TextView
                     android:id="@+id/txtStartLbl"
@@ -66,7 +67,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/imgStartLocation"
                     android:text="From"
-                    android:textColor="@color/quantum_black_hint_text"
+                    android:textColor="?android:textColorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -79,7 +80,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="asdgahsyd"
-                    android:textColor="@color/quantum_black_text"
+                    android:textColor="?android:textColorPrimary"
                     android:textStyle="bold" />
 
                 <View
@@ -89,7 +90,7 @@
                     android:layout_below="@+id/txtStartLocation"
                     android:layout_alignStart="@+id/txtStartLocation"
                     android:layout_marginTop="10dp"
-                    android:background="@color/quantum_black_divider" />
+                    android:background="?android:textColorPrimary" />
 
                 <ImageView
                     android:id="@+id/imgEndLocation"
@@ -110,7 +111,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_toEndOf="@+id/imgEndLocation"
                     android:text="To"
-                    android:textColor="@color/quantum_black_hint_text"
+                    android:textColor="?android:textColorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -123,7 +124,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="asdgahsyd"
-                    android:textColor="@color/quantum_black_text"
+                    android:textColor="?android:textColorPrimary"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -137,6 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="?android:colorBackground"
             android:scrollbars="none">
 
 
@@ -157,9 +159,9 @@
                     android:layout_height="wrap_content"
                     android:checkable="true"
                     android:text="Driving"
-                    android:textColor="@color/white"
+                    android:textColor="?android:textColorPrimary"
                     app:checkedIconEnabled="true"
-                    app:chipBackgroundColor="@color/primaryColor" />
+                    app:chipBackgroundColor="?android:colorPrimary" />
 
 
             </com.google.android.material.chip.ChipGroup>

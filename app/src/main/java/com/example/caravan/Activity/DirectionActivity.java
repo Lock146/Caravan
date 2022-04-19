@@ -19,7 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.caravan.Adapter.DirectionStepAdapter;
 import com.example.caravan.Constant.AllConstant;
-import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.Constant.Constants;
+import com.example.caravan.Database;
+import com.example.caravan.DestinationInfo;
+import com.example.caravan.DestinationModel;
+import com.example.caravan.DeviceInfo;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionLegModel;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionResponseModel;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionRouteModel;
@@ -86,23 +90,24 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private int currentMode;
     private boolean moreStops;
     private static DirectionStepAdapter adapter;
-    private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
+    private ArrayList<DestinationModel> destinationModelArrayList;
+    private ArrayList<DestinationInfo> m_destinations;
 
-    public static void getList(ArrayList<CurrentLocationModel> currentLocationModelArrayList) {
+    public static void getList(ArrayList<DestinationModel> destinationModelArrayList) {
 
-        while (!currentLocationModelArrayList.isEmpty()) {
-            if (currentLocationModelArrayList.get(0).getLat() != null && currentLocationModelArrayList.get(0).getLng() != null) {
-                //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
-                //placeId2 = currentLocationModelArrayList.get(0).getPlaceId();
-                //endLat = currentLocationModelArrayList.get(0).getLat();
-                //endLng = currentLocationModelArrayList.get(0).getLng();
+        while (!destinationModelArrayList.isEmpty()) {
+            if (destinationModelArrayList.get(0).getLat() != null && destinationModelArrayList.get(0).getLng() != null) {
+                //Log.e(TAG, "onStartClick: " + destinationModelArrayList.get(0).getPlaceId());
+                //placeId2 = destinationModelArrayList.get(0).getPlaceId();
+                //endLat = destinationModelArrayList.get(0).getLat();
+                //endLng = destinationModelArrayList.get(0).getLng();
                // getDirection("driving");
 
             } else {
 
             }
 
-            currentLocationModelArrayList.remove(0);
+            destinationModelArrayList.remove(0);
         }
     }
 
@@ -117,24 +122,25 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         placeId2 = null;
         endLat2 = 0.0;
 
-        endLat = getIntent().getDoubleExtra("lat", 0.0);
-        endLng = getIntent().getDoubleExtra("lng", 0.0);
-        placeId = getIntent().getStringExtra("placeId");
-        //Log.e(TAG, "onStartClick: " + currentLocationModelArrayList.get(0).getPlaceId());
-
-        endLat2 = getIntent().getDoubleExtra("lat2", 0.0);
-        endLng2 = getIntent().getDoubleExtra("lng2", 0.0);
-        placeId2 = getIntent().getStringExtra("placeId2");
-        Log.e(TAG, "onStartClick: " + endLat2.toString());
-
-        endLat3 = getIntent().getDoubleExtra("lat3", 0.0);
-        endLng3 = getIntent().getDoubleExtra("lng3", 0.0);
-        placeId3 = getIntent().getStringExtra("placeId3");
-
-        if (endLat2 == 0.0) {
-            moreStops = false;
-        }
-        Log.e(TAG, "onStartClick: " + moreStops);
+        m_destinations = getIntent().getParcelableArrayListExtra(Constants.KEY_DESTINATIONS);
+//        endLat = getIntent().getDoubleExtra("lat", 0.0);
+//        endLng = getIntent().getDoubleExtra("lng", 0.0);
+//        placeId = getIntent().getStringExtra("placeId");
+//        //Log.e(TAG, "onStartClick: " + destinationModelArrayList.get(0).getPlaceId());
+//
+//        endLat2 = getIntent().getDoubleExtra("lat2", 0.0);
+//        endLng2 = getIntent().getDoubleExtra("lng2", 0.0);
+//        placeId2 = getIntent().getStringExtra("placeId2");
+//        Log.e(TAG, "onStartClick: " + endLat2.toString());
+//
+//        endLat3 = getIntent().getDoubleExtra("lat3", 0.0);
+//        endLng3 = getIntent().getDoubleExtra("lng3", 0.0);
+//        placeId3 = getIntent().getStringExtra("placeId3");
+//
+//        if (endLat2 == 0.0) {
+//            moreStops = false;
+//        }
+//        Log.e(TAG, "onStartClick: " + moreStops);
 
 
 
@@ -180,9 +186,12 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                 if (checkedId != -1) {
                     switch (checkedId) {
                         case R.id.btnChipDriving:
-                            getDirection("driving");
+                            try {
+                                getDirection("driving");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             break;
-
                     }
                 }
             }
@@ -190,345 +199,448 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-    private void getDirection(String mode) {
+    private void getDirection(String mode) throws InterruptedException {
 
         if (isLocationPermissionOk) {
             loadingDialog.startLoading();
+            double startingLatitude = DeviceInfo.get_location().getLatitude();
+            double startingLongitude = DeviceInfo.get_location().getLongitude();
+            for(DestinationInfo destination : m_destinations){
+                double endingLatitude = destination.latitude();
+                double endingLongitude = destination.longitude();
+                String url = "https://maps.googleapis.com/maps/api/directions/json?" +
+                        "origin=" + startingLatitude + "," + startingLongitude +
+                        "&destination=" + endingLatitude + "," + endingLongitude +
+                        "&mode=" + mode +
+                        "&key=" + getResources().getString(R.string.MAPS_API_KEY);
 
-            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
-                    "origin=" + currentLocation.getLatitude() + "," + currentLocation.getLongitude() +
-                    "&destination=" + endLat + "," + endLng +
-                    "&mode=" + mode +
-                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
+                retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
+                    @Override
+                    public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
+                        Gson gson = new Gson();
+                        String res = gson.toJson(response.body());
+                        Log.d("TAG", "onResponse: " + res);
 
-            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
-                @Override
-                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
-                    Gson gson = new Gson();
-                    String res = gson.toJson(response.body());
-                    Log.d("TAG", "onResponse: " + res);
-
-                    if (response.errorBody() == null) {
-                        if (response.body() != null) {
-                            clearUI();
-
-                            if (response.body().getDirectionRouteModels().size() > 0) {
-                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
-
-                                getSupportActionBar().setTitle(routeModel.getSummary());
-
-                                DirectionLegModel legModel = routeModel.getLegs().get(0);
-                                binding.txtStartLocation.setText(legModel.getStartAddress());
-                                binding.txtEndLocation.setText(legModel.getEndAddress());
-
-                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
-                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
+                        if (response.errorBody() == null) {
+                            if (response.body() != null) {
 
 
-                                mGoogleMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(legModel.getEndLocation().getLat(), legModel.getEndLocation().getLng()))
-                                        .title("End Location"));
+                                if (response.body().getDirectionRouteModels().size() > 0) {
+                                    DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
 
-                                mGoogleMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng()))
-                                        .title("Start Location"));
+                                    getSupportActionBar().setTitle(routeModel.getSummary());
 
-                                adapter.setDirectionStepModels(legModel.getSteps());
+                                    DirectionLegModel legModel = routeModel.getLegs().get(0);
+                                    binding.txtStartLocation.setText(legModel.getStartAddress());
+                                    binding.txtEndLocation.setText(legModel.getEndAddress());
+
+                                    bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
+                                    bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
 
 
-                                List<LatLng> stepList = new ArrayList<>();
+                                    mGoogleMap.addMarker(new MarkerOptions()
+                                            .position(new LatLng(endingLatitude, endingLongitude))
+                                            .title("End Location"));
 
-                                PolylineOptions options = new PolylineOptions()
-                                        .width(25)
-                                        .color(Color.BLUE)
-                                        .geodesic(true)
-                                        .clickable(true)
-                                        .visible(true);
+                                    adapter.setDirectionStepModels(legModel.getSteps());
 
-                                List<PatternItem> pattern;
-                                if (mode.equals("walking")) {
-                                    pattern = Arrays.asList(
-                                            new Dot(), new Gap(10));
+                                    List<LatLng> stepList = new ArrayList<>();
 
-                                    options.jointType(JointType.ROUND);
-                                } else {
-                                    pattern = Arrays.asList(
-                                            new Dash(30));
-                                }
+                                    PolylineOptions options = new PolylineOptions()
+                                            .width(25)
+                                            .color(Color.BLUE)
+                                            .geodesic(true)
+                                            .clickable(true)
+                                            .visible(true);
 
-                                options.pattern(pattern);
+                                    List<PatternItem> pattern;
+                                    if (mode.equals("walking")) {
+                                        pattern = Arrays.asList(
+                                                new Dot(), new Gap(10));
 
-                                for (DirectionStepModel stepModel : legModel.getSteps()) {
-                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
-                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
-                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
+                                        options.jointType(JointType.ROUND);
+                                    } else {
+                                        pattern = Arrays.asList(
+                                                new Dash(30));
                                     }
+
+                                    options.pattern(pattern);
+
+                                    for (DirectionStepModel stepModel : legModel.getSteps()) {
+                                        List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
+                                        for (com.google.maps.model.LatLng latLng : decodedLatLng) {
+                                            stepList.add(new LatLng(latLng.lat, latLng.lng));
+                                        }
+                                    }
+
+                                    options.addAll(stepList);
+
+                                    Polyline polyline = mGoogleMap.addPolyline(options);
+
+                                    LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+                                    LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+
+
+                                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
+
+                                } else {
+                                    Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
                                 }
-
-                                options.addAll(stepList);
-
-                                Polyline polyline = mGoogleMap.addPolyline(options);
-
-                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-
-
-
-                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
-
                             } else {
                                 Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
+                            Log.d("TAG", "onResponse: " + response);
                         }
-                    } else {
-                        Log.d("TAG", "onResponse: " + response);
+
+                        loadingDialog.stopLoading();
                     }
 
-                    loadingDialog.stopLoading();
-                }
+                    @Override
+                    public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
 
-                @Override
-                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
+                    }
+                });
 
-                }
-            });
+                startingLatitude = endingLatitude;
+                startingLongitude = endingLongitude;
+                Thread.sleep(1000);
+            }
+//            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
+//                    "origin=" + currentLocation.getLatitude() + "," + currentLocation.getLongitude() +
+//                    "&destination=" + endLat + "," + endLng +
+//                    "&mode=" + mode +
+//                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
+//
+//            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
+//                @Override
+//                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
+//                    Gson gson = new Gson();
+//                    String res = gson.toJson(response.body());
+//                    Log.d("TAG", "onResponse: " + res);
+//
+//                    if (response.errorBody() == null) {
+//                        if (response.body() != null) {
+//                            clearUI();
+//
+//                            if (response.body().getDirectionRouteModels().size() > 0) {
+//                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
+//
+//                                getSupportActionBar().setTitle(routeModel.getSummary());
+//
+//                                DirectionLegModel legModel = routeModel.getLegs().get(0);
+//                                binding.txtStartLocation.setText(legModel.getStartAddress());
+//                                binding.txtEndLocation.setText(legModel.getEndAddress());
+//
+//                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
+//                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
+//
+//
+//                                mGoogleMap.addMarker(new MarkerOptions()
+//                                        .position(new LatLng(legModel.getEndLocation().getLat(), legModel.getEndLocation().getLng()))
+//                                        .title("End Location"));
+//
+//                                mGoogleMap.addMarker(new MarkerOptions()
+//                                        .position(new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng()))
+//                                        .title("Start Location"));
+//
+//                                adapter.setDirectionStepModels(legModel.getSteps());
+//
+//
+//                                List<LatLng> stepList = new ArrayList<>();
+//
+//                                PolylineOptions options = new PolylineOptions()
+//                                        .width(25)
+//                                        .color(Color.BLUE)
+//                                        .geodesic(true)
+//                                        .clickable(true)
+//                                        .visible(true);
+//
+//                                List<PatternItem> pattern;
+//                                if (mode.equals("walking")) {
+//                                    pattern = Arrays.asList(
+//                                            new Dot(), new Gap(10));
+//
+//                                    options.jointType(JointType.ROUND);
+//                                } else {
+//                                    pattern = Arrays.asList(
+//                                            new Dash(30));
+//                                }
+//
+//                                options.pattern(pattern);
+//
+//                                for (DirectionStepModel stepModel : legModel.getSteps()) {
+//                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
+//                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
+//                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
+//                                    }
+//                                }
+//
+//                                options.addAll(stepList);
+//
+//                                Polyline polyline = mGoogleMap.addPolyline(options);
+//
+//                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+//                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+//
+//
+//
+//                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
+//
+//                            } else {
+//                                Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } else {
+//                            Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
+//                        }
+//                    } else {
+//                        Log.d("TAG", "onResponse: " + response);
+//                    }
+//
+//                    loadingDialog.stopLoading();
+//                }
+//
+//                @Override
+//                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
+//
+//                }
+//            });
         }
-        if(moreStops == true) {
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    getDirection2("driving");
-                }
-            }, 5000);   //5 seconds
-
-
-        }
+//        if(moreStops == true) {
+//
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                public void run() {
+//                    getDirection2("driving");
+//                }
+//            }, 5000);   //5 seconds
+//
+//
+//        }
 
     }
 
-    private void getDirection2(String mode) {
+//    private void getDirection2(String mode) {
+//
+//        if (isLocationPermissionOk) {
+//            loadingDialog.startLoading();
+//            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
+//                    "origin=" + endLat + "," + endLng +
+//                    "&destination=" + endLat2 + "," + endLng2 +
+//                    "&mode=" + mode +
+//                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
+//
+//            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
+//                @Override
+//                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
+//                    Gson gson = new Gson();
+//                    String res = gson.toJson(response.body());
+//                    Log.d("TAG", "onResponse: " + res);
+//
+//                    if (response.errorBody() == null) {
+//                        if (response.body() != null) {
+//
+//
+//                            if (response.body().getDirectionRouteModels().size() > 0) {
+//                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
+//
+//                                getSupportActionBar().setTitle(routeModel.getSummary());
+//
+//                                DirectionLegModel legModel = routeModel.getLegs().get(0);
+//                                binding.txtStartLocation.setText(legModel.getStartAddress());
+//                                binding.txtEndLocation.setText(legModel.getEndAddress());
+//
+//                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
+//                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
+//
+//
+//                                mGoogleMap.addMarker(new MarkerOptions()
+//                                        .position(new LatLng(endLat2, endLng2))
+//                                        .title("End Location"));
+//
+//                                mGoogleMap.addMarker(new MarkerOptions()
+//                                        .position(new LatLng(endLat, endLng))
+//                                        .title("Start Location"));
+//
+//                                adapter.setDirectionStepModels(legModel.getSteps());
+//
+//
+//                                List<LatLng> stepList = new ArrayList<>();
+//
+//                                PolylineOptions options = new PolylineOptions()
+//                                        .width(25)
+//                                        .color(Color.BLUE)
+//                                        .geodesic(true)
+//                                        .clickable(true)
+//                                        .visible(true);
+//
+//                                List<PatternItem> pattern;
+//                                if (mode.equals("walking")) {
+//                                    pattern = Arrays.asList(
+//                                            new Dot(), new Gap(10));
+//
+//                                    options.jointType(JointType.ROUND);
+//                                } else {
+//                                    pattern = Arrays.asList(
+//                                            new Dash(30));
+//                                }
+//
+//                                options.pattern(pattern);
+//
+//                                for (DirectionStepModel stepModel : legModel.getSteps()) {
+//                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
+//                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
+//                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
+//                                    }
+//                                }
+//
+//                                options.addAll(stepList);
+//
+//                                Polyline polyline = mGoogleMap.addPolyline(options);
+//
+//                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+//                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+//
+//
+//                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
+//
+//                            } else {
+//                                Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } else {
+//                            Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
+//                        }
+//                    } else {
+//                        Log.d("TAG", "onResponse: " + response);
+//                    }
+//
+//                    loadingDialog.stopLoading();
+//                }
+//
+//                @Override
+//                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
+//
+//                }
+//            });
+//        }
+//        if (endLat3 == 0.0) {
+//            moreStops = false;
+//        }
+//        if(moreStops == true) {
+//
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                public void run() {
+//                    getDirection3("driving");
+//                }
+//            }, 5000);   //5 seconds
+//
+//
+//        }
+//
+//    }
+
+    private void getDirection3(String mode) throws InterruptedException {
 
         if (isLocationPermissionOk) {
             loadingDialog.startLoading();
-            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
-                    "origin=" + endLat + "," + endLng +
-                    "&destination=" + endLat2 + "," + endLng2 +
-                    "&mode=" + mode +
-                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
 
-            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
-                @Override
-                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
-                    Gson gson = new Gson();
-                    String res = gson.toJson(response.body());
-                    Log.d("TAG", "onResponse: " + res);
-
-                    if (response.errorBody() == null) {
-                        if (response.body() != null) {
-
-
-                            if (response.body().getDirectionRouteModels().size() > 0) {
-                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
-
-                                getSupportActionBar().setTitle(routeModel.getSummary());
-
-                                DirectionLegModel legModel = routeModel.getLegs().get(0);
-                                binding.txtStartLocation.setText(legModel.getStartAddress());
-                                binding.txtEndLocation.setText(legModel.getEndAddress());
-
-                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
-                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
-
-
-                                mGoogleMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(endLat2, endLng2))
-                                        .title("End Location"));
-
-                                mGoogleMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(endLat, endLng))
-                                        .title("Start Location"));
-
-                                adapter.setDirectionStepModels(legModel.getSteps());
-
-
-                                List<LatLng> stepList = new ArrayList<>();
-
-                                PolylineOptions options = new PolylineOptions()
-                                        .width(25)
-                                        .color(Color.BLUE)
-                                        .geodesic(true)
-                                        .clickable(true)
-                                        .visible(true);
-
-                                List<PatternItem> pattern;
-                                if (mode.equals("walking")) {
-                                    pattern = Arrays.asList(
-                                            new Dot(), new Gap(10));
-
-                                    options.jointType(JointType.ROUND);
-                                } else {
-                                    pattern = Arrays.asList(
-                                            new Dash(30));
-                                }
-
-                                options.pattern(pattern);
-
-                                for (DirectionStepModel stepModel : legModel.getSteps()) {
-                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
-                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
-                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
-                                    }
-                                }
-
-                                options.addAll(stepList);
-
-                                Polyline polyline = mGoogleMap.addPolyline(options);
-
-                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-
-
-                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
-
-                            } else {
-                                Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Log.d("TAG", "onResponse: " + response);
-                    }
-
-                    loadingDialog.stopLoading();
-                }
-
-                @Override
-                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
-
-                }
-            });
-        }
-        if (endLat3 == 0.0) {
-            moreStops = false;
-        }
-        if(moreStops == true) {
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    getDirection3("driving");
-                }
-            }, 5000);   //5 seconds
-
-
-        }
-
-    }
-
-    private void getDirection3(String mode) {
-
-        if (isLocationPermissionOk) {
-            loadingDialog.startLoading();
-            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
-                    "origin=" + endLat2 + "," + endLng2 +
-                    "&destination=" + endLat3 + "," + endLng3 +
-                    "&mode=" + mode +
-                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
-
-            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
-                @Override
-                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
-                    Gson gson = new Gson();
-                    String res = gson.toJson(response.body());
-                    Log.d("TAG", "onResponse: " + res);
-
-                    if (response.errorBody() == null) {
-                        if (response.body() != null) {
-
-
-                            if (response.body().getDirectionRouteModels().size() > 0) {
-                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
-
-                                getSupportActionBar().setTitle(routeModel.getSummary());
-
-                                DirectionLegModel legModel = routeModel.getLegs().get(0);
-                                binding.txtStartLocation.setText(legModel.getStartAddress());
-                                binding.txtEndLocation.setText(legModel.getEndAddress());
-
-                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
-                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
-
-
-                                mGoogleMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(endLat3, endLng3))
-                                        .title("End Location"));
-
-
-
-                                adapter.setDirectionStepModels(legModel.getSteps());
-
-
-                                List<LatLng> stepList = new ArrayList<>();
-
-                                PolylineOptions options = new PolylineOptions()
-                                        .width(25)
-                                        .color(Color.BLUE)
-                                        .geodesic(true)
-                                        .clickable(true)
-                                        .visible(true);
-
-                                List<PatternItem> pattern;
-                                if (mode.equals("walking")) {
-                                    pattern = Arrays.asList(
-                                            new Dot(), new Gap(10));
-
-                                    options.jointType(JointType.ROUND);
-                                } else {
-                                    pattern = Arrays.asList(
-                                            new Dash(30));
-                                }
-
-                                options.pattern(pattern);
-
-                                for (DirectionStepModel stepModel : legModel.getSteps()) {
-                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
-                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
-                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
-                                    }
-                                }
-
-                                options.addAll(stepList);
-
-                                Polyline polyline = mGoogleMap.addPolyline(options);
-
-                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-
-
-                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
-
-                            } else {
-                                Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Log.d("TAG", "onResponse: " + response);
-                    }
-
-                    loadingDialog.stopLoading();
-                }
-
-                @Override
-                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
-
-                }
-            });
+//            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
+//                    "origin=" + endLat2 + "," + endLng2 +
+//                    "&destination=" + endLat3 + "," + endLng3 +
+//                    "&mode=" + mode +
+//                    "&key=" + getResources().getString(R.string.MAPS_API_KEY);
+//
+//            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
+//                @Override
+//                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
+//                    Gson gson = new Gson();
+//                    String res = gson.toJson(response.body());
+//                    Log.d("TAG", "onResponse: " + res);
+//
+//                    if (response.errorBody() == null) {
+//                        if (response.body() != null) {
+//
+//
+//                            if (response.body().getDirectionRouteModels().size() > 0) {
+//                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
+//
+//                                getSupportActionBar().setTitle(routeModel.getSummary());
+//
+//                                DirectionLegModel legModel = routeModel.getLegs().get(0);
+//                                binding.txtStartLocation.setText(legModel.getStartAddress());
+//                                binding.txtEndLocation.setText(legModel.getEndAddress());
+//
+//                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
+//                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
+//
+//
+//                                mGoogleMap.addMarker(new MarkerOptions()
+//                                        .position(new LatLng(endLat3, endLng3))
+//                                        .title("End Location"));
+//
+//
+//
+//                                adapter.setDirectionStepModels(legModel.getSteps());
+//
+//
+//                                List<LatLng> stepList = new ArrayList<>();
+//
+//                                PolylineOptions options = new PolylineOptions()
+//                                        .width(25)
+//                                        .color(Color.BLUE)
+//                                        .geodesic(true)
+//                                        .clickable(true)
+//                                        .visible(true);
+//
+//                                List<PatternItem> pattern;
+//                                if (mode.equals("walking")) {
+//                                    pattern = Arrays.asList(
+//                                            new Dot(), new Gap(10));
+//
+//                                    options.jointType(JointType.ROUND);
+//                                } else {
+//                                    pattern = Arrays.asList(
+//                                            new Dash(30));
+//                                }
+//
+//                                options.pattern(pattern);
+//
+//                                for (DirectionStepModel stepModel : legModel.getSteps()) {
+//                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
+//                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
+//                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
+//                                    }
+//                                }
+//
+//                                options.addAll(stepList);
+//
+//                                Polyline polyline = mGoogleMap.addPolyline(options);
+//
+//                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+//                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+//
+//
+//                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
+//
+//                            } else {
+//                                Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } else {
+//                            Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
+//                        }
+//                    } else {
+//                        Log.d("TAG", "onResponse: " + response);
+//                    }
+//
+//                    loadingDialog.stopLoading();
+//                }
+//
+//                @Override
+//                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
+//
+//                }
+//            });
         }
 
     }
@@ -611,7 +723,11 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                 if (location != null) {
                     currentLocation = location;
 
-                    getDirection("driving");
+                    try {
+                        getDirection("driving");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
                 } else {
                     Toast.makeText(DirectionActivity.this, "Location Not Found", Toast.LENGTH_SHORT).show();
@@ -635,8 +751,8 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     }
     
     
-    public ArrayList<CurrentLocationModel> getList() {
-        return currentLocationModelArrayList;
+    public ArrayList<DestinationModel> getList() {
+        return destinationModelArrayList;
     } 
 
     private List<com.google.maps.model.LatLng> decode(String points) {

@@ -18,17 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.caravan.Activity.DirectionActivity;
-import com.example.caravan.CurrentLocationInterface;
-import com.example.caravan.CurrentLocationModel;
+import com.example.caravan.DestinationInterface;
+import com.example.caravan.DestinationModel;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.R;
-import com.example.caravan.SavedLocationInterface;
-import com.example.caravan.SavedPlaceModel;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.databinding.CurrentItemLayoutBinding;
 import com.example.caravan.databinding.FragmentCurrentLocationsBinding;
-import com.example.caravan.databinding.FragmentSavedPlacesBinding;
-import com.example.caravan.databinding.SavedItemLayoutBinding;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,14 +38,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class GroupMembersFragment extends Fragment implements CurrentLocationInterface {
+public class GroupMembersFragment extends Fragment implements DestinationInterface {
 
     private FragmentCurrentLocationsBinding binding;
     private FirebaseAuth firebaseAuth;
-    private ArrayList<CurrentLocationModel> currentLocationModelArrayList;
+    private ArrayList<DestinationModel> destinationModelArrayList;
     private LoadingDialog loadingDialog;
     private FirebaseRecyclerAdapter<String, ViewHolder> firebaseRecyclerAdapter;
-    private CurrentLocationInterface currentLocationInterface;
+    private DestinationInterface destinationInterface;
 
 
     @Override
@@ -57,11 +53,11 @@ public class GroupMembersFragment extends Fragment implements CurrentLocationInt
                              Bundle savedInstanceState) {
 
         binding = FragmentCurrentLocationsBinding.inflate(inflater, container, false);
-        currentLocationInterface = this;
+        destinationInterface = this;
         firebaseAuth = FirebaseAuth.getInstance();
-        currentLocationModelArrayList = new ArrayList<>();
+        destinationModelArrayList = new ArrayList<>();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Group Members");
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Group Members");
         return binding.getRoot();
     }
 
@@ -73,6 +69,7 @@ public class GroupMembersFragment extends Fragment implements CurrentLocationInt
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(binding.savedRecyclerView);
         getCurrentLocations();
+
     }
 
 
@@ -94,9 +91,9 @@ public class GroupMembersFragment extends Fragment implements CurrentLocationInt
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
 
-                            CurrentLocationModel currentLocationModel = snapshot.getValue(CurrentLocationModel.class);
-                            holder.binding.setCurrentLocationModel(currentLocationModel);
-                            holder.binding.setListener(currentLocationInterface);
+                            DestinationModel destinationModel = snapshot.getValue(DestinationModel.class);
+                            holder.binding.setDestinationModel(destinationModel);
+                            holder.binding.setListener(destinationInterface);
                         }
                     }
 
@@ -124,6 +121,7 @@ public class GroupMembersFragment extends Fragment implements CurrentLocationInt
     @Override
     public void onResume() {
         super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Group Members");
         firebaseRecyclerAdapter.startListening();
     }
 
@@ -134,13 +132,19 @@ public class GroupMembersFragment extends Fragment implements CurrentLocationInt
     }
 
     @Override
-    public void onLocationClick(CurrentLocationModel currentLocationModel) {
+    public void onDestroyView() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        super.onDestroyView();
+    }
 
-        if (currentLocationModel.getLat() != null && currentLocationModel.getLng() != null) {
+    @Override
+    public void onLocationClick(DestinationModel destinationModel) {
+
+        if (destinationModel.getLat() != null && destinationModel.getLng() != null) {
             Intent intent = new Intent(requireContext(), DirectionActivity.class);
-            intent.putExtra("placeId", currentLocationModel.getPlaceId());
-            intent.putExtra("lat", currentLocationModel.getLat());
-            intent.putExtra("lng", currentLocationModel.getLng());
+            intent.putExtra("placeId", destinationModel.getPlaceId());
+            intent.putExtra("lat", destinationModel.getLat());
+            intent.putExtra("lng", destinationModel.getLng());
 
             startActivity(intent);
 
@@ -156,7 +160,7 @@ public class GroupMembersFragment extends Fragment implements CurrentLocationInt
     }
 
     @Override
-    public void onConfirmationClick(CurrentLocationModel currentLocationModel) {
+    public void onConfirmationClick(DestinationModel destinationModel) {
 
     }
 

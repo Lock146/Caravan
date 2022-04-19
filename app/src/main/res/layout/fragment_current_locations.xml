@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="currentLocationModel"
-            type="com.example.caravan.CurrentLocationModel" />
+            name="destinationModel"
+            type="com.example.caravan.DestinationModel" />
 
         <variable
             name="googlePlaceModel"
@@ -16,7 +16,7 @@
 
         <variable
             name="listener"
-            type="com.example.caravan.CurrentLocationInterface" />
+            type="com.example.caravan.DestinationInterface" />
     </data>
 
 <RelativeLayout

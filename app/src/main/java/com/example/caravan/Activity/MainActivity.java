@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,7 +14,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
-import com.example.caravan.Constant.Constants;
 import com.example.caravan.CurrentLocationUpdateTask;
 import com.example.caravan.Database;
 import com.example.caravan.DeviceInfo;
@@ -37,7 +35,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Timer;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("MainActivity", "onCreate called");
         // TODO: Implement location update pausing
 
         preferenceManager = new PreferenceManager(getApplicationContext());
@@ -99,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
 
         getUserData();
-        getToken();
     }
 
     @Override
@@ -117,29 +113,47 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onStop(){
+        Log.d("MainActivity", "onStop called");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause(){
+        Log.d("MainActivity", "onPause called");
+        super.onPause();
+    }
+
     private void getUserData() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (snapshot.exists()) {
+        String userID = Database.get_instance().get_userID();
+        txtName.setText(Database.get_instance().get_userID());
+        txtEmail.setText(Database.get_instance().get_user_email(userID));
+        //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                //.child(firebaseAuth.getUid());
+        //databaseReference.addValueEventListener(new ValueEventListener() {
+            //@Override
+            //public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    UserModel userModel = snapshot.getValue(UserModel.class);
-                    Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
-                    txtName.setText(userModel.getUsername());
-                    txtEmail.setText(userModel.getEmail());
+                //if (snapshot.exists()) {
+
+                    //UserModel userModel = snapshot.getValue(UserModel.class);
+                    //Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
+                    //txtName.setText(userModel.getUsername());
+                   // txtEmail.setText(userModel.getEmail());
 
 
-                }
+                //}
 
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            //@Override
+            //public void onCancelled(@NonNull DatabaseError error) {
 
-            }
+            //}
+        //});
+    //}
         });
     }
     public void runtimeEnableAutoInit() {

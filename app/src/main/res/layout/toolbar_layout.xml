@@ -5,9 +5,9 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:background="@color/primaryColor"
+    android:background="?android:colorPrimary"
     android:elevation="1dp"
-    app:titleTextColor="@color/white"
+    app:titleTextColor="?android:textColorPrimaryInverse"
     tools:titleTextAppearance="@style/TextAppearance.AppCompat.Large">
 
 </androidx.appcompat.widget.Toolbar>
