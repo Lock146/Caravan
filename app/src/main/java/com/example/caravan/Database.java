@@ -64,7 +64,8 @@ public class Database {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(value.get(KEY_GROUP_ID) != null) {
-                    m_groupID = value.get(KEY_GROUP_ID).toString();
+                    Object groupID = value.get(Constants.KEY_GROUP_ID);
+                    m_groupID = groupID == null ? null : groupID.toString();
                     get_member_id();
                 }
             }
