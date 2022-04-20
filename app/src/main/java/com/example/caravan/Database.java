@@ -6,6 +6,7 @@ import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
+import static com.example.caravan.Constant.Constants.KEY_PROFILE_PICTURE;
 
 import android.location.Location;
 import android.net.Uri;
@@ -67,10 +68,19 @@ public class Database {
         m_dbUserListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(value.get(KEY_GROUP_ID) != null) {
-                    Object groupID = value.get(Constants.KEY_GROUP_ID);
-                    m_groupID = groupID == null ? null : groupID.toString();
-                    get_member_id();
+                if(value != null) {
+                    if (value.get(KEY_GROUP_ID) != null) {
+                        Object groupID = value.get(Constants.KEY_GROUP_ID);
+                        m_groupID = groupID == null ? null : groupID.toString();
+                        if(m_groupID != null) {
+                            get_member_id();
+                        }
+                    }
+
+                    if (value.get(Constants.KEY_DISPLAY_NAME) != null) {
+                        Object displayName = value.get(Constants.KEY_DISPLAY_NAME);
+                        m_displayName = displayName == null ? null : displayName.toString();
+                    }
                 }
             }
         };
@@ -127,7 +137,7 @@ public class Database {
         userImage.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String image = documentSnapshot.get("profilePicture", String.class);
+                String image = documentSnapshot.get(KEY_PROFILE_PICTURE, String.class);
                 Log.e(TAG, "image: " + image);
                 if (image != null) {
                     profilePicture = image;
@@ -145,33 +155,34 @@ public class Database {
 
     public String get_user_username(String userID){
         // Implementation
-         DocumentReference userName = (m_database.collection(KEY_COLLECTION_USERS)
-        .document(userID));
-        Log.e(TAG, "USER ID: " + userID);
-         userName.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                     //@Override
-                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                         String name = documentSnapshot.get("displayName", String.class);
-                         Log.e(TAG, "name: " + name);
-
-                         if (name != null) {
-                             displayName = name;
-                             Log.e(TAG, "onSuccess: " + name);
-                             //get_user_username(userID);
-                             return;
-                         }
-
-                     }
-
-                 });
-
-
-
-        Log.e(TAG, "displayName: " + displayName);
-        return (displayName);
+//         DocumentReference userName = (m_database.collection(KEY_COLLECTION_USERS)
+//        .document(userID));
+//        Log.e(TAG, "USER ID: " + userID);
+//         userName.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                     //@Override
+//                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                         String name = documentSnapshot.get("displayName", String.class);
+//                         Log.e(TAG, "name: " + name);
+//
+//                         if (name != null) {
+//                             displayName = name;
+//                             Log.e(TAG, "onSuccess: " + name);
+//                             //get_user_username(userID);
+//                             return;
+//                         }
+//
+//                     }
+//
+//                 });
+//
+//
+//
+//        Log.e(TAG, "displayName: " + displayName);
+//        return (displayName);
+        return "";
     }
-    public String get_displayName(String displayName) {
-        return displayName;
+    public String get_displayName() {
+        return m_displayName;
     }
 
     private void get_member_id(){
@@ -183,7 +194,7 @@ public class Database {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for(DocumentSnapshot member : queryDocumentSnapshots){
-                            Object email = member.get("email");
+                            Object email = member.get(Constants.KEY_EMAIL);
                             if(email != null && email.toString().equals(m_email)){
                                 m_memberID = member.getId();
                                 return;
@@ -262,12 +273,12 @@ public class Database {
     public void update_displayName() {
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
-                .update("displayName", m_displayName);
+                .update(Constants.KEY_DISPLAY_NAME, m_displayName);
     }
     public void update_profilePicture() {
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
-                .update("profilePicture", m_profilePicture.toString());
+                .update(KEY_PROFILE_PICTURE, m_profilePicture.toString());
     }
 
     public void send_message(String message){
@@ -341,8 +352,8 @@ public class Database {
                     .document(m_groupID)
                     .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
             Map<String, Object> groupMember = new HashMap<>();
-            groupMember.put(Constants.KEY_EMAIL, m_email);
-            groupMember.put(Constants.KEY_USER_ID, m_userID);
+            groupMember.put(Constants.KEY_EMAIL, email);
+            groupMember.put(Constants.KEY_USER_ID, userID);
             groupMembers.add(groupMember)
                     .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
                     .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
