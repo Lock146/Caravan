@@ -151,7 +151,7 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //binding.txtEmail.setText(firebaseAuth.getCurrentUser().getEmail());
+        binding.txtEmail.setText(firebaseAuth.getCurrentUser().getEmail());
         //if (Database.get_instance().get_user_username(firebaseAuth.getUid()) != null) {
             //binding.txtUsername.setText(Database.get_instance().get_user_username(firebaseAuth.getUid()));
        // }
