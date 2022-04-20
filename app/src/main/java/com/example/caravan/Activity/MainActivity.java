@@ -7,6 +7,8 @@ import android.app.NotificationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView imgHeader;
     private TextView txtName, txtEmail;
     private Timer m_currentLocationUpdater;
+    private String image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         long period = 5000;
         m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(getApplicationContext(), period), 0, period);
 
+        Database.get_instance().update_displayName();
+        Database.get_instance().update_profilePicture();
 
 
         Places.initialize(getApplicationContext(), getResources().getString(R.string.MAPS_API_KEY));
@@ -96,11 +101,12 @@ public class MainActivity extends AppCompatActivity {
 
         View headerLayout = navDrawerLayoutBinding.navigationView.getHeaderView(0);
 
-        //getUserData();
+
 
         imgHeader = headerLayout.findViewById(R.id.imgHeader);
         txtName = headerLayout.findViewById(R.id.txtHeaderName);
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
+
 
         getUserData();
 
@@ -138,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         Log.d("MainActivity", "onResume called");
+        //getUserData();
         super.onResume();
     }
 
@@ -169,12 +176,43 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void getUserData() {
+
+
+    public void getUserData() {
 
         String userID = Database.get_instance().get_userID();
-        Glide.with(this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).into(imgHeader);
-        imgHeader.setImageURI(Database.get_instance().get_user_image());
-        txtName.setText(Database.get_instance().get_user_username());
+        //image = Database.get_instance().get_user_image(firebaseAuth.getUid());
+        //Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/emoji_13.png?alt=media&token=8188a65f-9830-48e1-83d7-fa08f80a3d52").into(imgHeader);
+        //imgHeader.setImageURI(Database.get_instance().get_user_image());
+        if (Database.get_instance().get_user_image(firebaseAuth.getUid()) != null) {
+
+            //Log.e(TAG, "OOOOOOOOOOOOOO: " + image );
+            Glide.with(this).load(Database.get_instance().get_user_image(firebaseAuth.getUid())).into(imgHeader);
+
+            //imgHeader.setImageURI(Uri.parse(Database.get_instance().get_user_image(firebaseAuth.getUid())));
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getUserData();
+                }
+            }, 500);
+        }
+        //imgHeader.setImageURI(Uri.parse(image));
+        if (Database.get_instance().get_user_username(firebaseAuth.getUid()) != null) {
+            txtName.setText(Database.get_instance().get_user_username(firebaseAuth.getUid()));
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getUserData();
+                }
+            }, 500);
+            //getUserData();
+        }
+        //Log.e(TAG, "getUserData: " + firebaseAuth.getUid() );
         txtEmail.setText(Database.get_instance().get_user_email(userID));
         //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 //.child(firebaseAuth.getUid());

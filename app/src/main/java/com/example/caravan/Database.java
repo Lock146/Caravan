@@ -3,7 +3,6 @@ package com.example.caravan;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
 import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
-import static com.example.caravan.Constant.Constants.KEY_EMAIL;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
@@ -12,19 +11,13 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.caravan.Activity.MainActivity;
 import com.example.caravan.Constant.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -47,6 +40,10 @@ public class Database {
     private String m_groupID;
     private String m_memberID;
     private String m_email;
+    private String m_displayName;
+    private String displayName;
+    private String profilePicture;
+    private Uri m_profilePicture;
     private EventListener<DocumentSnapshot> m_dbUserListener;
 
     public static Database get_instance(){
@@ -65,6 +62,8 @@ public class Database {
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        m_displayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        m_profilePicture = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
         m_dbUserListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -116,22 +115,63 @@ public class Database {
 
     }
 
-    public Uri get_user_image(){
+    public String get_user_image(String userID){
         // Implementation
         // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
         //.document(userID).collection(Constants.KEY_EMAIL));
-        Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
-        return (image);
+        //Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+        //return (image);
+        DocumentReference userImage = (m_database.collection(KEY_COLLECTION_USERS)
+                .document(userID));
+        Log.e(TAG, "USER ID: " + userID);
+        userImage.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String image = documentSnapshot.get("profilePicture", String.class);
+                Log.e(TAG, "image: " + image);
+                if (image != null) {
+                    profilePicture = image;
+                    Log.e(TAG, "onSuccess: " + image);
+                    return;
+                }
+
+            }
+
+        });
+        Log.e(TAG, "profilePicture!!!!!: " + profilePicture);
+        return (profilePicture);
 
     }
 
-    public String get_user_username(){
+    public String get_user_username(String userID){
         // Implementation
-        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
-        //.document(userID).collection(Constants.KEY_EMAIL));
-        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        return (username);
+         DocumentReference userName = (m_database.collection(KEY_COLLECTION_USERS)
+        .document(userID));
+        Log.e(TAG, "USER ID: " + userID);
+         userName.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                     //@Override
+                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                         String name = documentSnapshot.get("displayName", String.class);
+                         Log.e(TAG, "name: " + name);
 
+                         if (name != null) {
+                             displayName = name;
+                             Log.e(TAG, "onSuccess: " + name);
+                             //get_user_username(userID);
+                             return;
+                         }
+
+                     }
+
+                 });
+
+
+
+        Log.e(TAG, "displayName: " + displayName);
+        return (displayName);
+    }
+    public String get_displayName(String displayName) {
+        return displayName;
     }
 
     private void get_member_id(){
@@ -218,6 +258,16 @@ public class Database {
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .update(KEY_CURRENT_LOCATION, location);
+    }
+    public void update_displayName() {
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update("displayName", m_displayName);
+    }
+    public void update_profilePicture() {
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update("profilePicture", m_profilePicture.toString());
     }
 
     public void send_message(String message){
