@@ -247,6 +247,10 @@ public class Database {
     }
 
     private Database(){
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            Log.d(TAG, "Unable to get current Firebase user");
+            assert false;
+        }
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
