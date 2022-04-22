@@ -44,6 +44,8 @@ public class Database {
     private String displayName;
     private String profilePicture;
     private Uri m_profilePicture;
+    private String testname;
+    private String testimage;
     private EventListener<DocumentSnapshot> m_dbUserListener;
 
     public static Database get_instance(){
@@ -64,6 +66,8 @@ public class Database {
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         m_displayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         m_profilePicture = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+        testname = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        testimage = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
         m_dbUserListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -279,6 +283,8 @@ public class Database {
             HashMap<String, Object> data = new HashMap<>();
             data.put(Constants.KEY_SENDER_ID, m_userID);
             data.put(Constants.KEY_MESSAGE, message);
+            data.put("displayName", testname);
+            data.put("profilePicture", testimage);
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> {
