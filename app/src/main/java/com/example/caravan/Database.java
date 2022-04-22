@@ -273,8 +273,8 @@ public class Database {
                     .document(m_groupID)
                     .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
             Map<String, Object> groupMember = new HashMap<>();
-            groupMember.put(Constants.KEY_EMAIL, m_email);
-            groupMember.put(Constants.KEY_USER_ID, m_userID);
+            groupMember.put(Constants.KEY_EMAIL, email);
+            groupMember.put(Constants.KEY_USER_ID, userID);
             groupMembers.add(groupMember)
                     .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
                     .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
