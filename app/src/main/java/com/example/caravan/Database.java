@@ -66,7 +66,9 @@ public class Database {
                 if(value.get(KEY_GROUP_ID) != null) {
                     Object groupID = value.get(Constants.KEY_GROUP_ID);
                     m_groupID = groupID == null ? null : groupID.toString();
-                    get_member_id();
+                    if(m_groupID != null) {
+                        get_member_id();
+                    }
                 }
             }
         };
