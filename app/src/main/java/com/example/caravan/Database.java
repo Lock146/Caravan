@@ -292,11 +292,13 @@ public class Database {
         m_userListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Log.d(TAG, "User event: " + (value != null ? value : "Error: " + error));
                 if(value.get(KEY_GROUP_ID) != null) {
                     Object groupID = value.get(Constants.KEY_GROUP_ID);
                     m_groupID = groupID == null ? null : groupID.toString();
                     if(m_groupID != null) {
                         get_member_id();
+                        init_group_listener();
                     }
                 }
             }
