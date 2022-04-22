@@ -27,6 +27,7 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.example.caravan.Activity.LoginActivity;
 import com.example.caravan.Activity.MainActivity;
+import com.example.caravan.Activity.PPMenuActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Permissions.AppPermissions;
@@ -92,7 +93,10 @@ public class SettingsFragment extends Fragment {
         });
 
         binding.cardPicture.setOnClickListener(view -> {
-            // Add thing for
+
+            Intent intent = new Intent(requireContext(), PPMenuActivity.class);
+            startActivity(intent);
+            
 
         });
 
