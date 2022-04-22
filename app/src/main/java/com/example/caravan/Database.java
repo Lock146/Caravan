@@ -310,7 +310,7 @@ public class Database {
         m_groupListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                Log.d(TAG, "Group event: " + (value != null ? value.toString() : "null"));
+                Log.d(TAG, "Group event: " + (value != null ? value.toString() : "Error: " + error));
             }
         };
         m_groupListenerRegistration = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
