@@ -345,17 +345,23 @@ public class Database {
         m_groupListenerRegistration.remove();
     }
 
-    private void upload_user_info(){
-        assert m_groupID != null;
+    private HashMap<String, ArrayList<String>> generate_user_info(){
         ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
         userInfo.add(MemberData.Email, m_email);
         userInfo.add(MemberData.Name, "name");
         userInfo.add(MemberData.ProfilePicture, "profile picture");
         HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
         userInfoMap.put(m_userID, userInfo);
+        return userInfoMap;
+    }
+
+    private void upload_user_info(){
+        assert m_groupID != null;
+        HashMap<String, Object> userInfo = new HashMap<>();
+        userInfo.put(KEY_GROUP_MEMBERS, generate_user_info());
         m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
-                .update(KEY_GROUP_MEMBERS, userInfoMap)
+                .set(userInfo, SetOptions.merge())
                 .addOnSuccessListener(result -> Log.d(TAG, "Successfully added member info"))
                 .addOnFailureListener(error -> Log.d(TAG, "Error adding member info: " + error))
                 .addOnCompleteListener(result -> Log.d(TAG, "Completed adding member info"));
