@@ -1,12 +1,15 @@
 package com.example.caravan.Adapter;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.caravan.Activity.GroupChatActivity;
 import com.example.caravan.Database;
 import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.databinding.ItemContainerReceivedMessageBinding;
@@ -92,6 +95,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void setData(ChatMessage chatMessage) {
+            //binding.userProfile.setImageURI(Uri.parse(chatMessage.image));
+            Glide.with(itemView.getContext()).load(chatMessage.image).into(binding.userProfile);
             binding.textUserName.setText(chatMessage.email);
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
