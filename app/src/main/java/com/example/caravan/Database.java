@@ -51,27 +51,6 @@ public class Database {
         return m_instance;
     }
 
-    private Database(){
-        m_database = FirebaseFirestore.getInstance();
-        m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        m_userListener = new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(value.get(KEY_GROUP_ID) != null) {
-                    Object groupID = value.get(Constants.KEY_GROUP_ID);
-                    m_groupID = groupID == null ? null : groupID.toString();
-                    if(m_groupID != null) {
-                        get_member_id();
-                    }
-                }
-            }
-        };
-        m_database.collection(Constants.KEY_COLLECTION_USERS)
-                .document(m_userID)
-                .addSnapshotListener(m_userListener);
-    }
-
     public String get_userID(){
         return m_userID;
     }
@@ -124,25 +103,6 @@ public class Database {
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         return (username);
 
-    }
-
-    private void get_member_id(){
-        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID)
-                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for(DocumentSnapshot member : queryDocumentSnapshots){
-                            Object email = member.get("email");
-                            if(email != null && email.toString().equals(m_email)){
-                                m_memberID = member.getId();
-                                return;
-                            }
-                        }
-                    }
-                });
     }
 
     public void leave_group(){
@@ -275,6 +235,46 @@ public class Database {
                     .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
                     .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
         }
+    }
+
+    private Database(){
+        m_database = FirebaseFirestore.getInstance();
+        m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        m_userListener = new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value.get(KEY_GROUP_ID) != null) {
+                    Object groupID = value.get(Constants.KEY_GROUP_ID);
+                    m_groupID = groupID == null ? null : groupID.toString();
+                    if(m_groupID != null) {
+                        get_member_id();
+                    }
+                }
+            }
+        };
+        m_database.collection(Constants.KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .addSnapshotListener(m_userListener);
+    }
+
+    private void get_member_id(){
+        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for(DocumentSnapshot member : queryDocumentSnapshots){
+                            Object email = member.get("email");
+                            if(email != null && email.toString().equals(m_email)){
+                                m_memberID = member.getId();
+                                return;
+                            }
+                        }
+                    }
+                });
     }
 
     private void add_user_info_to_group(String email, String userID){
