@@ -69,6 +69,7 @@ public class Database {
         groupInfo.put(KEY_GROUP_NAME, null);
         group.set(groupInfo);
         add_user_info_to_group(m_email, m_userID);
+        init_group_listener();
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
@@ -129,6 +130,8 @@ public class Database {
             m_database.collection(Constants.KEY_COLLECTION_USERS)
                     .document(m_userID)
                     .update(Constants.KEY_GROUP_ID, null);
+
+            remove_group_listener();
         }
     }
 
@@ -298,6 +301,18 @@ public class Database {
     }
 
     private void init_group_listener(){
+        m_groupListener = new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Log.d(TAG, "Group event: " + (value != null ? value.toString() : "null"));
+            }
+        };
+        m_groupListenerRegistration = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .addSnapshotListener(m_groupListener);
+    }
 
+    private void remove_group_listener(){
+        m_groupListenerRegistration.remove();
     }
 }
