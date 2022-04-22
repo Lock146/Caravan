@@ -67,7 +67,10 @@ public class Database {
         Map<String, Object> groupInfo = new HashMap<>();
         groupInfo.put(KEY_GROUP_OWNER, m_userID);
         groupInfo.put(KEY_GROUP_NAME, null);
-        group.set(groupInfo);
+        group.set(groupInfo)
+                .addOnSuccessListener(result -> Log.d(TAG, "Successfully created group"))
+                .addOnFailureListener(error -> Log.d(TAG, "Error creating group: " + error))
+                .addOnCompleteListener(result -> Log.d(TAG, "Completed group creation"));
         add_user_info_to_group(m_email, m_userID);
         init_group_listener();
 
@@ -76,7 +79,10 @@ public class Database {
         userInfo.put(KEY_GROUP_ID, m_groupID);
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
-                .set(userInfo, SetOptions.merge());
+                .set(userInfo, SetOptions.merge())
+                .addOnSuccessListener(result -> Log.d(TAG, "Successfully added group info to user"))
+                .addOnFailureListener(error -> Log.d(TAG, "Error adding group info to user: " + error))
+                .addOnCompleteListener(result -> Log.d(TAG, "Completed added group info to user"));
     }
 
     public String get_user_email(String userID){
@@ -276,9 +282,9 @@ public class Database {
             groupMember.put(Constants.KEY_EMAIL, email);
             groupMember.put(Constants.KEY_USER_ID, userID);
             groupMembers.add(groupMember)
-                    .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added group owner as member."))
-                    .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
-                    .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
+                    .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added user to group."))
+                    .addOnFailureListener(e -> Log.d("Database", "Unable to add user to group. Error: " + e.toString()))
+                    .addOnCompleteListener(task -> Log.d("Database", "Completed task adding user to group"));
         }
     }
 
