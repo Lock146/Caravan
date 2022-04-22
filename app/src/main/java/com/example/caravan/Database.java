@@ -271,6 +271,21 @@ public class Database {
             }
         });
     }
+    public void append_dest_to_suggestions(String destination) {
+        Task<DocumentSnapshot> groupInfo = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .get();
+        groupInfo.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot info) {
+                Object query = info.get(Constants.KEY_SUGG_STOPS);
+                ArrayList<String> suggestions = (ArrayList<String>) query;
+                assert suggestions != null;
+                suggestions.add(destination);
+                //update_route(route);
+            }
+        });
+    }
 
     public void update_route(ArrayList<String> placeIDs){
         if(in_group()) {
@@ -282,6 +297,18 @@ public class Database {
                     .addOnSuccessListener(result -> Log.d(TAG, "Successfully published route to group"))
                     .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
                     .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
+        }
+    }
+    public void update_suggestion_list(ArrayList<String> placeIDs){
+        if(in_group()) {
+            HashMap<String, Object> routeInfo = new HashMap<>();
+            routeInfo.put(Constants.KEY_SUGG_LIST, placeIDs);
+            m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                    .document(m_groupID)
+                    .set(routeInfo)
+                    .addOnSuccessListener(result -> Log.d(TAG, "Successfully published suggestion to group"))
+                    .addOnFailureListener(error -> Log.d(TAG, "Failed publishing suggestion to group: " + error))
+                    .addOnCompleteListener(result -> Log.d(TAG, "Completed suggestions publishing task"));
         }
     }
 

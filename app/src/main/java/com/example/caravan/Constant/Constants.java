@@ -23,6 +23,8 @@ public class Constants {
     public static final String KEY_FCM_TOKEN = "fcmToken";
 
     public static final String KEY_STOPS = "stops";
+    public static final String KEY_SUGG_STOPS = "suggestedStops";
+    public static final String KEY_SUGG_LIST = "suggestedStopsList";
     public static final String KEY_DESTINATIONS = "destinations";
     public static final String KEY_ROUTE = "route";
 }

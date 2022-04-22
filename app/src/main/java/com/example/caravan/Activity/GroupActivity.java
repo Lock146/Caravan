@@ -30,22 +30,22 @@ public class GroupActivity extends AppCompatActivity {
 
         setListeners();
 
-        binding.addUser.setOnClickListener(view -> add_user());
+        //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
-        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(!view.hasFocus()){
-                    Database.get_instance().update_group_name(binding.GroupName.getText().toString());
-                }
-            }
-        });
-        binding.groupMembership.setVisibility(Database.get_instance().in_group() ? View.VISIBLE : View.INVISIBLE);
-        CharSequence groupMembership = "Leave group";
-        binding.groupMembership.setText(groupMembership);
-        binding.groupMembership.setOnClickListener(view -> {
-            leave_group();
-        });
+//        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                if(!view.hasFocus()){
+//                    Database.get_instance().update_group_name(binding.GroupName.getText().toString());
+//                }
+//            }
+//        });
+//        binding.groupMembership.setVisibility(Database.get_instance().in_group() ? View.VISIBLE : View.INVISIBLE);
+//        CharSequence groupMembership = "Leave group";
+//        binding.groupMembership.setText(groupMembership);
+//        binding.groupMembership.setOnClickListener(view -> {
+//            leave_group();
+//        });
     }
 
     private void leave_group(){
@@ -57,8 +57,8 @@ public class GroupActivity extends AppCompatActivity {
             create_group();
         });
 
-        binding.groupMembership.setVisibility(View.INVISIBLE);
-        binding.groupMembership.setClickable(false);
+//        binding.groupMembership.setVisibility(View.INVISIBLE);
+//        binding.groupMembership.setClickable(false);
 
         disable_group_functionality();
     }
@@ -68,16 +68,16 @@ public class GroupActivity extends AppCompatActivity {
         enable_group_functionality();
     }
 
-    private void add_user(){
-        if(!binding.addEmail.getText().toString().isEmpty()) {
-            String email = binding.addEmail.getText().toString();
-            binding.addEmail.setText(null);
-            Database.get_instance().add_user(email);
-        }
-        else{
-            Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    private void add_user(){
+//        if(!binding.addEmail.getText().toString().isEmpty()) {
+//            String email = binding.addEmail.getText().toString();
+//            binding.addEmail.setText(null);
+//            Database.get_instance().add_user(email);
+//        }
+//        else{
+//            Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void open_group_chat(){
         startActivity(new Intent(this, GroupChatActivity.class));
@@ -91,20 +91,20 @@ public class GroupActivity extends AppCompatActivity {
 
         binding.chat.setVisibility(View.INVISIBLE);
         binding.chat.setClickable(false);
-        binding.groupMembership.setVisibility(View.INVISIBLE);
-        binding.groupMembership.setClickable(false);
+        //binding.groupMembership.setVisibility(View.INVISIBLE);
+        //binding.groupMembership.setClickable(false);
     }
 
     private void enable_group_functionality(){
         binding.addUser.setText(ADD_USER);
-        binding.addUser.setOnClickListener(view -> {
-            add_user();
-        });
+        //binding.addUser.setOnClickListener(view -> {
+        //    add_user();
+        //});
 
         binding.chat.setVisibility(View.VISIBLE);
         binding.chat.setClickable(true);
-        binding.groupMembership.setVisibility(View.VISIBLE);
-        binding.groupMembership.setClickable(true);
+        //binding.groupMembership.setVisibility(View.VISIBLE);
+        //binding.groupMembership.setClickable(true);
     }
 
     private void setListeners() {
