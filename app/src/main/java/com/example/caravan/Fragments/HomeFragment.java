@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userSavedLocationId;
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
-    private EventListener<DocumentSnapshot> onGroupChange;
+    private EventListener<DocumentSnapshot> m_onGroupChange;
     private ArrayList<GooglePlaceModel> m_stops;
     private ActivityResultLauncher<Intent> m_timelineLauncher;
     public LatLng testLocation;
@@ -259,13 +259,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.group.setOnClickListener(view -> open_group_activity());
         binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
                 Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
-        //onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
-                //requireContext(),
-                //value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
-        //));
-        //Database.get_instance().add_group_join_listener(onGroupChange);
-
-
+        m_onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                requireContext(),
+                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
+        ));
+        Database.get_instance().add_group_join_listener(m_onGroupChange);
 
         m_stops = new ArrayList<>();
 
