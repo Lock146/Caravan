@@ -56,11 +56,6 @@ public class Database {
         return m_instance;
     }
 
-    public static Database set_instance(){
-        m_instance = new Database();
-        return m_instance;
-    }
-
     private Database(){
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
