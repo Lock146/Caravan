@@ -25,6 +25,7 @@ public class PPMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_menu);
 
         binding = ActivityProfileMenuBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         binding.imageButton1.setOnClickListener(view -> {
         changepicture1();
