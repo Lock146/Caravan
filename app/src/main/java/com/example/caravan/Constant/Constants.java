@@ -11,6 +11,7 @@ public class Constants {
     public static final String KEY_USER = "user";
     public static final String KEY_USER_ID = "userID";
     public static final String KEY_EMAIL = "email";
+    public static final String KEY_PROFILE_PICTURE = "profilePicture";
     public static final String KEY_SENDER_EMAIL = "senderEmail";
     public static final String KEY_CURRENT_LOCATION = "currentLocation";
     public static final String KEY_SENDER_ID = "senderId";

@@ -42,6 +42,7 @@ public class Database {
     private String m_userID;
     private String m_groupID;
     private String m_email;
+    private String m_profilePicture;
     private EventListener<DocumentSnapshot> m_userListener;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
@@ -80,12 +81,12 @@ public class Database {
                 .addOnSuccessListener(result -> Log.d(TAG, "Successfully created group"))
                 .addOnFailureListener(error -> Log.d(TAG, "Error creating group: " + error))
                 .addOnCompleteListener(result -> Log.d(TAG, "Completed group creation"));
-        add_user_info_to_group(m_email, m_userID);
         init_group_listener();
+        upload_user_info();
 
         // Update user info
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put(KEY_GROUP_ID, m_groupID);
+        userInfo.put(KEY_GROUP_ID, group.getId());
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .set(userInfo, SetOptions.merge())
@@ -103,15 +104,14 @@ public class Database {
         }
     }
 
-    // TODO: test transmitting profile pictures using base64
-//    public Uri get_user_image(String userID){
-//        if(m_members.containsKey(userID)){
-//            return new Uri(Objects.requireNonNull(m_members.get(userID)).get(MemberData.ProfilePicture));
-//        }
-//        else{
-//            return null;
-//        }
-//    }
+    public Uri get_user_image(String userID){
+        if(m_members.containsKey(userID)){
+            return Uri.parse(Objects.requireNonNull(m_members.get(userID)).get(MemberData.ProfilePicture));
+        }
+        else{
+            return null;
+        }
+    }
 
     public String get_user_username(String userID){
         if(m_members.containsKey(userID)){
@@ -164,9 +164,6 @@ public class Database {
                 for (DocumentSnapshot user : users.getDocuments()) {
                     Object userEmail = user.get(Constants.KEY_EMAIL);
                     if(userEmail != null && userEmail.equals(email)){
-                        // Add user to group
-                        add_user_info_to_group(email, user.getId());
-
                         // Update user's group info
                         m_database.collection(Constants.KEY_COLLECTION_USERS)
                                 .document(user.getId())
@@ -272,29 +269,13 @@ public class Database {
         init_user_listener();
     }
 
-    private void add_user_info_to_group(String email, String userID){
-        if(in_group()) {
-            ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
-            userInfo.add(MemberData.Email, email);
-            userInfo.add(MemberData.Name, "name");
-            userInfo.add(MemberData.ProfilePicture, "profile picture");
-            DocumentReference group = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                    .document(m_groupID);
-            HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
-            userInfoMap.put(userID, userInfo);
-            group.update(KEY_GROUP_MEMBERS, userInfoMap)
-                    .addOnSuccessListener(result -> Log.d(TAG, "Successfully added member info"))
-                    .addOnFailureListener(error -> Log.d(TAG, "Error adding member info: " + error))
-                    .addOnCompleteListener(result -> Log.d(TAG, "Completed adding member info"));
-        }
-    }
-
     private void init_user_listener(){
         m_userListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Log.d(TAG, "User event: " + (value != null ? value : "Error: " + error));
                 if(value != null) {
+                    Boolean dataChanged = false;
                     Object obj = value.get(Constants.KEY_GROUP_ID);
                     String groupID = obj == null ? null : obj.toString();
                     if(groupID == null){
@@ -306,6 +287,17 @@ public class Database {
                         remove_group_listener();
                         m_groupID = groupID;
                         init_group_listener();
+                        dataChanged = true;
+                    }
+
+                    obj = value.get(Constants.KEY_PROFILE_PICTURE);
+                    String profilePicture = obj == null ? null : obj.toString();
+                    if(profilePicture != null && !profilePicture.equals(m_profilePicture)){
+                        m_profilePicture = profilePicture;
+                        dataChanged = true;
+                    }
+
+                    if(dataChanged){
                         upload_user_info();
                     }
                 }
@@ -341,7 +333,7 @@ public class Database {
         ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
         userInfo.add(MemberData.Email, m_email);
         userInfo.add(MemberData.Name, "name");
-        userInfo.add(MemberData.ProfilePicture, "profile picture");
+        userInfo.add(MemberData.ProfilePicture, m_profilePicture);
         HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
         userInfoMap.put(m_userID, userInfo);
         return userInfoMap;
