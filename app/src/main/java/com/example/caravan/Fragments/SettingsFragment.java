@@ -96,7 +96,6 @@ public class SettingsFragment extends Fragment {
 
             Intent intent = new Intent(requireContext(), PPMenuActivity.class);
             startActivity(intent);
-            
 
         });
 
@@ -148,7 +147,7 @@ public class SettingsFragment extends Fragment {
         Runtime.getRuntime().exit(0);
     }
 
-    private void pickImage() {
+    public void pickImage() {
 
         CropImage.activity()
                 .setCropShape(CropImageView.CropShape.OVAL)
