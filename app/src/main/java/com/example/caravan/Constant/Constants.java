@@ -4,6 +4,7 @@ public class Constants {
     public static final String KEY_COLLECTION_USERS = "users";
     public static final String KEY_COLLECTION_GROUPS = "groups";
     public static final String KEY_COLLECTION_GROUP_MEMBERS = "members";
+    public static final String KEY_GROUP_MEMBERS = "members";
     public static final String KEY_GROUP_ID = "groupID";
     public static final String KEY_GROUP_NAME = "groupName";
     public static final String KEY_GROUP_OWNER = "groupOwner";
