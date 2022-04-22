@@ -241,21 +241,8 @@ public class Database {
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        m_userListener = new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(value.get(KEY_GROUP_ID) != null) {
-                    Object groupID = value.get(Constants.KEY_GROUP_ID);
-                    m_groupID = groupID == null ? null : groupID.toString();
-                    if(m_groupID != null) {
-                        get_member_id();
-                    }
-                }
-            }
-        };
-        m_database.collection(Constants.KEY_COLLECTION_USERS)
-                .document(m_userID)
-                .addSnapshotListener(m_userListener);
+
+        init_user_listener();
     }
 
     private void get_member_id(){
@@ -290,6 +277,24 @@ public class Database {
                     .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
                     .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
         }
+    }
+
+    private void init_user_listener(){
+        m_userListener = new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value.get(KEY_GROUP_ID) != null) {
+                    Object groupID = value.get(Constants.KEY_GROUP_ID);
+                    m_groupID = groupID == null ? null : groupID.toString();
+                    if(m_groupID != null) {
+                        get_member_id();
+                    }
+                }
+            }
+        };
+        m_database.collection(Constants.KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .addSnapshotListener(m_userListener);
     }
 
     private void init_group_listener(){
