@@ -27,6 +27,7 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.example.caravan.Activity.LoginActivity;
 import com.example.caravan.Activity.MainActivity;
+import com.example.caravan.Activity.PPMenuActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Database;
@@ -90,6 +91,14 @@ public class SettingsFragment extends Fragment {
             directions = SettingsFragmentDirections.actionBtnSettingToEmailConfirmationFragment();
 
             Navigation.findNavController(getView()).navigate(directions);
+        });
+
+        binding.cardPicture.setOnClickListener(view -> {
+
+            Intent intent = new Intent(requireContext(), PPMenuActivity.class);
+            startActivity(intent);
+            
+
         });
 
         binding.cardPassword.setOnClickListener(view -> {
