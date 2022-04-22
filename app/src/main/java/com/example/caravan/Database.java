@@ -25,6 +25,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
@@ -40,7 +41,6 @@ public class Database {
     private FirebaseFirestore m_database;
     private String m_userID;
     private String m_groupID;
-    private String m_memberID;
     private String m_email;
     private EventListener<DocumentSnapshot> m_userListener;
     private EventListener<DocumentSnapshot> m_groupListener;
@@ -123,14 +123,17 @@ public class Database {
     }
 
     public void leave_group(){
-        Log.d("Database", "leave_group called");
+        Log.d(TAG, "leave_group called");
         if(!(m_groupID == null || m_groupID.equals(""))){
             // Remove from members list
             DocumentReference group = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                     .document(m_groupID);
-            group.collection(Constants.KEY_COLLECTION_GROUP_MEMBERS)
-                    .document(m_memberID)
-                    .delete();
+            HashMap<String, Object> membersCopy = new HashMap<>(m_members);
+            membersCopy.remove(m_userID);
+            HashMap<String, Object> membersUpdated = new HashMap<>();
+            membersUpdated.put(KEY_GROUP_MEMBERS, membersCopy);
+            group.update(membersUpdated);
+
             group.get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
@@ -143,6 +146,7 @@ public class Database {
                             }
                         }
                     });
+
             m_database.collection(Constants.KEY_COLLECTION_USERS)
                     .document(m_userID)
                     .update(Constants.KEY_GROUP_ID, null);
@@ -172,7 +176,7 @@ public class Database {
             });
         }
         catch(Exception e){
-            Log.d("Database", "Exception: " + e.toString());
+            Log.d(TAG, "Exception: " + e.toString());
         }
     }
 
@@ -203,7 +207,7 @@ public class Database {
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> {
-                        Log.d("Database", "Failed sending message: " + e.toString());
+                        Log.d(TAG, "Failed sending message: " + e.toString());
                     });
         }
     }
@@ -268,25 +272,6 @@ public class Database {
         init_user_listener();
     }
 
-    private void get_member_id(){
-        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID)
-                .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for(DocumentSnapshot member : queryDocumentSnapshots){
-                            Object email = member.get("email");
-                            if(email != null && email.toString().equals(m_email)){
-                                m_memberID = member.getId();
-                                return;
-                            }
-                        }
-                    }
-                });
-    }
-
     private void add_user_info_to_group(String email, String userID){
         if(in_group()) {
             ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
@@ -309,11 +294,17 @@ public class Database {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Log.d(TAG, "User event: " + (value != null ? value : "Error: " + error));
-                if(value.get(KEY_GROUP_ID) != null) {
-                    Object groupID = value.get(Constants.KEY_GROUP_ID);
-                    m_groupID = groupID == null ? null : groupID.toString();
-                    if(m_groupID != null) {
-                        get_member_id();
+                if(value != null) {
+                    Object obj = value.get(Constants.KEY_GROUP_ID);
+                    String groupID = obj == null ? null : obj.toString();
+                    if(groupID == null){
+                        if(m_groupListenerRegistration != null){
+                            m_groupListenerRegistration.remove();
+                        }
+                    }
+                    else if(!groupID.equals(m_groupID)){
+                        remove_group_listener();
+                        m_groupID = groupID;
                         init_group_listener();
                         upload_user_info();
                     }
@@ -338,11 +329,12 @@ public class Database {
         };
         m_groupListenerRegistration = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
-                .addSnapshotListener(m_groupListener);
+                .addSnapshotListener(MetadataChanges.EXCLUDE, m_groupListener);
     }
 
     private void remove_group_listener(){
         m_groupListenerRegistration.remove();
+        m_groupListenerRegistration = null;
     }
 
     private HashMap<String, ArrayList<String>> generate_user_info(){
