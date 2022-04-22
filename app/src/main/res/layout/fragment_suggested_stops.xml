@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/background"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="213dp"
         android:background="@color/primaryColor"
         android:orientation="horizontal" />
 

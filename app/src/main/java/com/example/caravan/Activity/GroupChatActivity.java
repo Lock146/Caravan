@@ -58,6 +58,12 @@ public class GroupChatActivity extends AppCompatActivity {
         m_chatAdapter = new ChatAdapter(m_chatMessages);
         m_binding.chatRecyclerView.setAdapter(m_chatAdapter);
     }
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void sendNotification(String message){}
+
     private void sendMessage() {
         if (!m_binding.message.getText().toString().equals("")) {
             Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
