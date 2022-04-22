@@ -27,8 +27,10 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.example.caravan.Activity.LoginActivity;
 import com.example.caravan.Activity.MainActivity;
+import com.example.caravan.Activity.PPMenuActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
 import com.example.caravan.Constant.AllConstant;
+import com.example.caravan.Database;
 import com.example.caravan.Permissions.AppPermissions;
 import com.example.caravan.R;
 import com.example.caravan.Utility.LoadingDialog;
@@ -91,6 +93,13 @@ public class SettingsFragment extends Fragment {
             Navigation.findNavController(getView()).navigate(directions);
         });
 
+        binding.cardPicture.setOnClickListener(view -> {
+
+            Intent intent = new Intent(requireContext(), PPMenuActivity.class);
+            startActivity(intent);
+
+        });
+
         binding.cardPassword.setOnClickListener(view -> {
 
             SettingsFragmentDirections.ActionBtnSettingToEmailConfirmationFragment directions =
@@ -139,7 +148,7 @@ public class SettingsFragment extends Fragment {
         Runtime.getRuntime().exit(0);
     }
 
-    private void pickImage() {
+    public void pickImage() {
 
         CropImage.activity()
                 .setCropShape(CropImageView.CropShape.OVAL)
@@ -151,7 +160,11 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.txtEmail.setText(firebaseAuth.getCurrentUser().getEmail());
-        binding.txtUsername.setText(firebaseAuth.getCurrentUser().getDisplayName());
+        //if (Database.get_instance().get_user_username(firebaseAuth.getUid()) != null) {
+            //binding.txtUsername.setText(Database.get_instance().get_user_username(firebaseAuth.getUid()));
+       // }
+
+        binding.txtUsername.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         Glide.with(requireContext()).load(firebaseAuth.getCurrentUser().getPhotoUrl()).into(binding.imgProfile);
 
