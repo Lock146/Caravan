@@ -130,9 +130,9 @@ dependencies {
     //rounded imageview used for chat screen
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
-    implementation 'com.squareup.retrofit2:retrofit:29.0'
+    //implementation 'com.squareup.retrofit2:retrofit:29.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 
-    implementation 'androidx.preference:preference:1.2.0'
+    //implementation 'androidx.preference:preference:1.2.0'
 
 }

@@ -7,8 +7,9 @@ public class ApiClient {
 
     public static Retrofit getClient() {
         if (retrofit == null){
-            retrofit = new Retrofit.Builder()
-                    .baseUrl("https")
+//            retrofit = new Retrofit.Builder()
+//                    .baseUrl("https");
         }
+        return null;
     }
 }

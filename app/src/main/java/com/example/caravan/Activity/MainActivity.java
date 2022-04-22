@@ -36,7 +36,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
-import androidx.preference.PreferenceManager;
+//import androidx.preference.PreferenceManager;
 import java.util.Timer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbarLayoutBinding.toolbar);
 
-        n_preferenceManager = new PreferenceManager(getApplicationContext());
+        //n_preferenceManager = new PreferenceManager(getApplicationContext());
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -205,8 +205,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateToken(String token){
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
-                n_preferenceManager.getString(Constants.KEY_USER));
+        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS)
+                //n_preferenceManager.getString(  )
+                .document(Constants.KEY_USER);
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
                 .addOnSuccessListener(unused -> showToast("Token updated successfully"))
                 .addOnFailureListener(e -> showToast("Unable to update token"));
