@@ -4,6 +4,7 @@ import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
 import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
+import static com.example.caravan.Constant.Constants.KEY_GROUP_MEMBERS;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
 
@@ -45,10 +46,11 @@ public class Database {
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private class MemberData {
-        // Changes will break compatibility with data in database
+        // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
         public static final int Name = 1;
         public static final int ProfilePicture = 2;
+        public static final int size = 3;
     }
     private HashMap<String, ArrayList<String>> m_members;
     public static Database get_instance(){
@@ -287,16 +289,18 @@ public class Database {
 
     private void add_user_info_to_group(String email, String userID){
         if(in_group()) {
-            CollectionReference groupMembers = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                    .document(m_groupID)
-                    .collection(Constants.KEY_COLLECTION_GROUP_MEMBERS);
-            Map<String, Object> groupMember = new HashMap<>();
-            groupMember.put(Constants.KEY_EMAIL, email);
-            groupMember.put(Constants.KEY_USER_ID, userID);
-            groupMembers.add(groupMember)
-                    .addOnSuccessListener(documentReference -> Log.d("Database", "Successfully added user to group."))
-                    .addOnFailureListener(e -> Log.d("Database", "Unable to add user to group. Error: " + e.toString()))
-                    .addOnCompleteListener(task -> Log.d("Database", "Completed task adding user to group"));
+            ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
+            userInfo.add(MemberData.Email, email);
+            userInfo.add(MemberData.Name, "name");
+            userInfo.add(MemberData.ProfilePicture, "profile picture");
+            DocumentReference group = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                    .document(m_groupID);
+            HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
+            userInfoMap.put(userID, userInfo);
+            group.update(KEY_GROUP_MEMBERS, userInfoMap)
+                    .addOnSuccessListener(result -> Log.d(TAG, "Successfully added member info"))
+                    .addOnFailureListener(error -> Log.d(TAG, "Error adding member info: " + error))
+                    .addOnCompleteListener(result -> Log.d(TAG, "Completed adding member info"));
         }
     }
 
