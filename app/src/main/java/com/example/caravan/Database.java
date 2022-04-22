@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Database {
     private static final String TAG = Database.class.getSimpleName();
@@ -43,19 +44,11 @@ public class Database {
     private EventListener<DocumentSnapshot> m_userListener;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
-    private enum MemberData{
-        Email(0),
-        Name(1),
-        ProfilePicture(2)
-        ;
-
-        public int index(){
-            return m_index;
-        }
-        private final int m_index;
-        private MemberData(int index){
-            m_index = index;
-        }
+    private class MemberData {
+        // Changes will break compatibility with data in database
+        public static final int Email = 0;
+        public static final int Name = 1;
+        public static final int ProfilePicture = 2;
     }
     private HashMap<String, ArrayList<String>> m_members;
     public static Database get_instance(){
@@ -100,30 +93,30 @@ public class Database {
     }
 
     public String get_user_email(String userID){
-        // Implementation
-       // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
-                //.document(userID).collection(Constants.KEY_EMAIL));
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        return (email);
-
+        if(m_members.containsKey(userID)){
+            return Objects.requireNonNull(m_members.get(userID)).get(MemberData.Email);
+        }
+        else{
+            return null;
+        }
     }
 
-    public Uri get_user_image(){
-        // Implementation
-        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
-        //.document(userID).collection(Constants.KEY_EMAIL));
-        Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
-        return (image);
+//    public Uri get_user_image(String userID){
+//        if(m_members.containsKey(userID)){
+//            return new Uri(Objects.requireNonNull(m_members.get(userID)).get(MemberData.ProfilePicture));
+//        }
+//        else{
+//            return null;
+//        }
+//    }
 
-    }
-
-    public String get_user_username(){
-        // Implementation
-        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
-        //.document(userID).collection(Constants.KEY_EMAIL));
-        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        return (username);
-
+    public String get_user_username(String userID){
+        if(m_members.containsKey(userID)){
+            return Objects.requireNonNull(m_members.get(userID)).get(MemberData.Name);
+        }
+        else{
+            return null;
+        }
     }
 
     public void leave_group(){
