@@ -101,6 +101,7 @@ public class Database {
         }
     }
 
+    // TODO: test transmitting profile pictures using base64
 //    public Uri get_user_image(String userID){
 //        if(m_members.containsKey(userID)){
 //            return new Uri(Objects.requireNonNull(m_members.get(userID)).get(MemberData.ProfilePicture));
