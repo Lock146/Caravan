@@ -178,12 +178,7 @@ public class Database {
     }
 
     public Boolean in_group(){
-        if  (m_groupID != null) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return m_groupID != null;
     }
 
     public void update_location(Location location){
