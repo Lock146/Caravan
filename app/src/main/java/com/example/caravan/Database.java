@@ -43,7 +43,21 @@ public class Database {
     private EventListener<DocumentSnapshot> m_userListener;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
+    private enum MemberData{
+        Email(0),
+        Name(1),
+        ProfilePicture(2)
+        ;
 
+        public int index(){
+            return m_index;
+        }
+        private final int m_index;
+        private MemberData(int index){
+            m_index = index;
+        }
+    }
+    private HashMap<String, ArrayList<String>> m_members;
     public static Database get_instance(){
         if(m_instance == null){
             m_instance = new Database();
@@ -254,7 +268,7 @@ public class Database {
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
+        m_members = new HashMap<>();
         init_user_listener();
     }
 
