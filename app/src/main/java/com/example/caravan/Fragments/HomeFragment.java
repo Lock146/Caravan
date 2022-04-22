@@ -259,10 +259,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.group.setOnClickListener(view -> open_group_activity());
         binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
                 Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
-        m_onGroupChange = (value, error) -> binding.group.setImageDrawable(AppCompatResources.getDrawable(
-                requireContext(),
-                value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups
-        ));
+        m_onGroupChange = (value, error) -> {
+            if(value == null){
+                Log.d(TAG, "m_onGroupChange error: " + error);
+                assert false;
+            }
+            else {
+                binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                        requireContext(),
+                        value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
+            }
+        };
         Database.get_instance().add_group_join_listener(m_onGroupChange);
 
         m_stops = new ArrayList<>();
@@ -911,9 +918,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void open_group_activity(){
-
         if(!Database.get_instance().in_group()){
-            binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_groups));
             Database.get_instance().create_group();
         }
         startActivity(new Intent(requireContext(), GroupActivity.class));
