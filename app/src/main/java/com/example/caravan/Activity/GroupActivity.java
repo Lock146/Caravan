@@ -30,8 +30,6 @@ public class GroupActivity extends AppCompatActivity {
 
         setListeners();
 
-        binding.addUser.setOnClickListener(view -> add_user());
-        binding.chat.setOnClickListener(view -> open_group_chat());
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -108,6 +106,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
-
+        binding.addUser.setOnClickListener(view -> add_user());
+        binding.chat.setOnClickListener(view -> open_group_chat());
+        binding.groupMembership.setOnClickListener(view -> leave_group());
     }
 }
