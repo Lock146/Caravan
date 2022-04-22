@@ -3,7 +3,6 @@ package com.example.caravan;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
 import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
-import static com.example.caravan.Constant.Constants.KEY_EMAIL;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
@@ -12,25 +11,19 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.caravan.Constant.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
@@ -47,7 +40,9 @@ public class Database {
     private String m_groupID;
     private String m_memberID;
     private String m_email;
-    private EventListener<DocumentSnapshot> m_dbUserListener;
+    private EventListener<DocumentSnapshot> m_userListener;
+    private EventListener<DocumentSnapshot> m_groupListener;
+    private ListenerRegistration m_groupListenerRegistration;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -60,7 +55,7 @@ public class Database {
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        m_dbUserListener = new EventListener<DocumentSnapshot>() {
+        m_userListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(value.get(KEY_GROUP_ID) != null) {
@@ -74,7 +69,7 @@ public class Database {
         };
         m_database.collection(Constants.KEY_COLLECTION_USERS)
                 .document(m_userID)
-                .addSnapshotListener(m_dbUserListener);
+                .addSnapshotListener(m_userListener);
     }
 
     public String get_userID(){
@@ -295,5 +290,9 @@ public class Database {
                     .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
                     .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
         }
+    }
+
+    private void init_group_listener(){
+
     }
 }
