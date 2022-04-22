@@ -315,6 +315,7 @@ public class Database {
                     if(m_groupID != null) {
                         get_member_id();
                         init_group_listener();
+                        upload_user_info();
                     }
                 }
             }
@@ -324,11 +325,15 @@ public class Database {
                 .addSnapshotListener(m_userListener);
     }
 
+    @SuppressWarnings("unchecked")
     private void init_group_listener(){
         m_groupListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Log.d(TAG, "Group event: " + (value != null ? value.toString() : "Error: " + error));
+                if(value != null){
+                    m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
+                }
             }
         };
         m_groupListenerRegistration = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
@@ -338,5 +343,21 @@ public class Database {
 
     private void remove_group_listener(){
         m_groupListenerRegistration.remove();
+    }
+
+    private void upload_user_info(){
+        assert m_groupID != null;
+        ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
+        userInfo.add(MemberData.Email, m_email);
+        userInfo.add(MemberData.Name, "name");
+        userInfo.add(MemberData.ProfilePicture, "profile picture");
+        HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
+        userInfoMap.put(m_userID, userInfo);
+        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .update(KEY_GROUP_MEMBERS, userInfoMap)
+                .addOnSuccessListener(result -> Log.d(TAG, "Successfully added member info"))
+                .addOnFailureListener(error -> Log.d(TAG, "Error adding member info: " + error))
+                .addOnCompleteListener(result -> Log.d(TAG, "Completed adding member info"));
     }
 }
