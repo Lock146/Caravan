@@ -30,7 +30,7 @@ public class GroupActivity extends AppCompatActivity {
 
         setListeners();
 
-        binding.addUser.setOnClickListener(view -> add_user());
+        //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -68,26 +68,26 @@ public class GroupActivity extends AppCompatActivity {
         enable_group_functionality();
     }
 
-    private void add_user(){
-        if(!binding.addEmail.getText().toString().isEmpty()) {
-            String email = binding.addEmail.getText().toString();
-            binding.addEmail.setText(null);
-            Database.get_instance().add_user(email);
-        }
-        else{
-            Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
-        }
-    }
+    //private void add_user(){
+    //    if(!binding.addEmail.getText().toString().isEmpty()) {
+    //        String email = binding.addEmail.getText().toString();
+   //         binding.addEmail.setText(null);
+   //         Database.get_instance().add_user(email);
+      //  }
+      //  else{
+    //        Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
+    //    }
+   // }
 
     private void open_group_chat(){
         startActivity(new Intent(this, GroupChatActivity.class));
     }
 
     private void disable_group_functionality(){
-        binding.addUser.setText(CREATE_GROUP);
-        binding.addUser.setOnClickListener(view -> {
-            create_group();
-        });
+       // binding.addUser.setText(CREATE_GROUP);
+       // binding.addUser.setOnClickListener(view -> {
+        //    create_group();
+      //  });
 
         binding.chat.setVisibility(View.INVISIBLE);
         binding.chat.setClickable(false);
@@ -96,10 +96,10 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void enable_group_functionality(){
-        binding.addUser.setText(ADD_USER);
-        binding.addUser.setOnClickListener(view -> {
-            add_user();
-        });
+        //binding.addUser.setText(ADD_USER);
+       // binding.addUser.setOnClickListener(view -> {
+        //    add_user();
+      //  });
 
         binding.chat.setVisibility(View.VISIBLE);
         binding.chat.setClickable(true);

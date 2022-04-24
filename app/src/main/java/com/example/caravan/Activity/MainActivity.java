@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
 
         getUserData();
+        getToken();
     }
 
     @Override
@@ -204,10 +205,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateToken(String token){
+        //preferencemanager putString(Constants)
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS)
                 //n_preferenceManager.getString(  )
-                .document(Constants.KEY_USER);
+                //.document(Constants.KEY_USER);
+        .document(FirebaseAuth.getInstance().getUid());
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
                 .addOnSuccessListener(unused -> showToast("Token updated successfully"))
                 .addOnFailureListener(e -> showToast("Unable to update token"));
