@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.caravan.Adapter.ChatAdapter;
@@ -17,11 +18,17 @@ import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.User;
 import com.example.caravan.databinding.ActivityGroupChatBinding;
 import com.example.caravan.Constant.Constants;
+import com.example.caravan.network.ApiClient;
+import com.example.caravan.network.ApiService;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.EventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +38,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import javax.security.auth.callback.Callback;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupChatActivity extends AppCompatActivity {
 
@@ -58,11 +67,41 @@ public class GroupChatActivity extends AppCompatActivity {
         m_chatAdapter = new ChatAdapter(m_chatMessages);
         m_binding.chatRecyclerView.setAdapter(m_chatAdapter);
     }
+
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void sendNotification(String message){}
+    private void sendNotification(String messageBody){
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if(response.isSuccessful()){
+                            try {
+                                if(response.body() != null){
+                                    JSONObject responseJson = new JSONObject(response.body());
+                                    JSONArray results = responseJson.getJSONArray("results");
+                                    if(responseJson.getInt("failure")== 1){
+                                        JSONObject error = (JSONObject) results.get(0);
+                                        showToast(error.getString("error"));
+                                        return;
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace(); }
+                            showToast("Notification sent Successfully");
+                        } else{
+                            showToast("Error: "+ response.code()); }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                        showToast(t.getMessage()); }
+                });
+    }
 
     private void sendMessage() {
         if (!m_binding.message.getText().toString().equals("")) {
@@ -123,7 +162,6 @@ public class GroupChatActivity extends AppCompatActivity {
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
     }
 
-    //added based on video
-    //private void getToken(String message, String)
+
 
 }
