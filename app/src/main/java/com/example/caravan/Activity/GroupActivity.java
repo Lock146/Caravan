@@ -1,9 +1,12 @@
 package com.example.caravan.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,9 +14,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.caravan.Adapter.ChatAdapter;
+import com.example.caravan.Adapter.RouteTimelineAdapter;
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.Database;
+import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.R;
+import com.example.caravan.StopInfo;
+import com.example.caravan.User;
 import com.example.caravan.databinding.ActivityGroupBinding;
+import com.example.caravan.databinding.ActivityGroupChatBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupActivity extends AppCompatActivity {
     private ActivityGroupBinding binding;
@@ -21,17 +34,36 @@ public class GroupActivity extends AppCompatActivity {
     private static final CharSequence CREATE_GROUP = "Create group";
     private static final CharSequence ADD_USER = "Add user";
     private static final CharSequence OPEN_CHAT = "Open Chat";
+    private PreferenceManager m_preferenceManager;
+    private RecyclerView recyclerView;
+    private RouteTimelineAdapter routeTimelineAdapter;
+    private ArrayList<StopInfo> CurrentRoute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("GroupActivity", "onCreateCalled");
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
+        routeTimelineAdapter = new RouteTimelineAdapter(CurrentRoute);
+        binding.recyclerView.setAdapter(routeTimelineAdapter);
         setContentView(binding.getRoot());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        setContentView(R.layout.activity_routetimeline);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(extras.containsKey(Constants.KEY_STOPS)) {
+            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
+        }
+        else{
+            CurrentRoute = new ArrayList<>();
+        }
         setListeners();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
+
+
 //        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
 //            public void onFocusChange(View view, boolean b) {
@@ -47,7 +79,6 @@ public class GroupActivity extends AppCompatActivity {
 //            leave_group();
 //        });
     }
-
     private void leave_group(){
         Database.get_instance().leave_group();
         //Database.get_instance();

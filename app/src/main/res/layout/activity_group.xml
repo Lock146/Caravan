@@ -68,7 +68,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             android:layout_weight="2.2"
             android:orientation="horizontal">
 
@@ -108,7 +108,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".Activity.suggestedStopsActivity">
+            tools:context=".Activity.RouteTimelineActivity">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
