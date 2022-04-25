@@ -227,9 +227,7 @@ public class Database {
             data.put(Constants.KEY_MESSAGE, message);
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
-                    .addOnFailureListener( e -> {
-                        Log.d(TAG, "Failed sending message: " + e.toString());
-                    });
+                    .addOnFailureListener( e -> Log.d(TAG, "Failed sending message: " + e));
         }
     }
 
