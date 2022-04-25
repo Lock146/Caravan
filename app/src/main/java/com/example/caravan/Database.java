@@ -54,6 +54,7 @@ public class Database {
         public static final int size = 3;
     }
     private HashMap<String, ArrayList<String>> m_members;
+
     public static Database get_instance(){
         if(m_instance == null){
             m_instance = new Database();
