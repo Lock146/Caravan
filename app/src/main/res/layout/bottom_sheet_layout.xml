@@ -5,33 +5,44 @@
     style="@style/Theme.Caravan"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="7dp"
+    android:elevation="10dp"
     android:padding="0dp"
     android:visibility="visible"
     app:behavior_hideable="false"
     app:behavior_peekHeight="100dp"
-    app:layout_behavior="@string/bottom_sheet_behavior"
-    tools:background="?android:colorBackground"
-    tools:srcCompat="@android:drawable/screen_background_light"
-    tools:visibility="visible">
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtSheetRoute"
+        android:layout_alignTop="@id/timeLayout"
+        android:layout_marginTop="0dp"
+        android:background="?android:colorBackground"
+        android:elevation="30dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp" />
 
     <LinearLayout
         android:id="@+id/timeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="30dp"
         android:orientation="horizontal"
         android:paddingStart="20dp"
+        android:paddingTop="10dp"
         android:paddingEnd="20dp"
         android:textColor="?android:textColorPrimary"
-        app:tint="?android:colorBackground"
-        tools:backgroundTint="@android:color/background_light"
-        tools:srcCompat="@android:drawable/screen_background_light">
+        app:tint="?android:colorBackground">
 
 
         <TextView
             android:id="@+id/txtSheetTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="30dp"
             android:textColor="?android:textColorPrimary"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -41,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:elevation="30dp"
             android:textColor="?android:textColorPrimary"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -52,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeLayout"
         android:layout_marginTop="10dp"
+        android:elevation="30dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:text="Fastest route"
@@ -66,6 +79,7 @@
         android:layout_below="@+id/txtSheetRoute"
         android:layout_marginTop="10dp"
         android:background="?android:textColorPrimary"
+        android:elevation="30dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp" />
 
@@ -75,6 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view"
         android:layout_marginTop="20dp"
+        android:elevation="30dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:text="Steps"
@@ -89,13 +104,12 @@
         android:layout_below="@+id/txtSheetSteps"
         android:layout_marginTop="20dp"
         android:backgroundTint="?android:colorBackground"
+        android:elevation="30dp"
         android:overScrollMode="never"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:scrollbars="none"
-        tools:listitem="@layout/step_item_layout"
-        tools:srcCompat="@android:drawable/screen_background_light" />
-
+        tools:listitem="@layout/step_item_layout" />
 
 
 </RelativeLayout>
