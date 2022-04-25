@@ -293,7 +293,7 @@ public class Database {
                         dataChanged = true;
                     }
 
-                    if(dataChanged){
+                    if(dataChanged && m_groupID != null){
                         upload_user_info();
                     }
                 }
@@ -321,8 +321,10 @@ public class Database {
     }
 
     private void remove_group_listener(){
-        m_groupListenerRegistration.remove();
-        m_groupListenerRegistration = null;
+        if(m_groupListenerRegistration != null) {
+            m_groupListenerRegistration.remove();
+            m_groupListenerRegistration = null;
+        }
     }
 
     private HashMap<String, ArrayList<String>> generate_user_info(){
