@@ -3,7 +3,6 @@ package com.example.caravan;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
 import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
-import static com.example.caravan.Constant.Constants.KEY_EMAIL;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
@@ -17,14 +16,9 @@ import androidx.annotation.Nullable;
 
 import com.example.caravan.Constant.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,6 +31,7 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Database {
@@ -47,7 +42,12 @@ public class Database {
     private String m_groupID;
     private String m_memberID;
     private String m_email;
+    private String m_displayName;
+    private String displayName;
+    private String profilePicture;
+    private Uri m_profilePicture;
     private EventListener<DocumentSnapshot> m_dbUserListener;
+    private ArrayList<GooglePlaceModel> m_stops1;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -65,6 +65,8 @@ public class Database {
         m_database = FirebaseFirestore.getInstance();
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        m_displayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        m_profilePicture = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
         m_dbUserListener = new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -116,22 +118,63 @@ public class Database {
 
     }
 
-    public Uri get_user_image(){
+    public String get_user_image(String userID){
         // Implementation
         // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
         //.document(userID).collection(Constants.KEY_EMAIL));
-        Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
-        return (image);
+        //Uri image = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+        //return (image);
+        DocumentReference userImage = (m_database.collection(KEY_COLLECTION_USERS)
+                .document(userID));
+        Log.e(TAG, "USER ID: " + userID);
+        userImage.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String image = documentSnapshot.get("profilePicture", String.class);
+                Log.e(TAG, "image: " + image);
+                if (image != null) {
+                    profilePicture = image;
+                    Log.e(TAG, "onSuccess: " + image);
+                    return;
+                }
+
+            }
+
+        });
+        Log.e(TAG, "profilePicture!!!!!: " + profilePicture);
+        return (profilePicture);
 
     }
 
-    public String get_user_username(){
+    public String get_user_username(String userID){
         // Implementation
-        // CollectionReference email = (m_database.collection(KEY_COLLECTION_USERS)
-        //.document(userID).collection(Constants.KEY_EMAIL));
-        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        return (username);
+         DocumentReference userName = (m_database.collection(KEY_COLLECTION_USERS)
+        .document(userID));
+        Log.e(TAG, "USER ID: " + userID);
+         userName.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                     //@Override
+                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                         String name = documentSnapshot.get("displayName", String.class);
+                         Log.e(TAG, "name: " + name);
 
+                         if (name != null) {
+                             displayName = name;
+                             Log.e(TAG, "onSuccess: " + name);
+                             //get_user_username(userID);
+                             return;
+                         }
+
+                     }
+
+                 });
+
+
+
+        Log.e(TAG, "displayName: " + displayName);
+        return (displayName);
+    }
+    public String get_displayName(String displayName) {
+        return displayName;
     }
 
     private void get_member_id(){
@@ -219,6 +262,16 @@ public class Database {
                 .document(m_userID)
                 .update(KEY_CURRENT_LOCATION, location);
     }
+    public void update_displayName() {
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update("displayName", m_displayName);
+    }
+    public void update_profilePicture() {
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update("profilePicture", m_profilePicture.toString());
+    }
 
     public void send_message(String message){
         if(m_groupID != null){
@@ -229,6 +282,8 @@ public class Database {
             HashMap<String, Object> data = new HashMap<>();
             data.put(Constants.KEY_SENDER_ID, m_userID);
             data.put(Constants.KEY_MESSAGE, message);
+            data.put("displayName", m_displayName);
+            data.put("profilePicture", profilePicture);
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> {
@@ -264,15 +319,15 @@ public class Database {
             @Override
             public void onSuccess(DocumentSnapshot info) {
                 Object query = info.get(Constants.KEY_ROUTE);
-                ArrayList<String> route = (ArrayList<String>) query;
+                ArrayList<GooglePlaceModel> route = (ArrayList<GooglePlaceModel>) query;
                 assert route != null;
-                route.add(destination);
+                //route.add(destination);
                 update_route(route);
             }
         });
     }
 
-    public void update_route(ArrayList<String> placeIDs){
+    public void update_route(ArrayList<GooglePlaceModel> placeIDs){
         if(in_group()) {
             HashMap<String, Object> routeInfo = new HashMap<>();
             routeInfo.put(Constants.KEY_ROUTE, placeIDs);
@@ -298,5 +353,23 @@ public class Database {
                     .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
                     .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
         }
+    }
+
+    public ArrayList<GooglePlaceModel> get_caravan_stops(){
+        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID);
+
+        m_stops.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
+                    m_stops1 = route;
+                }
+            }
+        });
+        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
+        return m_stops1;
+
     }
 }
