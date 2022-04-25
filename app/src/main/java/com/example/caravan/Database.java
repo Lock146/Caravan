@@ -49,7 +49,7 @@ public class Database {
     private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
-    private class MemberData {
+    private static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
         public static final int Name = 1;
@@ -58,10 +58,10 @@ public class Database {
     }
     private HashMap<String, ArrayList<String>> m_members;
 
-    private class MemberLocation{
+    private static class MemberLocation{
         public static final int Latitude = 0;
         public static final int Longitude = 1;
-        public static final int size = 3;
+        public static final int size = 2;
     }
     private HashMap<String, ArrayList<Double>> m_memberLocations;
 
