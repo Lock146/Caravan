@@ -11,10 +11,11 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.caravan.Activity.MainActivity;
 import com.example.caravan.Constant.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Database {
@@ -45,6 +47,7 @@ public class Database {
     private String profilePicture;
     private Uri m_profilePicture;
     private EventListener<DocumentSnapshot> m_dbUserListener;
+    private ArrayList<GooglePlaceModel> m_stops1;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -316,15 +319,15 @@ public class Database {
             @Override
             public void onSuccess(DocumentSnapshot info) {
                 Object query = info.get(Constants.KEY_ROUTE);
-                ArrayList<String> route = (ArrayList<String>) query;
+                ArrayList<GooglePlaceModel> route = (ArrayList<GooglePlaceModel>) query;
                 assert route != null;
-                route.add(destination);
+                //route.add(destination);
                 update_route(route);
             }
         });
     }
 
-    public void update_route(ArrayList<String> placeIDs){
+    public void update_route(ArrayList<GooglePlaceModel> placeIDs){
         if(in_group()) {
             HashMap<String, Object> routeInfo = new HashMap<>();
             routeInfo.put(Constants.KEY_ROUTE, placeIDs);
@@ -350,5 +353,23 @@ public class Database {
                     .addOnFailureListener(e -> Log.d("Database", "Unable to add group owner as member. Error: " + e.toString()))
                     .addOnCompleteListener(task -> Log.d("Database", "Completed task adding group owner as member."));
         }
+    }
+
+    public ArrayList<GooglePlaceModel> get_caravan_stops(){
+        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID);
+
+        m_stops.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
+                    m_stops1 = route;
+                }
+            }
+        });
+        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
+        return m_stops1;
+
     }
 }
