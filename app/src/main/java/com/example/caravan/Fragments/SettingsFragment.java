@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
+import com.example.caravan.Activity.GroupListActivity;
 import com.example.caravan.Activity.LoginActivity;
 import com.example.caravan.Activity.MainActivity;
 import com.example.caravan.Activity.PPMenuActivity;
@@ -95,7 +96,10 @@ public class SettingsFragment extends Fragment {
 
         binding.cardPicture.setOnClickListener(view -> {
 
-            Intent intent = new Intent(requireContext(), PPMenuActivity.class);
+            //Intent intent = new Intent(requireContext(), PPMenuActivity.class);
+            //startActivity(intent);
+
+            Intent intent = new Intent(requireContext(), GroupListActivity.class);
             startActivity(intent);
 
         });
