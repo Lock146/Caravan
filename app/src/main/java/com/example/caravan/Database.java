@@ -305,7 +305,7 @@ public class Database {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Log.d(TAG, "User event: " + (value != null ? value : "Error: " + error));
                 if(value != null) {
-                    Boolean dataChanged = false;
+                    boolean dataChanged = false;
                     Object obj = value.get(Constants.KEY_GROUP_ID);
                     String groupID = obj == null ? null : obj.toString();
                     if(groupID == null){
