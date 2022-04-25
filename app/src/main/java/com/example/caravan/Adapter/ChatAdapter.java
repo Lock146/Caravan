@@ -1,12 +1,15 @@
 package com.example.caravan.Adapter;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.caravan.Activity.GroupChatActivity;
 import com.example.caravan.Database;
 import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.databinding.ItemContainerReceivedMessageBinding;

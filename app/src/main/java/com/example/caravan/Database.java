@@ -15,6 +15,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.caravan.Constant.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -186,6 +188,16 @@ public class Database {
                 .document(m_userID)
                 .update(KEY_CURRENT_LOCATION, location);
     }
+    public void update_displayName() {
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update("displayName", m_displayName);
+    }
+    public void update_profilePicture() {
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update("profilePicture", m_profilePicture.toString());
+    }
 
     public void send_message(String message){
         if(m_groupID != null){
@@ -196,6 +208,8 @@ public class Database {
             HashMap<String, Object> data = new HashMap<>();
             data.put(Constants.KEY_SENDER_ID, m_userID);
             data.put(Constants.KEY_MESSAGE, message);
+            data.put("displayName", m_displayName);
+            data.put("profilePicture", profilePicture);
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> {
@@ -231,15 +245,15 @@ public class Database {
             @Override
             public void onSuccess(DocumentSnapshot info) {
                 Object query = info.get(Constants.KEY_ROUTE);
-                ArrayList<String> route = (ArrayList<String>) query;
+                ArrayList<GooglePlaceModel> route = (ArrayList<GooglePlaceModel>) query;
                 assert route != null;
-                route.add(destination);
+                //route.add(destination);
                 update_route(route);
             }
         });
     }
 
-    public void update_route(ArrayList<String> placeIDs){
+    public void update_route(ArrayList<GooglePlaceModel> placeIDs){
         if(in_group()) {
             HashMap<String, Object> routeInfo = new HashMap<>();
             routeInfo.put(Constants.KEY_ROUTE, placeIDs);
@@ -322,6 +336,24 @@ public class Database {
     private void remove_group_listener(){
         m_groupListenerRegistration.remove();
         m_groupListenerRegistration = null;
+    }
+
+    public ArrayList<GooglePlaceModel> get_caravan_stops(){
+        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID);
+
+        m_stops.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
+                    m_stops1 = route;
+                }
+            }
+        });
+        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
+        return m_stops1;
+
     }
 
     private HashMap<String, ArrayList<String>> generate_user_info(){

@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.bumptech.glide.Glide;
 import com.example.caravan.Activity.DirectionActivity;
 import com.example.caravan.Activity.GroupActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
@@ -928,17 +930,51 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
         ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
 
+        //String m_groupID = Database.get_instance().get_groupID();
+            //m_stops = Database.get_instance().get_caravan_stops();
+
+        if (Database.get_instance().get_caravan_stops() != null) {
+
+            m_stops = Database.get_instance().get_caravan_stops();
+
 
             for (GooglePlaceModel stop : m_stops) {
                 destinations.add(new DestinationInfo(stop.placeID(), stop.getGeometry().getLocation().getLat(), stop.getGeometry().getLocation().getLng()));
             }
-        //if (m_stops != null) {
-        if (destinations.size() != 0) {
-            intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
+            //if (m_stops != null) {
+            if (destinations.size() != 0) {
+                intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
+                startActivity(intent);
 
-            startActivity(intent);
+            }
+
+
+
+        } else {
+
+                    test();
+
+
         }
-        //}
+
+    }
+    public void test() {
+        if (Database.get_instance().get_caravan_stops() != null) {
+
+            //m_stops = Database.get_instance().get_caravan_stops();
+            open_directions();
+
+
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    test();
+                }
+            }, 50);
+
+        }
     }
 
     private void open_timeline(){
@@ -949,8 +985,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             stops.add(new StopInfo(stop, 0));
             placeIDs.add(stop.placeID());
         }
-        Database.get_instance().update_route(placeIDs);
+        Database.get_instance().update_route(m_stops);
         intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
         m_timelineLauncher.launch(intent);
     }
+
+
 }

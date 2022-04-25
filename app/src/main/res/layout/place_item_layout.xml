@@ -75,7 +75,7 @@
                         android:layout_height="36dp"
                         android:layout_alignParentEnd="true"
                         android:onClick="@{()->listener.onSaveClick(googlePlaceModel)}"
-                        android:src="@drawable/ic_add"
+                        android:src="@drawable/ic_suggest_stop"
                         app:tint="@color/primaryColor" />
 
                     <ImageView

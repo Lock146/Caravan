@@ -27,6 +27,7 @@ public class GroupActivity extends AppCompatActivity {
         Log.d("GroupActivity", "onCreateCalled");
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //Database.get_instance();
 
         setListeners();
 

@@ -187,6 +187,49 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardPicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    app:cardElevation="6dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/backgroundColor"
+                        android:paddingStart="10dp"
+                        android:paddingTop="25dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="25dp">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="10dp"
+                            android:text="Change Profile Picture"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            app:drawableStartCompat="@drawable/ic_logout"
+                            app:drawableTint="@color/primaryColor" />
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_gas_station"
+                            android:visibility="invisible"
+                            app:tint="@color/primaryColor"
+                            tools:visibility="invisible" />
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardLogout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
