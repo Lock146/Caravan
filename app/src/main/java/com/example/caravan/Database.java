@@ -46,6 +46,7 @@ public class Database {
     private String m_email;
     private String m_profilePicture;
     private EventListener<DocumentSnapshot> m_userListener;
+    private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private class MemberData {
@@ -56,6 +57,7 @@ public class Database {
         public static final int size = 3;
     }
     private HashMap<String, ArrayList<String>> m_members;
+
     public static Database get_instance(){
         if(m_instance == null){
             m_instance = new Database();
@@ -266,6 +268,13 @@ public class Database {
         }
     }
 
+    public void logout(){
+        m_userListenerRegistration.remove();
+        if(m_groupID != null){
+            m_groupListenerRegistration.remove();
+        }
+    }
+
     private Database(){
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             Log.d(TAG, "Unable to get current Firebase user");
@@ -291,6 +300,7 @@ public class Database {
                         if(m_groupListenerRegistration != null){
                             m_groupListenerRegistration.remove();
                         }
+                        m_groupID = null;
                     }
                     else if(!groupID.equals(m_groupID)){
                         remove_group_listener();
@@ -306,13 +316,13 @@ public class Database {
                         dataChanged = true;
                     }
 
-                    if(dataChanged){
+                    if(dataChanged && m_groupID != null){
                         upload_user_info();
                     }
                 }
             }
         };
-        m_database.collection(Constants.KEY_COLLECTION_USERS)
+        m_userListenerRegistration = m_database.collection(Constants.KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .addSnapshotListener(m_userListener);
     }
@@ -334,8 +344,10 @@ public class Database {
     }
 
     private void remove_group_listener(){
-        m_groupListenerRegistration.remove();
-        m_groupListenerRegistration = null;
+        if(m_groupListenerRegistration != null) {
+            m_groupListenerRegistration.remove();
+            m_groupListenerRegistration = null;
+        }
     }
 
     public ArrayList<GooglePlaceModel> get_caravan_stops(){
