@@ -44,6 +44,7 @@ public class Database {
     private String m_email;
     private String m_profilePicture;
     private EventListener<DocumentSnapshot> m_userListener;
+    private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private class MemberData {
@@ -253,6 +254,13 @@ public class Database {
         }
     }
 
+    public void logout(){
+        m_userListenerRegistration.remove();
+        if(m_groupID != null){
+            m_groupListenerRegistration.remove();
+        }
+    }
+
     private Database(){
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             Log.d(TAG, "Unable to get current Firebase user");
@@ -300,7 +308,7 @@ public class Database {
                 }
             }
         };
-        m_database.collection(Constants.KEY_COLLECTION_USERS)
+        m_userListenerRegistration = m_database.collection(Constants.KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .addSnapshotListener(m_userListener);
     }
