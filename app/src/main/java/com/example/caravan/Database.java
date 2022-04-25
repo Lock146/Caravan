@@ -277,6 +277,7 @@ public class Database {
                         if(m_groupListenerRegistration != null){
                             m_groupListenerRegistration.remove();
                         }
+                        m_groupID = null;
                     }
                     else if(!groupID.equals(m_groupID)){
                         remove_group_listener();
