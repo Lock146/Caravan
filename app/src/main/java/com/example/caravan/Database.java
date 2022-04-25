@@ -7,6 +7,7 @@ import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_MEMBERS;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
+import static com.example.caravan.Constant.Constants.KEY_MEMBER_LOCATIONS;
 
 import android.location.Location;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,6 +57,13 @@ public class Database {
         public static final int size = 3;
     }
     private HashMap<String, ArrayList<String>> m_members;
+
+    private class MemberLocation{
+        public static final int Latitude = 0;
+        public static final int Longitude = 1;
+        public static final int size = 3;
+    }
+    private HashMap<String, ArrayList<Double>> m_memberLocations;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -149,6 +158,12 @@ public class Database {
                         }
                     });
 
+            HashMap<String, Object> memberLocations = new HashMap<>(m_memberLocations);
+            memberLocations.remove(m_userID);
+            HashMap<String, Object> memberLocationsUpdated = new HashMap<>();
+            memberLocationsUpdated.put(KEY_MEMBER_LOCATIONS, memberLocations);
+            group.update(memberLocationsUpdated);
+
             m_database.collection(Constants.KEY_COLLECTION_USERS)
                     .document(m_userID)
                     .update(Constants.KEY_GROUP_ID, null);
@@ -184,9 +199,21 @@ public class Database {
     }
 
     public void update_location(Location location){
-        m_database.collection(KEY_COLLECTION_USERS)
-                .document(m_userID)
-                .update(KEY_CURRENT_LOCATION, location);
+        if(in_group()){
+            ArrayList<Double> myLocation = new ArrayList<>(MemberLocation.size);
+            myLocation.add(MemberLocation.Latitude, location.getLatitude());
+            myLocation.add(MemberLocation.Longitude, location.getLongitude());
+
+            HashMap<String, ArrayList<Double>> myLocationMap = new HashMap<>();
+            myLocationMap.put(m_userID, myLocation);
+
+            HashMap<String, Object> mergeMyLocation = new HashMap<>();
+            mergeMyLocation.put(KEY_MEMBER_LOCATIONS, myLocationMap);
+
+            m_database.collection(KEY_COLLECTION_GROUPS)
+                    .document(m_groupID)
+                    .set(mergeMyLocation, SetOptions.merge());
+        }
     }
 
     public void send_message(String message){
@@ -321,6 +348,7 @@ public class Database {
                 Log.d(TAG, "Group event: " + (value != null ? value.toString() : "Error: " + error));
                 if(value != null){
                     m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
+                    m_memberLocations = (HashMap<String, ArrayList<Double>>) value.get(KEY_MEMBER_LOCATIONS);
                 }
             }
         };
