@@ -250,6 +250,7 @@ public class Database {
                 .update(Constants.KEY_GROUP_NAME, newName);
     }
 
+    @SuppressWarnings("unchecked")
     public void append_dest_to_route(String destination){
         Task<DocumentSnapshot> groupInfo = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
