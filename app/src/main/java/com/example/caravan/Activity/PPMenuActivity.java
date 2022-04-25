@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.caravan.Database;
+import com.example.caravan.Fragments.SettingsFragment;
 import com.example.caravan.R;
 import com.example.caravan.databinding.ActivityProfileMenuBinding;
 import com.example.caravan.generated.callback.OnClickListener;
@@ -102,11 +103,11 @@ public class PPMenuActivity extends AppCompatActivity {
     private void changepicture3() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
         Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/emoji_13.png?alt=media&token=8188a65f-9830-48e1-83d7-fa08f80a3d52");
-        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+        UserProfileChangeRequest profileUpdate3 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate3);
 
         Database.get_instance().update_profilePicture();
     }
@@ -114,66 +115,68 @@ public class PPMenuActivity extends AppCompatActivity {
     private void changepicture4() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
         Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Fish.png?alt=media&token=a606def0-d6df-4915-92fe-e7a933dc0077");
-        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+        UserProfileChangeRequest profileUpdate4 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate4);
 
         Database.get_instance().update_profilePicture();
     }
     private void changepicture5() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
         Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Orange.png?alt=media&token=504f9df8-98a2-4244-8f04-dfb12e68b5a1");
-        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+        UserProfileChangeRequest profileUpdate5 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate5);
 
         Database.get_instance().update_profilePicture();
     }
     private void changepicture6() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
         Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/SantaCat.png?alt=media&token=a64f6e2a-ed4a-49f2-9b61-00f001dc7b5b");
-        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+        UserProfileChangeRequest profileUpdate6 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate6);
 
         Database.get_instance().update_profilePicture();
+
+
     }
     private void changepicture7() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
         Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Smiley_Faces.png?alt=media&token=c8741d61-5237-486e-9a64-f3c5bc5fbaaf");
-        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+        UserProfileChangeRequest profileUpdate7 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate7);
 
         Database.get_instance().update_profilePicture();
     }
     private void changepicture8() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
         Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Unfathomable.png?alt=media&token=4daad176-dd37-47b6-94a1-0ea2396832d3");
-        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+        UserProfileChangeRequest profileUpdate8 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate8);
 
         Database.get_instance().update_profilePicture();
     }
     private void changepicture9() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
         Uri imageUri = Uri.parse("");
-        UserProfileChangeRequest profileUpdate2 = new UserProfileChangeRequest.Builder()
+        UserProfileChangeRequest profileUpdate9 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate2);
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate9);
 
         Database.get_instance().update_profilePicture();
     }
