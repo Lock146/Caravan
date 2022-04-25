@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/_4sdp">
+    android:padding="1dp">
 
 <!--    <com.makeranen.roundedimageview.RoundedImageView-->
 <!--        android:id="@+id/imageProfile"-->
@@ -38,6 +38,18 @@
 <!--        app:layout_constraintStart_toStartOf="@id/textMessage"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/textMessage"/>-->
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userProfile"
+        android:layout_width="35dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/splash_image"
+        app:layout_constraintEnd_toStartOf="@+id/textMessage"
+        app:layout_constraintBottom_toBottomOf="@id/textMessage"
+        />
+
+
+
     <TextView
         android:id="@+id/textUserName"
         android:layout_width="0dp"
@@ -53,7 +65,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:background="@drawable/background_chat_input"
+            android:layout_marginLeft="35dp"
+            android:background="@drawable/background_received_messages"
             android:paddingStart="12dp"
             android:paddingTop="8dp"
             android:paddingEnd="12dp"

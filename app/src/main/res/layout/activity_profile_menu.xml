@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10sp"
+        android:rowCount="5"
+        android:columnCount="2"
+        >
+
+
+
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_bunny_avatar_round" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_cat_avatar_round" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_emoji_13_round" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_fish_avatar_round" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_orange_round" />
+
+
+        <ImageButton
+            android:id="@+id/imageButton6"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_santacat_avatar_round" />
+
+        <ImageButton
+            android:id="@+id/imageButton7"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_smile_round" />
+
+        <ImageButton
+            android:id="@+id/imageButton8"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@mipmap/ic_unfathomable_round" />
+
+        <ImageButton
+            android:id="@+id/imageButton9"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="5sp"
+            app:srcCompat="@drawable/ic_add" />
+
+
+    </GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
