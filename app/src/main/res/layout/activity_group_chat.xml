@@ -128,7 +128,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/background_chat_input"
         android:hint="@string/type_a_message"
-        android:imeOptions="actionDone"
+        android:imeOptions="actionSend"
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingStart="@dimen/_16sdp"
