@@ -89,7 +89,7 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5sp"
-            app:srcCompat="@drawable/ic_add" />
+            app:srcCompat="@mipmap/ic_typist_round" />
 
         <ImageButton
             android:id="@+id/imageButton10"

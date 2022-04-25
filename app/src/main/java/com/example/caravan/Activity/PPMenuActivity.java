@@ -171,7 +171,7 @@ public class PPMenuActivity extends AppCompatActivity {
     }
     private void changepicture9() {
         Log.e(TAG, "onCrete: " + "ITS BEEN CLICKED" );
-        Uri imageUri = Uri.parse("");
+        Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/caomptttt.gif?alt=media&token=f1ef80ed-1d6f-4271-b650-eaca73ccdd14");
         UserProfileChangeRequest profileUpdate9 = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(imageUri)
                 .build();
