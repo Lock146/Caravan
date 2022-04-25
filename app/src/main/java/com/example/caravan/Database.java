@@ -279,6 +279,8 @@ public class Database {
             HashMap<String, Object> data = new HashMap<>();
             data.put(Constants.KEY_SENDER_ID, m_userID);
             data.put(Constants.KEY_MESSAGE, message);
+            data.put("displayName", m_displayName);
+            data.put("profilePicture", profilePicture);
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> {

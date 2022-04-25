@@ -88,8 +88,8 @@ public class GroupChatActivity extends AppCompatActivity {
                 if(change.getType() == DocumentChange.Type.ADDED) {
                     ChatMessage message = new ChatMessage();
                     message.senderId = change.getDocument().getString(Constants.KEY_SENDER_ID);
-                    message.email = Database.get_instance().get_user_username(message.senderId);
-                    message.image = Database.get_instance().get_user_image(message.senderId);
+                    message.email = change.getDocument().getString("displayName");
+                    message.image = change.getDocument().getString("profilePicture");
                     message.message = change.getDocument().getString(Constants.KEY_MESSAGE);
                     message.dateTime = getReadableDateTime(change.getDocument().getDate(Constants.KEY_TIMESTAMP));
                     message.dateObject = change.getDocument().getDate(Constants.KEY_TIMESTAMP);
