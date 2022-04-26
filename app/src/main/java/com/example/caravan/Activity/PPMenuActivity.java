@@ -41,6 +41,6 @@ public class PPMenuActivity extends AppCompatActivity {
 
         FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate);
 
-        Database.get_instance().update_profilePicture();
+        Database.get_instance().profile_picture("");
     }
 }
