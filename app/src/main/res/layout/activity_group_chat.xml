@@ -24,7 +24,7 @@
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/primaryColor"
+        android:background="?android:colorPrimary"
 
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-32dp" />
@@ -74,8 +74,8 @@
         android:id="@+id/viewSupporter"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/primaryColor"
         android:layout_marginTop="9dp"
+        android:background="?android:colorPrimary"
         app:layout_constraintTop_toBottomOf="@+id/imageBack" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -128,7 +128,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/background_chat_input"
         android:hint="@string/type_a_message"
-        android:imeOptions="actionDone"
+        android:imeOptions="actionSend"
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingStart="@dimen/_16sdp"
