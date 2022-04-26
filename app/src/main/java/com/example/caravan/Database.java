@@ -223,12 +223,34 @@ public class Database {
         update_user_field(Constants.KEY_NAME, displayName);
     }
 
+    public String get_name_of(String userID){
+        if(m_members.containsKey(userID)){
+            return Objects.requireNonNull(m_members.get(userID)).get(MemberData.Name);
+        }
+        else{
+            return null;
+        }
+    }
+
     public String display_name(){
         return m_displayName;
     }
 
-    public void profile_picture(String profilePicture){
+    public void set_profile_picture(String profilePicture){
         update_user_field(Constants.KEY_PROFILE_PICTURE, profilePicture);
+    }
+
+    public String get_profile_picture_of(String userID){
+        if(m_members.containsKey(userID)){
+            return Objects.requireNonNull(m_members.get(userID)).get(MemberData.ProfilePicture);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public String get_profile_picture(){
+        return m_profilePicture;
     }
 
     public void send_message(String message){
@@ -241,7 +263,6 @@ public class Database {
             data.put(Constants.KEY_SENDER_ID, m_userID);
             data.put(Constants.KEY_MESSAGE, message);
             data.put("displayName", m_displayName);
-            data.put("profilePicture", profilePicture);
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> Log.d(TAG, "Failed sending message: " + e));
