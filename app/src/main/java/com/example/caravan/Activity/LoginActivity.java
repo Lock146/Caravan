@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                                 .document(FirebaseAuth.getInstance().getUid());
                         Map<String, String> userEmail = new HashMap<>();
                         userEmail.put(Constants.KEY_EMAIL, email);
-                        ref.set(userEmail);
+                        ref.set(userEmail, SetOptions.merge());
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
