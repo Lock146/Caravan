@@ -310,7 +310,7 @@ public class Database {
             routeInfo.put(Constants.KEY_ROUTE, placeIDs);
             m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                     .document(m_groupID)
-                    .set(routeInfo)
+                    .set(routeInfo, SetOptions.merge())
                     .addOnSuccessListener(result -> Log.d(TAG, "Successfully published route to group"))
                     .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
                     .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
