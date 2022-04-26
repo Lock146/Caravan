@@ -1,5 +1,6 @@
 package com.example.caravan.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -19,6 +20,7 @@ import androidx.core.app.NotificationManagerCompat;
 //import androidx.work.WorkManager;
 
 import com.example.caravan.R;
+import com.example.caravan.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.Constants;
@@ -40,17 +42,28 @@ public class MessagingServices extends FirebaseMessagingService {
     //Log.d("FCM", "Token: " + token);
         }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage){
+        String title = remoteMessage.getNotification().getTitle();
+        String text = remoteMessage.getNotification().getBody();
+        final String Channel_ID = "Heads Up Notification";
+        NotificationChannel channel =  new NotificationChannel(
+                Channel_ID,
+                "Heads up Notification",NotificationManager.IMPORTANCE_HIGH
+        );
+        getSystemService(NotificationManager.class).createNotificationChannel(channel);
+        Notification.Builder notification = new Notification.Builder(this, Channel_ID)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_notifications)
+                .setAutoCancel(true);
+        NotificationManagerCompat.from(this).notify(1, notification.build());
         super.onMessageReceived(remoteMessage);
         //Log.d("FCM", "Message: " + remoteMessage.getNotification().getBody());
+        //User user = new User();
+        //user.name = remoteMessage.getData().get(Constants.KEY_USER_ID);
     }
 
-    //public void updateToken(String token){
-        //change this code into firestor
-        //DatabaseReference databaseReference = FirestoreDatabase.getInstance().getReference("Users").child(util.getUID());
-       // Map<String, Object> map=new HashMap<>();
-       // map.put("token", token);
-        //databaseReference.updateChildren(map);
-    //}
+
 
    }

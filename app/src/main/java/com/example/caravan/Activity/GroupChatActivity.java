@@ -96,7 +96,6 @@ public class GroupChatActivity extends AppCompatActivity {
                         } else{
                             showToast("Error: "+ response.code()); }
                     }
-
                     @Override
                     public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                         showToast(t.getMessage()); }
@@ -109,6 +108,7 @@ public class GroupChatActivity extends AppCompatActivity {
             Database.get_instance().send_message(m_binding.message.getText().toString());
             m_binding.message.setText(null);
         }
+
     }
     private void list_members(){
     }

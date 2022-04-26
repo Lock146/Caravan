@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -15,28 +14,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.bumptech.glide.Glide;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.CurrentLocationUpdateTask;
 import com.example.caravan.Database;
-import com.example.caravan.DeviceInfo;
 import com.example.caravan.R;
-import com.example.caravan.UserModel;
 import com.example.caravan.databinding.ActivityMainBinding;
 import com.example.caravan.databinding.NavDrawerLayoutBinding;
 import com.example.caravan.databinding.ToolbarLayoutBinding;
 import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
-//import androidx.preference.PreferenceManager;
+
 import java.util.Timer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView imgHeader;
     private TextView txtName, txtEmail;
     private Timer m_currentLocationUpdater;
-    private PreferenceManager n_preferenceManager;
+    //private PreferenceManager n_preferenceManager;
 
 
     // TODO: Implement location update pausing
