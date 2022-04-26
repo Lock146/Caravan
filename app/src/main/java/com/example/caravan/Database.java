@@ -262,7 +262,6 @@ public class Database {
             HashMap<String, Object> data = new HashMap<>();
             data.put(Constants.KEY_SENDER_ID, m_userID);
             data.put(Constants.KEY_MESSAGE, message);
-            data.put("displayName", m_displayName);
             data.put(Constants.KEY_TIMESTAMP, new Date());
             ref.set(data)
                     .addOnFailureListener( e -> Log.d(TAG, "Failed sending message: " + e));
@@ -404,21 +403,21 @@ public class Database {
     }
 
     public ArrayList<GooglePlaceModel> get_caravan_stops(){
-        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID);
-
-        m_stops.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
-                    m_stops1 = route;
-                }
-            }
-        });
-        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
-        return m_stops1;
-
+//        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+//                .document(m_groupID);
+//
+//        m_stops.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                DocumentSnapshot document = task.getResult();
+//                if (document.exists()) {
+//                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
+//                    m_stops1 = route;
+//                }
+//            }
+//        });
+//        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
+//        return m_stops1;
+        return new ArrayList<>();
     }
 
     private HashMap<String, ArrayList<String>> generate_user_info(){
