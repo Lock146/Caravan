@@ -744,7 +744,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onBackPressed() {
-        //Database.set_instance();
+        Database.set_instance();
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         else
