@@ -47,6 +47,7 @@ public class Database {
     private String m_groupID;
     private String m_email;
     private String m_profilePicture;
+    private String m_displayName;
     private EventListener<DocumentSnapshot> m_userListener;
     private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
@@ -200,7 +201,7 @@ public class Database {
         return m_groupID != null;
     }
 
-    public void update_location(Location location){
+    public void current_location(Location location){
         if(in_group()){
             ArrayList<Double> myLocation = new ArrayList<>(MemberLocation.size);
             myLocation.add(MemberLocation.Latitude, location.getLatitude());
@@ -217,15 +218,17 @@ public class Database {
                     .set(mergeMyLocation, SetOptions.merge());
         }
     }
-    public void update_displayName() {
-        m_database.collection(KEY_COLLECTION_USERS)
-                .document(m_userID)
-                .update("displayName", m_displayName);
+
+    public void display_name(String displayName){
+        update_user_field(Constants.KEY_NAME, displayName);
     }
-    public void update_profilePicture() {
-        m_database.collection(KEY_COLLECTION_USERS)
-                .document(m_userID)
-                .update("profilePicture", m_profilePicture.toString());
+
+    public String display_name(){
+        return m_displayName;
+    }
+
+    public void profile_picture(String profilePicture){
+        update_user_field(Constants.KEY_PROFILE_PICTURE, profilePicture);
     }
 
     public void send_message(String message){
@@ -342,6 +345,8 @@ public class Database {
                         dataChanged = true;
                     }
 
+                    m_displayName = value.get(Constants.KEY_NAME, String.class);
+
                     if(dataChanged && m_groupID != null){
                         upload_user_info();
                     }
@@ -415,5 +420,11 @@ public class Database {
                 .addOnSuccessListener(result -> Log.d(TAG, "Successfully added member info"))
                 .addOnFailureListener(error -> Log.d(TAG, "Error adding member info: " + error))
                 .addOnCompleteListener(result -> Log.d(TAG, "Completed adding member info"));
+    }
+
+    private void update_user_field(String key, String value){
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update(key, value);
     }
 }
