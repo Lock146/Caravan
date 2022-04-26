@@ -423,7 +423,7 @@ public class Database {
     private HashMap<String, ArrayList<String>> generate_user_info(){
         ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
         userInfo.add(MemberData.Email, m_email);
-        userInfo.add(MemberData.Name, "name");
+        userInfo.add(MemberData.Name, m_displayName);
         userInfo.add(MemberData.ProfilePicture, m_profilePicture);
         HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
         userInfoMap.put(m_userID, userInfo);
