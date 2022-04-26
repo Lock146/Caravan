@@ -96,11 +96,11 @@ public class SettingsFragment extends Fragment {
 
         binding.cardPicture.setOnClickListener(view -> {
 
-            //Intent intent = new Intent(requireContext(), PPMenuActivity.class);
-            //startActivity(intent);
-
-            Intent intent = new Intent(requireContext(), GroupListActivity.class);
+            Intent intent = new Intent(requireContext(), PPMenuActivity.class);
             startActivity(intent);
+
+            //Intent intent = new Intent(requireContext(), GroupListActivity.class);
+            //startActivity(intent);
 
         });
 

@@ -38,6 +38,7 @@ public class PPMenuActivity extends AppCompatActivity {
 
         binding.imageButton1.setOnClickListener(view -> {
             changepicture1();
+            //super.onBackPressed();
         });
 
         binding.imageButton2.setOnClickListener(view -> {
