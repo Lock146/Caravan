@@ -47,6 +47,7 @@ public class GroupActivity extends AppCompatActivity {
         binding.recyclerView.setAdapter(routeTimelineAdapter);
         setContentView(binding.getRoot());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Database.get_instance();
 
         setContentView(R.layout.activity_routetimeline);
         Intent intent = getIntent();
@@ -78,6 +79,21 @@ public class GroupActivity extends AppCompatActivity {
 //        binding.groupMembership.setOnClickListener(view -> {
 //            leave_group();
 //        });
+        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!view.hasFocus()){
+                    Database.get_instance().update_group_name(binding.GroupName.getText().toString());
+                }
+            }
+        });
+
+        if(Database.get_instance().in_group()){
+            enable_group_functionality();
+        }
+        else{
+            disable_group_functionality();
+        }
     }
     private void leave_group(){
         Database.get_instance().leave_group();
@@ -99,16 +115,16 @@ public class GroupActivity extends AppCompatActivity {
         enable_group_functionality();
     }
 
-//    private void add_user(){
-//        if(!binding.addEmail.getText().toString().isEmpty()) {
-//            String email = binding.addEmail.getText().toString();
-//            binding.addEmail.setText(null);
-//            Database.get_instance().add_user(email);
-//        }
-//        else{
-//            Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    private void add_user(){
+        if(!binding.addEmail.getText().toString().isEmpty()) {
+            String email = binding.addEmail.getText().toString();
+            binding.addEmail.setText(null);
+            Database.get_instance().add_user(email);
+        }
+        else{
+            Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void open_group_chat(){
         startActivity(new Intent(this, GroupChatActivity.class));
@@ -122,24 +138,26 @@ public class GroupActivity extends AppCompatActivity {
 
         binding.chat.setVisibility(View.INVISIBLE);
         binding.chat.setClickable(false);
-        //binding.groupMembership.setVisibility(View.INVISIBLE);
-        //binding.groupMembership.setClickable(false);
+        binding.groupMembership.setVisibility(View.INVISIBLE);
+        binding.groupMembership.setClickable(false);
     }
 
     private void enable_group_functionality(){
         binding.addUser.setText(ADD_USER);
-        //binding.addUser.setOnClickListener(view -> {
-        //    add_user();
-        //});
+        binding.addUser.setOnClickListener(view -> {
+            add_user();
+        });
 
         binding.chat.setVisibility(View.VISIBLE);
         binding.chat.setClickable(true);
-        //binding.groupMembership.setVisibility(View.VISIBLE);
-        //binding.groupMembership.setClickable(true);
+        binding.groupMembership.setVisibility(View.VISIBLE);
+        binding.groupMembership.setClickable(true);
     }
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
-
+        binding.addUser.setOnClickListener(view -> add_user());
+        binding.chat.setOnClickListener(view -> open_group_chat());
+        binding.groupMembership.setOnClickListener(view -> leave_group());
     }
 }

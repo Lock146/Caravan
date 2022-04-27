@@ -34,7 +34,9 @@
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.RouteTimelineActivity" />
         <activity android:name=".Activity.suggestedStopsActivity" />
+        <activity android:name=".Activity.PPMenuActivity"/>
         <activity android:name=".Activity.SplashActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
