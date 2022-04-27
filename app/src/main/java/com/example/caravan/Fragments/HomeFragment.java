@@ -756,7 +756,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     }
                     size--;
                 }
-                //m_stops.
 
 
 
@@ -769,7 +768,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 //if (m_stops != null) {
             } else {
 
-                test3(googlePlaceModel);
+//                test3(googlePlaceModel);
 
 
             }
@@ -791,7 +790,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 Database.get_instance().suggest_stops(m_stops);
 
 
-                Database.set_instance();
+//                Database.set_instance();
 
                 //if (m_stops != null) {
             } else {
@@ -806,24 +805,24 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         googlePlaceAdapter.notifyDataSetChanged();
     }
 
-    public void test3(GooglePlaceModel googlePlaceModel) {
-        if (Database.get_instance().get_suggested_stops() != null) {
-
-            //m_stops = Database.get_instance().get_caravan_stops();
-            onSaveClick(googlePlaceModel);
-
-
-        } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    test3(googlePlaceModel);
-                }
-            }, 50);
-
-        }
-    }
+//    public void test3(GooglePlaceModel googlePlaceModel) {
+//        if (Database.get_instance().get_suggested_stops() != null) {
+//
+//            //m_stops = Database.get_instance().get_caravan_stops();
+//            onSaveClick(googlePlaceModel);
+//
+//
+//        } else {
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    test3(googlePlaceModel);
+//                }
+//            }, 50);
+//
+//        }
+//    }
 
 
     public void onLocationClick(GooglePlaceModel googlePlaceModel) {
@@ -1026,7 +1025,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             startActivity(intent);
         } else {
 
-            test2();
+//            test2();
 
 
         }
@@ -1035,24 +1034,24 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         //startActivity(intent);
     }
 
-    public void test2() {
-        if (Database.get_instance().get_suggested_stops() != null) {
-
-            //m_stops = Database.get_instance().get_caravan_stops();
-            open_group_activity();
-
-
-        } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    test2();
-                }
-            }, 50);
-
-        }
-    }
+//    public void test2() {
+//        if (Database.get_instance().get_suggested_stops() != null) {
+//
+//            //m_stops = Database.get_instance().get_caravan_stops();
+//            open_group_activity();
+//
+//
+//        } else {
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    test2();
+//                }
+//            }, 50);
+//
+//        }
+//    }
 
 
 
@@ -1085,30 +1084,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         } else {
 
-                    test();
+//                    test();
 
 
         }
 
     }
-    public void test() {
-        if (Database.get_instance().get_caravan_stops() != null) {
-
-            //m_stops = Database.get_instance().get_caravan_stops();
-            open_directions();
-
-
-        } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    test();
-                }
-            }, 50);
-
-        }
-    }
+//    public void test() {
+//        if (Database.get_instance().get_caravan_stops() != null) {
+//
+//            //m_stops = Database.get_instance().get_caravan_stops();
+//            open_directions();
+//
+//
+//        } else {
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    test();
+//                }
+//            }, 50);
+//
+//        }
+//    }
 
     private void open_timeline(){
         /*
