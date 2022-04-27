@@ -132,8 +132,6 @@ public class GroupActivity extends AppCompatActivity {
     }
     private void leave_group(){
         Database.get_instance().leave_group();
-        //Database.get_instance();
-        Database.set_instance();
         binding.chat.setText(CREATE_GROUP);
         binding.chat.setOnClickListener(view -> {
             create_group();
