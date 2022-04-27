@@ -68,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
         long period = 5000;
         m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(getApplicationContext(), period), 0, period);
 
-        Database.get_instance().update_displayName();
-        Database.get_instance().update_profilePicture();
-
-
         Places.initialize(getApplicationContext(), getResources().getString(R.string.MAPS_API_KEY));
         navDrawerLayoutBinding = NavDrawerLayoutBinding.inflate(getLayoutInflater());
         setContentView(navDrawerLayoutBinding.getRoot());
@@ -189,10 +185,10 @@ public class MainActivity extends AppCompatActivity {
         //image = Database.get_instance().get_user_image(firebaseAuth.getUid());
         //Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/emoji_13.png?alt=media&token=8188a65f-9830-48e1-83d7-fa08f80a3d52").into(imgHeader);
         //imgHeader.setImageURI(Database.get_instance().get_user_image());
-        if (Database.get_instance().get_user_image(firebaseAuth.getUid()) != null) {
+        if (Database.get_instance().get_profile_picture() != null) {
 
             //Log.e(TAG, "OOOOOOOOOOOOOO: " + image );
-            Glide.with(this).load(Database.get_instance().get_user_image(firebaseAuth.getUid())).into(imgHeader);
+            Glide.with(this).load(Database.get_instance().get_profile_picture()).into(imgHeader);
 
             //imgHeader.setImageURI(Uri.parse(Database.get_instance().get_user_image(firebaseAuth.getUid())));
         } else {

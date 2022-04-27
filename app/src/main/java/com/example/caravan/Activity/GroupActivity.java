@@ -31,8 +31,6 @@ public class GroupActivity extends AppCompatActivity {
 
         setListeners();
 
-        binding.addUser.setOnClickListener(view -> add_user());
-        binding.chat.setOnClickListener(view -> open_group_chat());
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -41,37 +39,17 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
-        binding.groupList.setVisibility(Database.get_instance().in_group() ? View.VISIBLE : View.INVISIBLE);
-        CharSequence groupList = "View Members";
-        binding.groupList.setText(groupList);
-        binding.groupList.setOnClickListener(view -> {
-            open_grouplist();
-        });
 
-
-        binding.groupMembership.setVisibility(Database.get_instance().in_group() ? View.VISIBLE : View.INVISIBLE);
-        CharSequence groupMembership = "Leave group";
-        binding.groupMembership.setText(groupMembership);
-        binding.groupMembership.setOnClickListener(view -> {
-            leave_group();
-        });
-
-
+        if(Database.get_instance().in_group()){
+            enable_group_functionality();
+        }
+        else{
+            disable_group_functionality();
+        }
     }
 
     private void leave_group(){
         Database.get_instance().leave_group();
-        //Database.get_instance();
-        Database.set_instance();
-        binding.chat.setText(CREATE_GROUP);
-        binding.chat.setOnClickListener(view -> {
-            create_group();
-        });
-
-        binding.groupMembership.setVisibility(View.INVISIBLE);
-        binding.groupMembership.setClickable(false);
-        binding.groupList.setVisibility(View.INVISIBLE);
-        binding.groupList.setClickable(false);
 
         disable_group_functionality();
     }
@@ -96,12 +74,6 @@ public class GroupActivity extends AppCompatActivity {
         startActivity(new Intent(this, GroupChatActivity.class));
     }
 
-
-    private  void open_grouplist() {
-        startActivity(new Intent(this, GroupListActivity.class));
-    }
-
-
     private void disable_group_functionality(){
         binding.addUser.setText(CREATE_GROUP);
         binding.addUser.setOnClickListener(view -> {
@@ -112,8 +84,6 @@ public class GroupActivity extends AppCompatActivity {
         binding.chat.setClickable(false);
         binding.groupMembership.setVisibility(View.INVISIBLE);
         binding.groupMembership.setClickable(false);
-        binding.groupList.setVisibility(View.INVISIBLE);
-        binding.groupList.setClickable(false);
     }
 
     private void enable_group_functionality(){
@@ -126,12 +96,12 @@ public class GroupActivity extends AppCompatActivity {
         binding.chat.setClickable(true);
         binding.groupMembership.setVisibility(View.VISIBLE);
         binding.groupMembership.setClickable(true);
-        binding.groupList.setVisibility(View.VISIBLE);
-        binding.groupList.setClickable(true);
     }
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
-
+        binding.addUser.setOnClickListener(view -> add_user());
+        binding.chat.setOnClickListener(view -> open_group_chat());
+        binding.groupMembership.setOnClickListener(view -> leave_group());
     }
 }

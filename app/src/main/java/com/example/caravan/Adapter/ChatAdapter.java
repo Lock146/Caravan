@@ -95,9 +95,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void setData(ChatMessage chatMessage) {
-            //binding.userProfile.setImageURI(Uri.parse(chatMessage.image));
-            Glide.with(itemView.getContext()).load(chatMessage.image).into(binding.userProfile);
-            binding.textUserName.setText(chatMessage.email);
+            Glide.with(itemView.getContext())
+                    .load(Database.get_instance().get_profile_picture_of(chatMessage.senderId))
+                    .into(binding.userProfile);
+            binding.textUserName.setText(Database.get_instance().get_name_of(chatMessage.senderId));
+
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
         }
