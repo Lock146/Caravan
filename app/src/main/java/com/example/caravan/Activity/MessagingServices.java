@@ -50,7 +50,7 @@ public class MessagingServices extends FirebaseMessagingService {
         User user = new User();
         user.userID = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_USER_ID);
         user.name = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_NAME);
-        user.token = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_FCM_TOKEN);
+        //user.token = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_FCM_TOKEN);
 
         int notificationId = new Random().nextInt();
         String channelId = "char_message";
@@ -62,6 +62,7 @@ public class MessagingServices extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
         builder.setSmallIcon(R.drawable.ic_notifications);
+        //needs to be changed
         builder.setContentTitle(user.name);
         builder.setContentText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE));
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE)));
