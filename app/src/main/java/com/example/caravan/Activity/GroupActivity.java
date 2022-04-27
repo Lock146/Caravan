@@ -40,12 +40,13 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
-        binding.groupMembership.setVisibility(Database.get_instance().in_group() ? View.VISIBLE : View.INVISIBLE);
-        CharSequence groupMembership = "Leave group";
-        binding.groupMembership.setText(groupMembership);
-        binding.groupMembership.setOnClickListener(view -> {
-            leave_group();
-        });
+
+        if(Database.get_instance().in_group()){
+            enable_group_functionality();
+        }
+        else{
+            disable_group_functionality();
+        }
     }
 
     private void leave_group(){
@@ -109,6 +110,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
-
+        binding.addUser.setOnClickListener(view -> add_user());
+        binding.chat.setOnClickListener(view -> open_group_chat());
+        binding.groupMembership.setOnClickListener(view -> leave_group());
     }
 }

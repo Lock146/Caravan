@@ -67,6 +67,6 @@ public class CurrentLocationUpdateTask extends TimerTask {
     }
     @Override
     public void run() {
-        m_database.update_location(m_currentLocation);
+        m_database.current_location(m_currentLocation);
     }
 }

@@ -57,7 +57,11 @@ public class RouteTimelineActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
-
+    /** Called when the user touches the button */
+    public void sendMessage(View view) {
+        // Do something in response to button click
+        onBackPressed();
+    }
     @Override
     public void onBackPressed(){
         Intent result = new Intent(Intent.ACTION_GET_CONTENT);

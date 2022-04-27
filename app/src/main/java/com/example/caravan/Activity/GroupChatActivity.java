@@ -29,6 +29,7 @@ import com.google.firebase.firestore.EventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.security.acl.Group;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GroupChatActivity extends AppCompatActivity {
-
+    private static final String TAG = GroupChatActivity.class.getSimpleName();
     private ActivityGroupChatBinding m_binding;
     private List<ChatMessage> m_chatMessages;
     private ChatAdapter m_chatAdapter;
@@ -65,7 +66,13 @@ public class GroupChatActivity extends AppCompatActivity {
         m_chatAdapter = new ChatAdapter(m_chatMessages);
         m_binding.chatRecyclerView.setAdapter(m_chatAdapter);
     }
-
+    private void sendMessage() {
+        if (!m_binding.message.getText().toString().equals("")) {
+            Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
+            Database.get_instance().send_message(m_binding.message.getText().toString());
+            m_binding.message.setText(null);
+        }
+        }
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -92,16 +99,12 @@ public class GroupChatActivity extends AppCompatActivity {
                 if(change.getType() == DocumentChange.Type.ADDED) {
                     ChatMessage message = new ChatMessage();
                     message.senderId = change.getDocument().getString(Constants.KEY_SENDER_ID);
-                    message.email = Database.get_instance().get_user_email(message.senderId);
                     message.message = change.getDocument().getString(Constants.KEY_MESSAGE);
                     message.dateTime = getReadableDateTime(change.getDocument().getDate(Constants.KEY_TIMESTAMP));
                     message.dateObject = change.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     m_chatMessages.add(message);
                     sendNotification("message received");
                 }
-                   //if(){
-                    //JSONArray}
-                    //sendNotification();
             }
             Collections.sort(m_chatMessages, (msg1, msg2) -> msg1.dateObject.compareTo(msg2.dateObject));
             if(count == 0){
@@ -154,15 +157,5 @@ public class GroupChatActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                         showToast(t.getMessage()); }
                 });
-    }
-
-    private void sendMessage() {
-        if (!m_binding.message.getText().toString().equals("")) {
-            Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
-            Database.get_instance().send_message(m_binding.message.getText().toString());
-            m_binding.message.setText(null);
-            //sendNotification();
-
-        }
     }
 }
