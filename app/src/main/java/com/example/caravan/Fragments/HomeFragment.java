@@ -745,10 +745,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 int size = m_stops.size();
                 while (size >= 1) {
-                    //Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getName() );
+                    Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getReference() );
 
-                    //Log.e(TAG, "onSaveClick: " + googlePlaceModel.getName());
-                    if (m_stops.get(size-1).getName().equals(googlePlaceModel.getName())){
+                    Log.e(TAG, "onSaveClick: " + googlePlaceModel.getReference());
+
+                    if (m_stops.get(size-1).getReference().equals(googlePlaceModel.getReference())){
                         m_stops.remove(size-1);
                         Log.e(TAG, "onSaveClick: " + "SUCCESSFUL DELETE");
                         break;
@@ -756,6 +757,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     size--;
                 }
                 //m_stops.
+
 
 
                 m_stops.remove(googlePlaceModel);
