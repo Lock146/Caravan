@@ -763,7 +763,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 Database.get_instance().suggest_stops(m_stops);
 
-                Database.set_instance();
 
                 //if (m_stops != null) {
             } else {
@@ -789,13 +788,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 Database.get_instance().suggest_stops(m_stops);
 
-
-//                Database.set_instance();
-
                 //if (m_stops != null) {
             } else {
 
-                test3(googlePlaceModel);
+//                test3(googlePlaceModel);
 
 
             }
@@ -1021,7 +1017,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //                startActivity(intent);
 //
 //            }
-//            Database.set_instance();
             startActivity(intent);
         } else {
 
@@ -1080,7 +1075,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
             }
 
-            Database.set_instance();
 
         } else {
 
