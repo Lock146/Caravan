@@ -12,6 +12,7 @@ import java.util.List;
 public class GooglePlaceModel extends Object {
 
     public ArrayList<GooglePlaceModel> route;
+    //public ArrayList<GooglePlaceModel> route;
     @SerializedName("business_status")
     @Expose
     private String businessStatus;
@@ -43,7 +44,6 @@ public class GooglePlaceModel extends Object {
     @SerializedName("place_id")
     @Expose
     private String m_placeID;
-
 
     @SerializedName("rating")
     @Expose

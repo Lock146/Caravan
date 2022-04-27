@@ -31,8 +31,6 @@ public class GroupActivity extends AppCompatActivity {
 
         setListeners();
 
-        binding.addUser.setOnClickListener(view -> add_user());
-        binding.chat.setOnClickListener(view -> open_group_chat());
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -41,25 +39,17 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
-        binding.groupMembership.setVisibility(Database.get_instance().in_group() ? View.VISIBLE : View.INVISIBLE);
-        CharSequence groupMembership = "Leave group";
-        binding.groupMembership.setText(groupMembership);
-        binding.groupMembership.setOnClickListener(view -> {
-            leave_group();
-        });
+
+        if(Database.get_instance().in_group()){
+            enable_group_functionality();
+        }
+        else{
+            disable_group_functionality();
+        }
     }
 
     private void leave_group(){
         Database.get_instance().leave_group();
-        //Database.get_instance();
-        Database.set_instance();
-        binding.chat.setText(CREATE_GROUP);
-        binding.chat.setOnClickListener(view -> {
-            create_group();
-        });
-
-        binding.groupMembership.setVisibility(View.INVISIBLE);
-        binding.groupMembership.setClickable(false);
 
         disable_group_functionality();
     }
@@ -110,6 +100,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
-
+        binding.addUser.setOnClickListener(view -> add_user());
+        binding.chat.setOnClickListener(view -> open_group_chat());
+        binding.groupMembership.setOnClickListener(view -> leave_group());
     }
 }
