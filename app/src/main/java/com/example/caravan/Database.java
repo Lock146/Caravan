@@ -79,11 +79,6 @@ public class Database {
         return m_instance;
     }
 
-    public static Database set_instance() {
-        m_instance = new Database();
-        return m_instance;
-    }
-
     public String get_userID(){
         return m_userID;
     }
