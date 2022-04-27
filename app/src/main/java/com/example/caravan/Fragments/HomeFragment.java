@@ -1012,18 +1012,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             m_stops = Database.get_instance().get_suggested_stops();
 
 
-            for (GooglePlaceModel stop : m_stops) {
-                stops.add(new StopInfo(stop, 0));
-                placeIDs.add(stop.placeID());
-            }
-            //if (m_stops != null) {
-            if (stops.size() != 0) {
-                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-                startActivity(intent);
-
-            }
-            Database.set_instance();
-
+//            for (GooglePlaceModel stop : m_stops) {
+//                stops.add(new StopInfo(stop, 0));
+//                placeIDs.add(stop.placeID());
+//            }
+//            //if (m_stops != null) {
+//            if (stops.size() != 0) {
+//                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
+//                startActivity(intent);
+//
+//            }
+//            Database.set_instance();
+            startActivity(intent);
         } else {
 
             test2();

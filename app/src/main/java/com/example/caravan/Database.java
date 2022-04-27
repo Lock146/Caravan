@@ -8,6 +8,8 @@ import static com.example.caravan.Constant.Constants.KEY_GROUP_MEMBERS;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
 import static com.example.caravan.Constant.Constants.KEY_MEMBER_LOCATIONS;
+import static com.example.caravan.Constant.Constants.KEY_ROUTE;
+import static com.example.caravan.Constant.Constants.KEY_SUGG_STOPS;
 
 import android.location.Location;
 import android.net.Uri;
@@ -52,7 +54,8 @@ public class Database {
     private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
-    private ArrayList<GooglePlaceModel> m_stops1;
+    private ArrayList<GooglePlaceModel> m_suggestedStops;
+    private ArrayList<GooglePlaceModel> m_route;
     private static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
@@ -210,8 +213,14 @@ public class Database {
     public void current_location(Location location){
         if(in_group()){
             ArrayList<Double> myLocation = new ArrayList<>(MemberLocation.size);
-            myLocation.add(MemberLocation.Latitude, location.getLatitude());
-            myLocation.add(MemberLocation.Longitude, location.getLongitude());
+            if(location != null) {
+                myLocation.add(MemberLocation.Latitude, location.getLatitude());
+                myLocation.add(MemberLocation.Longitude, location.getLongitude());
+            }
+            else{
+                myLocation.add(MemberLocation.Latitude, 0.0);
+                myLocation.add(MemberLocation.Longitude, 0.0);
+            }
 
             HashMap<String, ArrayList<Double>> myLocationMap = new HashMap<>();
             myLocationMap.put(m_userID, myLocation);
@@ -341,7 +350,7 @@ public class Database {
     public void suggest_stops(ArrayList<GooglePlaceModel> placeIDs){
         if(in_group()) {
             HashMap<String, Object> routeInfo = new HashMap<>();
-            routeInfo.put("suggestedStops", placeIDs);
+            routeInfo.put(KEY_SUGG_STOPS, placeIDs);
             m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                     .document(m_groupID)
                     .set(routeInfo, SetOptions.merge())
@@ -352,24 +361,8 @@ public class Database {
     }
 
     public ArrayList<GooglePlaceModel> get_suggested_stops(){
-        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID);
-
-        m_stops.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    ArrayList<GooglePlaceModel> suggestedStops = (document.toObject(GooglePlaceModel.class).suggestedStops);
-                    m_stops1 = suggestedStops;
-                }
-            }
-        });
-        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
-        return m_stops1;
-        //return new ArrayList<>();
+        return m_suggestedStops;
     }
-
-
 
     public void update_suggestion_list(ArrayList<String> placeIDs){
         if(in_group()) {
@@ -454,6 +447,8 @@ public class Database {
                 if(value != null){
                     m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
                     m_memberLocations = (HashMap<String, ArrayList<Double>>) value.get(KEY_MEMBER_LOCATIONS);
+                    m_route = (ArrayList<GooglePlaceModel>) value.get(KEY_ROUTE);
+                    m_suggestedStops = (ArrayList<GooglePlaceModel>) value.get(KEY_SUGG_STOPS);
                 }
             }
         };
@@ -470,21 +465,7 @@ public class Database {
     }
 
     public ArrayList<GooglePlaceModel> get_caravan_stops(){
-        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID);
-
-        m_stops.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
-                    m_stops1 = route;
-                }
-            }
-        });
-        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
-        return m_stops1;
-        //return new ArrayList<>();
+        return m_route;
     }
 
     private HashMap<String, ArrayList<String>> generate_user_info(){
