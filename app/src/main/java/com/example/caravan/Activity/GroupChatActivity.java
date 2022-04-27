@@ -45,7 +45,7 @@ import retrofit2.Response;
 public class GroupChatActivity extends AppCompatActivity {
 
     private ActivityGroupChatBinding m_binding;
-    private User m_receiverUser;
+    //private User m_receiverUser;
     private List<ChatMessage> m_chatMessages;
     private ChatAdapter m_chatAdapter;
     private PreferenceManager m_preferenceManager;
@@ -107,6 +107,8 @@ public class GroupChatActivity extends AppCompatActivity {
             Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
             Database.get_instance().send_message(m_binding.message.getText().toString());
             m_binding.message.setText(null);
+            sendNotification();
+
         }
 
     }

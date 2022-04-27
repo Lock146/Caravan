@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateToken(String token){
-        //preferencemanager putString(Constants)
+        //preferenceManager.putString(Constants.KEY_FCM_TOKEN, token);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS)
                 //n_preferenceManager.getString(  )

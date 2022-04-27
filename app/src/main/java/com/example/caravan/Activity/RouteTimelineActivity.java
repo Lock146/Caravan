@@ -15,6 +15,8 @@ import com.example.caravan.Adapter.RouteTimelineAdapter;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
+import com.example.caravan.databinding.ActivityGroupChatBinding;
+import com.example.caravan.databinding.ActivityRoutetimelineBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RouteTimelineAdapter routeTimelineAdapter;
     private ArrayList<StopInfo> CurrentRoute;
+    private ActivityRoutetimelineBinding rt_binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class RouteTimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_routetimeline);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+        rt_binding = ActivityRoutetimelineBinding.inflate(getLayoutInflater());
+        setListeners();
         if(extras.containsKey(Constants.KEY_STOPS)) {
             CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
         }
@@ -95,5 +100,7 @@ public class RouteTimelineActivity extends AppCompatActivity {
                     }).show();
             }
         };
+    private void setListeners() {
+        rt_binding.imageBack.setOnClickListener(v -> onBackPressed()); }
     }
 
