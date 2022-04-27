@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.EventListener;
 
+import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +35,7 @@ import java.util.Locale;
 import javax.security.auth.callback.Callback;
 
 public class GroupChatActivity extends AppCompatActivity {
-
+    private static final String TAG = GroupChatActivity.class.getSimpleName();
     private ActivityGroupChatBinding m_binding;
     private User m_receiverUser;
     private List<ChatMessage> m_chatMessages;
@@ -45,6 +46,7 @@ public class GroupChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Database.get_instance();
         m_binding = ActivityGroupChatBinding.inflate(getLayoutInflater());
         setContentView(m_binding.getRoot());
         setListeners();
@@ -60,7 +62,7 @@ public class GroupChatActivity extends AppCompatActivity {
     }
     private void sendMessage() {
         if (!m_binding.message.getText().toString().equals("")) {
-            Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
+            Log.d(TAG, "Sending message: " + m_binding.message.getText().toString());
             Database.get_instance().send_message(m_binding.message.getText().toString());
             m_binding.message.setText(null);
         }
@@ -87,7 +89,6 @@ public class GroupChatActivity extends AppCompatActivity {
                 if(change.getType() == DocumentChange.Type.ADDED) {
                     ChatMessage message = new ChatMessage();
                     message.senderId = change.getDocument().getString(Constants.KEY_SENDER_ID);
-                    message.email = Database.get_instance().get_user_email(message.senderId);
                     message.message = change.getDocument().getString(Constants.KEY_MESSAGE);
                     message.dateTime = getReadableDateTime(change.getDocument().getDate(Constants.KEY_TIMESTAMP));
                     message.dateObject = change.getDocument().getDate(Constants.KEY_TIMESTAMP);
