@@ -733,72 +733,76 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
-        Log.d("HomeFragment", "onSaveClick called. GooglePlaceMode: " + googlePlaceModel.getName());
-        if(googlePlaceModel.in_timeline()){
-            if (Database.get_instance().get_suggested_stops() != null) {
-
-
-                googlePlaceModel.in_timeline(false);
-
-                m_stops = Database.get_instance().get_suggested_stops();
-
-
-                int size = m_stops.size();
-                while (size >= 1) {
-                    Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getReference() );
-
-                    Log.e(TAG, "onSaveClick: " + googlePlaceModel.getReference());
-
-                    if (m_stops.get(size-1).getReference().equals(googlePlaceModel.getReference())){
-                        m_stops.remove(size-1);
-                        Log.e(TAG, "onSaveClick: " + "SUCCESSFUL DELETE");
-                        break;
-                    }
-                    size--;
-                }
+        Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
 
 
 
-                m_stops.remove(googlePlaceModel);
-
-                Database.get_instance().suggest_stops(m_stops);
-
-
-                //if (m_stops != null) {
-            } else {
-
-//                test3(googlePlaceModel);
-
-
-            }
-
-
-
-        }
-        else{
-
-
-            if (Database.get_instance().get_suggested_stops() != null) {
-
-                googlePlaceModel.in_timeline(true);
-
-                m_stops = Database.get_instance().get_suggested_stops();
-
-                m_stops.add(googlePlaceModel);
-
-                Database.get_instance().suggest_stops(m_stops);
-
-                //if (m_stops != null) {
-            } else {
-
-//                test3(googlePlaceModel);
-
-
-            }
-
-
-        }
-        googlePlaceAdapter.notifyDataSetChanged();
+        // TODO: Add ability to remove stops
+//        if(googlePlaceModel.in_timeline()){
+//            if (Database.get_instance().get_suggested_stops() != null) {
+//
+//
+//                googlePlaceModel.in_timeline(false);
+//
+//                m_stops = Database.get_instance().get_suggested_stops();
+//
+//
+//                int size = m_stops.size();
+//                while (size >= 1) {
+//                    Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getReference() );
+//
+//                    Log.e(TAG, "onSaveClick: " + googlePlaceModel.getReference());
+//
+//                    if (m_stops.get(size-1).getReference().equals(googlePlaceModel.getReference())){
+//                        m_stops.remove(size-1);
+//                        Log.e(TAG, "onSaveClick: " + "SUCCESSFUL DELETE");
+//                        break;
+//                    }
+//                    size--;
+//                }
+//
+//
+//
+//                m_stops.remove(googlePlaceModel);
+//
+//                Database.get_instance().suggest_stops(m_stops);
+//
+//
+//                //if (m_stops != null) {
+//            } else {
+//
+////                test3(googlePlaceModel);
+//
+//
+//            }
+//
+//
+//
+//        }
+//        else{
+//
+//
+//            if (Database.get_instance().get_suggested_stops() != null) {
+//
+//                googlePlaceModel.in_timeline(true);
+//
+//                m_stops = Database.get_instance().get_suggested_stops();
+//
+//                m_stops.add(googlePlaceModel);
+//
+//                Database.get_instance().suggest_stops(m_stops);
+//
+//                //if (m_stops != null) {
+//            } else {
+//
+////                test3(googlePlaceModel);
+//
+//
+//            }
+//
+//
+//        }
+//        googlePlaceAdapter.notifyDataSetChanged();
     }
 
 //    public void test3(GooglePlaceModel googlePlaceModel) {
