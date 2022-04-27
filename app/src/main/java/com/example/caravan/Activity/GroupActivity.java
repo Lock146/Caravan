@@ -84,6 +84,9 @@ public class GroupActivity extends AppCompatActivity {
         binding.chat.setClickable(false);
         binding.groupMembership.setVisibility(View.INVISIBLE);
         binding.groupMembership.setClickable(false);
+
+        binding.groupList.setVisibility(View.INVISIBLE);
+        binding.groupList.setClickable(false);
     }
 
     private void enable_group_functionality(){
@@ -96,6 +99,12 @@ public class GroupActivity extends AppCompatActivity {
         binding.chat.setClickable(true);
         binding.groupMembership.setVisibility(View.VISIBLE);
         binding.groupMembership.setClickable(true);
+        binding.groupList.setVisibility(View.VISIBLE);
+        binding.groupList.setClickable(true);
+    }
+
+    private void open_list(){
+        startActivity(new Intent(this, GroupListActivity.class));
     }
 
     private void setListeners() {
@@ -103,5 +112,6 @@ public class GroupActivity extends AppCompatActivity {
         binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
         binding.groupMembership.setOnClickListener(view -> leave_group());
+        binding.groupList.setOnClickListener(view -> open_list());
     }
 }

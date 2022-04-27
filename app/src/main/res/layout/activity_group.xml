@@ -119,6 +119,19 @@
                 app:cornerRadius="20dp"
                 app:elevation="10dp"
                 android:textColor="@color/white"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/groupList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/primaryDarkColor"
+                android:padding="15dp"
+                android:textStyle="bold"
+                app:cornerRadius="20dp"
+                app:elevation="10dp"
+                android:textColor="@color/white"
+                android:text="View Members"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/groupMembership"
