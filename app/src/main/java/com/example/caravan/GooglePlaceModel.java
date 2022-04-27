@@ -6,10 +6,14 @@ import com.example.caravan.Model.GooglePlaceModel.PhotoModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GooglePlaceModel extends Object {
 
+    public ArrayList<GooglePlaceModel> route;
+    public ArrayList<GooglePlaceModel> suggestedStops;
+    //public ArrayList<GooglePlaceModel> route;
     @SerializedName("business_status")
     @Expose
     private String businessStatus;
@@ -41,7 +45,6 @@ public class GooglePlaceModel extends Object {
     @SerializedName("place_id")
     @Expose
     private String m_placeID;
-
 
     @SerializedName("rating")
     @Expose

@@ -29,7 +29,7 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_item,parent,false);
+        View view = layoutInflater.inflate(R.layout.suggested_item_layout,parent,false);
 
         ViewHolder viewHolder = new ViewHolder(view);
 
