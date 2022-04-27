@@ -1,21 +1,24 @@
 package com.example.caravan;
 
+import androidx.annotation.DrawableRes;
+
 public class MemberInfo
 {
-    private String memberName;
-    private int profilePicture;
+    String memberName;
+    @DrawableRes int profilePicture;
 
-    public MemberInfo(String name, int picture)
+
+    public MemberInfo(String name, @DrawableRes int picture)
     {
         memberName = name;
         profilePicture = picture;
     }
 
-    public String memname() {
+    public String getMemberName() {
         return memberName;
     }
 
-    public int picture()
+    public @DrawableRes int getProfilePicture()
     {
         return profilePicture;
     }

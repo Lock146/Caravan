@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Adapter.GroupListAdapter;
+import com.example.caravan.MemberInfo;
 import com.example.caravan.R;
 import com.google.maps.android.quadtree.PointQuadTree;
 
@@ -23,7 +24,8 @@ public class GroupListActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private GroupListAdapter groupListAdapter;
 
-    private List<String> groupMember;
+
+    private List<MemberInfo> groupMember;
 
      @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -41,26 +43,24 @@ public class GroupListActivity extends AppCompatActivity
          recyclerView.addItemDecoration(dividerItemDecoration);
 
 
-         groupMember.add("Cameron");
-         groupMember.add("Luke");
-         groupMember.add("Colby");
-         groupMember.add("Kyler");
-         groupMember.add("Cameron");
-         groupMember.add("Luke");
-         groupMember.add("Colby");
-         groupMember.add("Kyler");
 
-         groupMember.add("Cameron");
-         groupMember.add("Luke");
-         groupMember.add("Colby");
-         groupMember.add("Kyler");
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_fish_avatar_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
+
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
      }
 
 
-     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
          @Override
          public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
              return false;
@@ -70,11 +70,9 @@ public class GroupListActivity extends AppCompatActivity
          public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
          {
              int position = viewHolder.getAdapterPosition();
-            switch (direction) {
-                case ItemTouchHelper.LEFT:
-                    groupMember.remove(position);
-                    groupListAdapter.notifyItemRemoved(position);
-                    break;
+             if (direction == ItemTouchHelper.RIGHT) {
+                 groupMember.remove(position);
+                 groupListAdapter.notifyItemRemoved(position);
 
             }
          }
