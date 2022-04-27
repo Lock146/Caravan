@@ -11,6 +11,7 @@ import java.util.List;
 
 public class GooglePlaceModel extends Object {
 
+    public ArrayList<GooglePlaceModel> route;
     //public ArrayList<GooglePlaceModel> route;
     @SerializedName("business_status")
     @Expose

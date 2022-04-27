@@ -52,6 +52,7 @@ public class Database {
     private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
+    private ArrayList<GooglePlaceModel> m_stops1;
     private static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
@@ -72,6 +73,11 @@ public class Database {
         if(m_instance == null){
             m_instance = new Database();
         }
+        return m_instance;
+    }
+
+    public static Database set_instance() {
+        m_instance = new Database();
         return m_instance;
     }
 
@@ -310,7 +316,7 @@ public class Database {
             routeInfo.put(Constants.KEY_ROUTE, placeIDs);
             m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                     .document(m_groupID)
-                    .set(routeInfo)
+                    .set(routeInfo, SetOptions.merge())
                     .addOnSuccessListener(result -> Log.d(TAG, "Successfully published route to group"))
                     .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
                     .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
@@ -403,21 +409,21 @@ public class Database {
     }
 
     public ArrayList<GooglePlaceModel> get_caravan_stops(){
-//        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-//                .document(m_groupID);
-//
-//        m_stops.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot document = task.getResult();
-//                if (document.exists()) {
-//                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
-//                    m_stops1 = route;
-//                }
-//            }
-//        });
-//        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
-//        return m_stops1;
-        return new ArrayList<>();
+        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID);
+
+        m_stops.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ArrayList<GooglePlaceModel> route = (document.toObject(GooglePlaceModel.class).route);
+                    m_stops1 = route;
+                }
+            }
+        });
+        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
+        return m_stops1;
+        //return new ArrayList<>();
     }
 
     private HashMap<String, ArrayList<String>> generate_user_info(){
