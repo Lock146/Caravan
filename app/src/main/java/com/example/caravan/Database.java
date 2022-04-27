@@ -337,6 +337,40 @@ public class Database {
                     .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
         }
     }
+
+    public void suggest_stops(ArrayList<GooglePlaceModel> placeIDs){
+        if(in_group()) {
+            HashMap<String, Object> routeInfo = new HashMap<>();
+            routeInfo.put("suggestedStops", placeIDs);
+            m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                    .document(m_groupID)
+                    .set(routeInfo, SetOptions.merge())
+                    .addOnSuccessListener(result -> Log.d(TAG, "Successfully published route to group"))
+                    .addOnFailureListener(error -> Log.d(TAG, "Failed publishing route to group: " + error))
+                    .addOnCompleteListener(result -> Log.d(TAG, "Completed route publishing task"));
+        }
+    }
+
+    public ArrayList<GooglePlaceModel> get_suggested_stops(){
+        DocumentReference m_stops = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID);
+
+        m_stops.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ArrayList<GooglePlaceModel> suggestedStops = (document.toObject(GooglePlaceModel.class).suggestedStops);
+                    m_stops1 = suggestedStops;
+                }
+            }
+        });
+        //Log.e(TAG, "get_caravan_stops: " + m_stops1.toString() );
+        return m_stops1;
+        //return new ArrayList<>();
+    }
+
+
+
     public void update_suggestion_list(ArrayList<String> placeIDs){
         if(in_group()) {
             HashMap<String, Object> routeInfo = new HashMap<>();

@@ -735,14 +735,92 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d("HomeFragment", "onSaveClick called. GooglePlaceMode: " + googlePlaceModel.getName());
         if(googlePlaceModel.in_timeline()){
-            googlePlaceModel.in_timeline(false);
-            m_stops.remove(googlePlaceModel);
+            if (Database.get_instance().get_suggested_stops() != null) {
+
+
+                googlePlaceModel.in_timeline(false);
+
+                m_stops = Database.get_instance().get_suggested_stops();
+
+
+                int size = m_stops.size();
+                while (size >= 1) {
+                    //Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getName() );
+
+                    //Log.e(TAG, "onSaveClick: " + googlePlaceModel.getName());
+                    if (m_stops.get(size-1).getName().equals(googlePlaceModel.getName())){
+                        m_stops.remove(size-1);
+                        Log.e(TAG, "onSaveClick: " + "SUCCESSFUL DELETE");
+                        break;
+                    }
+                    size--;
+                }
+                //m_stops.
+
+
+                m_stops.remove(googlePlaceModel);
+
+                Database.get_instance().suggest_stops(m_stops);
+
+                Database.set_instance();
+
+                //if (m_stops != null) {
+            } else {
+
+                test3(googlePlaceModel);
+
+
+            }
+
+
+
         }
         else{
-            googlePlaceModel.in_timeline(true);
-            m_stops.add(googlePlaceModel);
+
+
+            if (Database.get_instance().get_suggested_stops() != null) {
+
+                googlePlaceModel.in_timeline(true);
+
+                m_stops = Database.get_instance().get_suggested_stops();
+
+                m_stops.add(googlePlaceModel);
+
+                Database.get_instance().suggest_stops(m_stops);
+
+
+                Database.set_instance();
+
+                //if (m_stops != null) {
+            } else {
+
+                test3(googlePlaceModel);
+
+
+            }
+
+
         }
         googlePlaceAdapter.notifyDataSetChanged();
+    }
+
+    public void test3(GooglePlaceModel googlePlaceModel) {
+        if (Database.get_instance().get_suggested_stops() != null) {
+
+            //m_stops = Database.get_instance().get_caravan_stops();
+            onSaveClick(googlePlaceModel);
+
+
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    test3(googlePlaceModel);
+                }
+            }, 50);
+
+        }
     }
 
 
@@ -923,8 +1001,61 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         if(!Database.get_instance().in_group()){
             Database.get_instance().create_group();
         }
-        startActivity(new Intent(requireContext(), GroupActivity.class));
+
+        Intent intent = new Intent(requireContext(), GroupActivity.class);
+        ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
+        ArrayList<String> placeIDs = new ArrayList<>();
+        if (Database.get_instance().get_suggested_stops() != null) {
+
+            m_stops = Database.get_instance().get_suggested_stops();
+
+
+            for (GooglePlaceModel stop : m_stops) {
+                stops.add(new StopInfo(stop, 0));
+                placeIDs.add(stop.placeID());
+            }
+            //if (m_stops != null) {
+            if (stops.size() != 0) {
+                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
+                startActivity(intent);
+
+            }
+            Database.set_instance();
+
+        } else {
+
+            test2();
+
+
+        }
+        //Database.get_instance().suggest_stops(m_stops);
+        //intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
+        //startActivity(intent);
     }
+
+    public void test2() {
+        if (Database.get_instance().get_suggested_stops() != null) {
+
+            //m_stops = Database.get_instance().get_caravan_stops();
+            open_group_activity();
+
+
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    test2();
+                }
+            }, 50);
+
+        }
+    }
+
+
+
+
+
 
     private void open_directions(){
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
@@ -948,7 +1079,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
             }
 
-
+            Database.set_instance();
 
         } else {
 
@@ -978,6 +1109,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void open_timeline(){
+        /*
         Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
         ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
         ArrayList<String> placeIDs = new ArrayList<>();
@@ -988,6 +1120,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         Database.get_instance().update_route(m_stops);
         intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
         m_timelineLauncher.launch(intent);
+
+         */
     }
 
 

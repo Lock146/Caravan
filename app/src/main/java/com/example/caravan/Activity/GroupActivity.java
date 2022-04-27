@@ -1,6 +1,8 @@
 package com.example.caravan.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.caravan.Adapter.ChatAdapter;
 import com.example.caravan.Adapter.RouteTimelineAdapter;
+import com.example.caravan.Adapter.suggestedStopsAdapter;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.Database;
 import com.example.caravan.Model.ChatMessage;
@@ -36,12 +39,41 @@ public class GroupActivity extends AppCompatActivity {
     private static final CharSequence OPEN_CHAT = "Open Chat";
     private PreferenceManager m_preferenceManager;
     private RecyclerView recyclerView;
-    private RouteTimelineAdapter routeTimelineAdapter;
+    private suggestedStopsAdapter suggestedStopsAdapter;
     private ArrayList<StopInfo> CurrentRoute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("GroupActivity", "onCreateCalled");
+
+        binding = ActivityGroupBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(extras.containsKey(Constants.KEY_STOPS)) {
+            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
+        }
+        else{
+            CurrentRoute = new ArrayList<>();
+        }
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setFitsSystemWindows(true);
+        suggestedStopsAdapter = new suggestedStopsAdapter(CurrentRoute);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setAdapter(suggestedStopsAdapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        //itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+        /*
+
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
         routeTimelineAdapter = new RouteTimelineAdapter(CurrentRoute);
         binding.recyclerView.setAdapter(routeTimelineAdapter);
@@ -59,7 +91,7 @@ public class GroupActivity extends AppCompatActivity {
             CurrentRoute = new ArrayList<>();
         }
         setListeners();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
@@ -94,6 +126,8 @@ public class GroupActivity extends AppCompatActivity {
         else{
             disable_group_functionality();
         }
+        */
+
     }
     private void leave_group(){
         Database.get_instance().leave_group();
