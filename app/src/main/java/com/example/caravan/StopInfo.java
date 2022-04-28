@@ -128,4 +128,21 @@ public class StopInfo implements Parcelable
         parcel.writeString(m_name);
         parcel.writeDouble(m_distance);
     }
+
+    @Override
+    public boolean equals(Object obj){
+        Log.d(TAG, "Equals override called");
+        if(obj instanceof String){
+            String placeID = (String) obj;
+            return m_placeID.equals(placeID);
+        }
+//        Re-enable if we want comparison to GooglePlaceModel
+//        else if(obj instanceof GooglePlaceModel){
+//            GooglePlaceModel other = (GooglePlaceModel)obj;
+//            return m_placeID.equals(other.placeID());
+//        }
+        else{
+            return false;
+        }
+    }
 }
