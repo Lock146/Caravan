@@ -23,23 +23,33 @@ public class StopInfo implements Parcelable
     @SerializedName("distance")
     @Expose
     private double m_distance;
+    @SerializedName("latitude")
+    @Expose
+    private double m_latitude;
+    @SerializedName("longitude")
+    @Expose
+    private double m_longitude;
 
     public StopInfo() {
         m_placeID = "";
         m_name = "";
         m_distance = 0.0;
+        m_latitude = 0.0;
+        m_longitude = 0.0;
     }
 
     public StopInfo(GooglePlaceModel stop, double distance) {
         Log.d(TAG, "StopInfo constructed: " + stop);
         m_placeID = stop.placeID();
         m_name = stop.getName();
-        m_distance = distance;
-    }
-
-    public StopInfo(String placeID, String name, double distance){
-        m_placeID = placeID;
-        m_name = name;
+        if(stop.getGeometry().getLocation() == null) {
+            m_latitude = 0.0;
+            m_longitude = 0.0;
+        }
+        else {
+            m_latitude = stop.getGeometry().getLocation().getLat();
+            m_longitude = stop.getGeometry().getLocation().getLng();
+        }
         m_distance = distance;
     }
 
@@ -57,6 +67,10 @@ public class StopInfo implements Parcelable
         return m_distance;
     }
 
+    public double getLatitude() { return m_latitude; }
+
+    public double getLongitude() { return m_longitude; }
+
     public void setName(String name)
     {
         m_name = name;
@@ -71,11 +85,17 @@ public class StopInfo implements Parcelable
         m_distance = distance;
     }
 
+    public void setLatitude(double latitude) { m_latitude = latitude; }
+
+    public void setLongitude(double longitude) { m_longitude = longitude; }
+
     public static StopInfo get_stop_info(HashMap<String, Object> hashedStop){
         StopInfo stop = new StopInfo();
         stop.setName((String) hashedStop.get("name"));
         stop.setPlaceID((String) hashedStop.get("placeID"));
         stop.setDistance((double) hashedStop.get("distance"));
+        stop.setLatitude((double) hashedStop.get("latitude"));
+        stop.setLongitude((double) hashedStop.get("longitude"));
         return stop;
     }
 
