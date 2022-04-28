@@ -313,20 +313,14 @@ public class Database {
             }
         });
     }
-    public void append_dest_to_suggestions(String destination) {
-        Task<DocumentSnapshot> groupInfo = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+    public void append_to_suggestions(GooglePlaceModel suggestion) {
+        ArrayList<GooglePlaceModel> currentSuggestions = new ArrayList<>(m_suggestedStops);
+        currentSuggestions.add(suggestion);
+        HashMap<String, Object> updatedSuggestions = new HashMap<>();
+        updatedSuggestions.put(Constants.KEY_SUGG_STOPS, currentSuggestions);
+        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
-                .get();
-        groupInfo.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot info) {
-                Object query = info.get(Constants.KEY_SUGG_STOPS);
-                ArrayList<String> suggestions = (ArrayList<String>) query;
-                assert suggestions != null;
-                suggestions.add(destination);
-                //update_route(route);
-            }
-        });
+                .set(updatedSuggestions, SetOptions.merge());
     }
 
     public void update_route(ArrayList<GooglePlaceModel> placeIDs){
@@ -356,7 +350,11 @@ public class Database {
     }
 
     public ArrayList<GooglePlaceModel> get_suggested_stops(){
-        return m_suggestedStops;
+        ArrayList<GooglePlaceModel> suggestions = new ArrayList<>(m_suggestedStops.size());
+        for(int i = 0; i < m_suggestedStops.size(); i++){
+            suggestions.add(i, m_suggestedStops.get(i));
+        }
+        return suggestions;
     }
 
     public void update_suggestion_list(ArrayList<String> placeIDs){
