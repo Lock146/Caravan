@@ -175,7 +175,7 @@ public class Database {
                     .document(m_userID)
                     .update(Constants.KEY_GROUP_ID, null);
 
-            remove_group_listener();
+            cleanup();
         }
     }
 
@@ -400,10 +400,11 @@ public class Database {
                         if(m_groupListenerRegistration != null){
                             m_groupListenerRegistration.remove();
                         }
+                        cleanup();
                         m_groupID = null;
                     }
                     else if(!groupID.equals(m_groupID)){
-                        remove_group_listener();
+                        cleanup();
                         m_groupID = groupID;
                         init_group_listener();
                         dataChanged = true;
@@ -442,13 +443,15 @@ public class Database {
                     // TODO: See if there's another way to do this, it's fucking ugly
                     ArrayList<HashMap<String, Object>> suggestions = (ArrayList<HashMap<String, Object>>) value.get(KEY_SUGG_STOPS);
                     if(suggestions != null) {
-                        m_suggestedStops.clear();
+                        if(m_suggestedStops != null) {
+                            m_suggestedStops.clear();
+                        }
                         for (HashMap<String, Object> suggestion : suggestions) {
                             m_suggestedStops.add(StopInfo.get_stop_info(suggestion));
                         }
                     }
                     else{
-                        m_suggestedStops = null;
+                        m_suggestedStops = new ArrayList<>();
                     }
                 }
             }
@@ -495,5 +498,13 @@ public class Database {
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .update(key, value);
+    }
+
+    private void cleanup(){
+        if(m_suggestedStops != null){
+            m_suggestedStops.clear();
+        }
+
+        remove_group_listener();
     }
 }
