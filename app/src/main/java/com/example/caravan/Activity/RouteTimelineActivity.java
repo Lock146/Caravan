@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Adapter.RouteTimelineAdapter;
 import com.example.caravan.Constant.Constants;
+import com.example.caravan.Database;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,14 +31,15 @@ public class RouteTimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routetimeline);
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if(extras.containsKey(Constants.KEY_STOPS)) {
-            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
-        }
-        else{
-            CurrentRoute = new ArrayList<>();
-        }
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        if(extras.containsKey(Constants.KEY_STOPS)) {
+//            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
+//        }
+//        else{
+//            CurrentRoute = new ArrayList<>();
+//        }
+        CurrentRoute = Database.get_instance().get_caravan_stops();
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
