@@ -499,7 +499,7 @@ public class Database {
         }
     }
 
-    public ArrayList<GooglePlaceModel> get_caravan_stops(){
+    public ArrayList<StopInfo> get_caravan_stops(){
         return m_route;
     }
 
