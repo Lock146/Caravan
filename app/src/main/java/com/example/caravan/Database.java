@@ -72,6 +72,14 @@ public class Database {
     }
     private HashMap<String, ArrayList<Double>> m_memberLocations;
 
+    private static class MemberVotes{
+        public static final int For = 0;
+        public static final int Against = 1;
+        public static final int OwnerVote = 2;
+        public static final int size = 3;
+    }
+    private HashMap<String, ArrayList<Integer>> m_votes;
+
     public static Database get_instance(){
         if(m_instance == null){
             m_instance = new Database();
