@@ -389,6 +389,17 @@ public class Database {
         record_vote(placeID, false);
     }
 
+    public boolean is_owner() {
+        if(m_owner != null && m_userID != null) {
+            Log.d(TAG, "is_owner -> " + m_owner.equals(m_userID));
+            return m_owner.equals(m_userID);
+        }
+        else{
+            Log.d(TAG, "is_owner: either m_owner or m_userID is null");
+            return false;
+        }
+    }
+
     private Database(){
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             Log.d(TAG, "Unable to get current Firebase user");
@@ -526,6 +537,14 @@ public class Database {
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .update(key, value);
+    }
+
+    private void update_group_map(String key, Object value){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(key, value);
+        m_database.collection(KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .set(map, SetOptions.merge());
     }
 
     private void record_vote(String placeID, boolean vote){
