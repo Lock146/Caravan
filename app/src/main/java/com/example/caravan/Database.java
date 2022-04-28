@@ -123,7 +123,7 @@ public class Database {
     }
 
     public String get_user_email(String userID){
-        if(m_members.containsKey(userID)){
+        if(m_members != null && m_members.containsKey(userID)){
             return Objects.requireNonNull(m_members.get(userID)).get(MemberData.Email);
         }
         else{
