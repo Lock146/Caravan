@@ -496,6 +496,7 @@ public class Database {
         return m_route;
     }
 
+    // Compile the user's information needed for the group
     private HashMap<String, ArrayList<String>> generate_user_info(){
         ArrayList<String> userInfo = new ArrayList<>(MemberData.size);
         userInfo.add(MemberData.Email, m_email);
@@ -506,6 +507,7 @@ public class Database {
         return userInfoMap;
     }
 
+    // Upload user info to the group on Firestore
     private void upload_user_info(){
         assert m_groupID != null;
         HashMap<String, Object> userInfo = new HashMap<>();
@@ -518,6 +520,7 @@ public class Database {
                 .addOnCompleteListener(result -> Log.d(TAG, "Completed adding member info"));
     }
 
+    // Helper function to update a field for the user's info in Firestore
     private void update_user_field(String key, String value){
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
@@ -551,7 +554,7 @@ public class Database {
         }
     }
 
-    // cleanup() is for getting the database in a state ready for another group
+    // cleanup() is for getting the database (local class) in a state ready for another group
     private void cleanup(){
         remove_group_listener();
         if(m_suggestedStops != null){
