@@ -8,6 +8,7 @@ import static com.example.caravan.Constant.Constants.KEY_GROUP_MEMBERS;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_OWNER;
 import static com.example.caravan.Constant.Constants.KEY_MEMBER_LOCATIONS;
+import static com.example.caravan.Constant.Constants.KEY_SUGG_STOPS;
 
 import android.location.Location;
 import android.net.Uri;
@@ -91,12 +92,14 @@ public class Database {
 
     public void create_group(){
         // Create group
+        ArrayList<GooglePlaceModel> suggestedStops = new ArrayList<>();
         DocumentReference group = m_database.collection(KEY_COLLECTION_GROUPS)
                 .document();
         m_groupID = group.getId();
         Map<String, Object> groupInfo = new HashMap<>();
         groupInfo.put(KEY_GROUP_OWNER, m_userID);
         groupInfo.put(KEY_GROUP_NAME, null);
+        groupInfo.put(KEY_SUGG_STOPS, suggestedStops);
         group.set(groupInfo)
                 .addOnSuccessListener(result -> Log.d(TAG, "Successfully created group"))
                 .addOnFailureListener(error -> Log.d(TAG, "Error creating group: " + error))

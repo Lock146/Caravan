@@ -735,6 +735,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d("HomeFragment", "onSaveClick called. GooglePlaceMode: " + googlePlaceModel.getName());
         if(googlePlaceModel.in_timeline()){
+
+            Log.d("HomeFragment", "onSaveClick called. GooglePlaceMode: " + "REMOVE");
             if (Database.get_instance().get_suggested_stops() != null) {
 
 
@@ -762,6 +764,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 m_stops.remove(googlePlaceModel);
 
+                googlePlaceAdapter.notifyDataSetChanged();
+
                 Database.get_instance().suggest_stops(m_stops);
 
                 Database.set_instance();
@@ -778,7 +782,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         }
         else{
-
+            Log.d("HomeFragment", "onSaveClick called. GooglePlaceMode: " + " ADD");
 
             if (Database.get_instance().get_suggested_stops() != null) {
 
@@ -789,7 +793,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 m_stops.add(googlePlaceModel);
 
                 Database.get_instance().suggest_stops(m_stops);
-
+                googlePlaceAdapter.notifyDataSetChanged();
 
                 Database.set_instance();
 
@@ -803,7 +807,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
 
         }
-        googlePlaceAdapter.notifyDataSetChanged();
+
     }
 
     public void test3(GooglePlaceModel googlePlaceModel) {
@@ -1009,6 +1013,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         ArrayList<String> placeIDs = new ArrayList<>();
         if (Database.get_instance().get_suggested_stops() != null) {
 
+
+
             m_stops = Database.get_instance().get_suggested_stops();
 
 
@@ -1017,11 +1023,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 placeIDs.add(stop.placeID());
             }
             //if (m_stops != null) {
-            if (stops.size() != 0) {
-                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-                startActivity(intent);
+            //if (stops.size() != 0) {
 
-            }
+
+           // }
+
+            intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
+            startActivity(intent);
             Database.set_instance();
 
         } else {
@@ -1030,6 +1038,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
 
         }
+
         //Database.get_instance().suggest_stops(m_stops);
         //intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
         //startActivity(intent);
