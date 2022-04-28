@@ -75,14 +75,14 @@ public class GroupChatActivity extends AppCompatActivity {
 
             try{
                 JSONArray tokens = new JSONArray();
-                tokens.put("fZtxACrzRmS5Ag2O5lrl8i:APA91bHq4nt0bi5DTIkKqSP3nKBPljgm5K2P3p6rFfwb72ZOHmisTVL_h7VaNgE9xRbCyCLTrTftwauNK80PIvAJItFzxxHER0SuQfd958DcqbsHjbiC0qf2wubHSL879CPz7ARKPNoC");
+                tokens.put("f3PF23maR5WevKikeHl5vE:APA91bFI_yMgbpWzVmPsGrP0qToiXnSuGVHFUCFnvlwnY5cZHc4BoMQZObXeXy_86-q9LW8hvce4yojpY2MJSZUT-hSPoI64fBY8q9dBbtfUF4j1DT9tGp4m6yvGEgwLW7oIlRFOy6fR");
                 //tokens.put(receiverUser.token);
                 //Log.e(TAG, "sendMessage: " + receiverUser.token.toString() );
 
                 JSONObject data = new JSONObject();
                 data.put(Constants.KEY_USER_ID, "c91Fm3d4NoYsVIcItySJwwKXYyq2");
                 data.put(Constants.KEY_NAME, "Kyler Parker");
-                data.put(Constants.KEY_FCM_TOKEN, "e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
+                //data.put(Constants.KEY_FCM_TOKEN, "e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
                 data.put(Constants.KEY_MESSAGE, "This is the message");
 
 
