@@ -382,6 +382,8 @@ public class Database {
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         m_members = new HashMap<>();
+        m_suggestedStops = new ArrayList<>();
+        m_route = new ArrayList<>();
         init_user_listener();
     }
 
