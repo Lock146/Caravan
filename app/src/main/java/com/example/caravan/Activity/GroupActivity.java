@@ -9,11 +9,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.textclassifier.ConversationActions;
 import android.widget.Toast;
 
 import com.example.caravan.Database;
 import com.example.caravan.R;
 import com.example.caravan.databinding.ActivityGroupBinding;
+
+import java.lang.Object;
 
 public class GroupActivity extends AppCompatActivity {
     private ActivityGroupBinding binding;
@@ -81,6 +84,7 @@ public class GroupActivity extends AppCompatActivity {
    // }
 
     private void open_group_chat(){
+
         startActivity(new Intent(this, GroupChatActivity.class));
     }
 

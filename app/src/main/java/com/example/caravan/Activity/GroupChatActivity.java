@@ -85,6 +85,7 @@ public class GroupChatActivity extends AppCompatActivity {
                 data.put(Constants.KEY_FCM_TOKEN, "e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
                 data.put(Constants.KEY_MESSAGE, "This is the message");
 
+
                 JSONObject body = new JSONObject();
                 body.put(Constants.REMOTE_MSG_DATA, data);
                 body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
