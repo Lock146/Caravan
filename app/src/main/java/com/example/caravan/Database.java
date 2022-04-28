@@ -35,11 +35,13 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class Database {
     private static final String TAG = Database.class.getSimpleName();
@@ -139,7 +141,7 @@ public class Database {
     }
 
     public String get_user_username(String userID){
-        if(m_members.containsKey(userID)){
+        if(m_members != null && m_members.containsKey(userID)){
             return Objects.requireNonNull(m_members.get(userID)).get(MemberData.Name);
         }
         else{
@@ -489,6 +491,9 @@ public class Database {
                         m_suggestedStops = new ArrayList<>();
                     }
                     m_votes = (HashMap<String, HashMap<String, ArrayList<String>>>) value.get(Constants.KEY_VOTE);
+                    if(m_votes != null && is_owner()){
+                        tally_votes();
+                    }
                 }
             }
         };
@@ -572,6 +577,53 @@ public class Database {
                     .document(m_groupID)
                     .set(voteMap, SetOptions.merge());
         }
+    }
+
+    private void tally_votes(){
+        if(is_owner()) {
+            Set<String> places = m_votes.keySet();
+            for (String place : places) {
+                HashMap<String, ArrayList<String>> votes = m_votes.get(place);
+                int yes = votes.get(MemberVotes.For).size();
+                int no = votes.get(MemberVotes.Against).size();
+                int memberCount = m_members.size();
+                if (yes + no == memberCount) {
+                    if (yes > no) {
+                        add_suggested_stop(place);
+                    } else if (yes < no) {
+                        remove_suggested_stop(place);
+                    } else {
+                        if (votes.get(MemberVotes.For).contains(m_userID)){
+                            add_suggested_stop(place);
+                        }
+                        else{
+                            remove_suggested_stop(place);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void remove_suggested_stop(String placeID){
+        assert m_votes != null;
+        HashMap<String, HashMap<String, ArrayList<String>>> votes = new HashMap<>(m_votes);
+        votes.remove(placeID);
+        update_group_map(Constants.KEY_VOTE, votes);
+
+        assert m_suggestedStops != null;
+        ArrayList<StopInfo> stops = new ArrayList<>(m_suggestedStops);
+        for(int i = 0; i < stops.size(); i++){
+            if(stops.get(i).equals(placeID)){
+                stops.remove(i);
+                break;
+            }
+        }
+        update_group_map(KEY_SUGG_STOPS, stops);
+    }
+
+    private void add_suggested_stop(String placeID){
+
     }
 
     // cleanup() is for getting the database (local class) in a state ready for another group
