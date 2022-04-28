@@ -23,10 +23,8 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
     double MILES = 1609.344;
     double route_miles;
     ArrayList<StopInfo> m_suggestions;
-    public suggestedStopsAdapter(ArrayList<GooglePlaceModel> suggestions) {
-        for(GooglePlaceModel suggestion : suggestions){
-            m_suggestions.add(new StopInfo(suggestion, 0));
-        }
+    public suggestedStopsAdapter(ArrayList<StopInfo> suggestions) {
+        m_suggestions = suggestions;
     }
 
     @NonNull

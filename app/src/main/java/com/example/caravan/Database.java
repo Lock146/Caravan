@@ -54,7 +54,7 @@ public class Database {
     private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
-    private ArrayList<GooglePlaceModel> m_suggestedStops;
+    private ArrayList<StopInfo> m_suggestedStops;
     private ArrayList<GooglePlaceModel> m_route;
     private static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
@@ -314,8 +314,8 @@ public class Database {
         });
     }
     public void append_to_suggestions(GooglePlaceModel suggestion) {
-        ArrayList<GooglePlaceModel> currentSuggestions = new ArrayList<>(m_suggestedStops);
-        currentSuggestions.add(suggestion);
+        ArrayList<StopInfo> currentSuggestions = new ArrayList<>(m_suggestedStops);
+        currentSuggestions.add(new StopInfo(suggestion, 0.0));
         HashMap<String, Object> updatedSuggestions = new HashMap<>();
         updatedSuggestions.put(Constants.KEY_SUGG_STOPS, currentSuggestions);
         m_database.collection(Constants.KEY_COLLECTION_GROUPS)
@@ -349,12 +349,8 @@ public class Database {
         }
     }
 
-    public ArrayList<GooglePlaceModel> get_suggested_stops(){
-        ArrayList<GooglePlaceModel> suggestions = new ArrayList<>(m_suggestedStops.size());
-        for(int i = 0; i < m_suggestedStops.size(); i++){
-            suggestions.add(i, m_suggestedStops.get(i));
-        }
-        return suggestions;
+    public ArrayList<StopInfo> get_suggested_stops(){
+        return m_suggestedStops;
     }
 
     public void update_suggestion_list(ArrayList<String> placeIDs){
@@ -441,7 +437,7 @@ public class Database {
                     m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
                     m_memberLocations = (HashMap<String, ArrayList<Double>>) value.get(KEY_MEMBER_LOCATIONS);
                     m_route = (ArrayList<GooglePlaceModel>) value.get(KEY_ROUTE);
-                    m_suggestedStops = (ArrayList<GooglePlaceModel>) value.get(KEY_SUGG_STOPS);
+                    m_suggestedStops = (ArrayList<StopInfo>) value.get(KEY_SUGG_STOPS);
                 }
             }
         };

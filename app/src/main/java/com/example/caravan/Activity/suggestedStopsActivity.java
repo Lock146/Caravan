@@ -26,7 +26,7 @@ import java.util.List;
 public class suggestedStopsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private suggestedStopsAdapter suggestedStopsAdapters;
-    private ArrayList<GooglePlaceModel> CurrentSuggestions;
+    private ArrayList<StopInfo> CurrentSuggestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class suggestedStopsActivity extends AppCompatActivity {
 
             return false;
         }
-        GooglePlaceModel deletedRoute;
+        StopInfo deletedRoute;
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -81,7 +81,7 @@ public class suggestedStopsActivity extends AppCompatActivity {
             CurrentSuggestions.remove(position);
 
             suggestedStopsAdapters.notifyItemRemoved(position);
-            Snackbar.make(recyclerView, deletedRoute.getName(), Snackbar.LENGTH_LONG)
+            Snackbar.make(recyclerView, deletedRoute.name(), Snackbar.LENGTH_LONG)
                     .setAction("Undo", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
