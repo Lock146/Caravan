@@ -307,20 +307,10 @@ public class Database {
     }
 
     @SuppressWarnings("unchecked")
-    public void append_dest_to_route(String destination){
-        Task<DocumentSnapshot> groupInfo = m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID)
-                .get();
-        groupInfo.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot info) {
-                Object query = info.get(Constants.KEY_ROUTE);
-                ArrayList<GooglePlaceModel> route = (ArrayList<GooglePlaceModel>) query;
-                assert route != null;
-                //route.add(destination);
-                update_route(route);
-            }
-        });
+    public void append_to_route(StopInfo stop){
+        ArrayList<StopInfo> route = m_route != null ? new ArrayList<>(m_route) : new ArrayList<>();
+        route.add(stop);
+        update_group_map(Constants.KEY_ROUTE, route);
     }
 
     public void append_to_suggestions(GooglePlaceModel suggestion) {
