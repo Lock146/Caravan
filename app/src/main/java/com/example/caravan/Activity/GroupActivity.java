@@ -110,7 +110,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
-        binding.addUser.setOnClickListener(view -> add_user());
+        //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
         binding.groupMembership.setOnClickListener(view -> leave_group());
     }

@@ -16,14 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 //import androidx.work.OneTimeWorkRequest;
 //import androidx.work.WorkManager;
 
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.R;
 import com.example.caravan.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 //import androidx.work.OneTimeWorkRequest;
@@ -48,12 +49,12 @@ public class MessagingServices extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         User user = new User();
-        user.userID = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_USER_ID);
-        user.name = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_NAME);
+        //user.userID = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_USER_ID);
+       // user.name = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_NAME);
         //user.token = remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_FCM_TOKEN);
 
         int notificationId = new Random().nextInt();
-        String channelId = "char_message";
+        String channelId = "chat_message";
 
         Intent intent = new Intent(this, GroupChatActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -63,7 +64,8 @@ public class MessagingServices extends FirebaseMessagingService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
         builder.setSmallIcon(R.drawable.ic_notifications);
         //needs to be changed
-        builder.setContentTitle(user.name);
+
+        builder.setContentTitle(Constants.KEY_NAME);
         builder.setContentText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE));
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE)));
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
@@ -72,7 +74,7 @@ public class MessagingServices extends FirebaseMessagingService {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence channelName = "chat Message";
-            String channelDescription = "This notification is used for chat messsages";
+            String channelDescription = "This notification is used for chat messages";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
             channel.setDescription(channelDescription);

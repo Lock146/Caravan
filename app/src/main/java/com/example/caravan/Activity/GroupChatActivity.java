@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.TintTypedArray;
 
 import com.example.caravan.Adapter.ChatAdapter;
 import com.example.caravan.Database;
@@ -31,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.security.acl.Group;
 
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,7 +105,28 @@ public class GroupChatActivity extends AppCompatActivity {
                     message.dateTime = getReadableDateTime(change.getDocument().getDate(Constants.KEY_TIMESTAMP));
                     message.dateObject = change.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     m_chatMessages.add(message);
-                    sendNotification("message received");
+                    //sendNotification("message received");
+                    if (!isReceiverAvalaible){
+                        try{
+                            JSONArray tokens = new JSONArray();
+                            tokens.put(receiverUser.token);
+
+                            JSONObject data = new JSONObject();
+                            data.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                            data.put(Constants.KEY_NAME, getString(Constants.KEY_NAME));
+                            data.put(Constants.KEY_FCM_TOKEN, getString(Constants.KEY_FCM_TOKEN));
+                            data.put(Constants.KEY_MESSAGE, getString(Constants.KEY_MESSAGE));
+
+                            JSONObject body = new JSONObject();
+                            body.put(Constants.REMOTE_MSG_DATA, data);
+                            body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
+
+                            sendNotification(body.toString());
+                        }
+                        catch (Exception exception){
+                            showToast(exception.getMessage());
+                        }
+                    }
                 }
             }
             Collections.sort(m_chatMessages, (msg1, msg2) -> msg1.dateObject.compareTo(msg2.dateObject));

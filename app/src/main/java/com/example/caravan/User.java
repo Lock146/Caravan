@@ -10,5 +10,5 @@ import com.example.caravan.listeners.UserListener;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    public String name, email, userID;
+    public String name, email, userID, token;
 }

@@ -21,6 +21,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.CurrentLocationUpdateTask;
 import com.example.caravan.Database;
@@ -38,7 +39,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.Constants;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Timer;
@@ -234,11 +234,11 @@ public class MainActivity extends AppCompatActivity {
     //}
         //});
 
-    public void runtimeEnableAutoInit() {
+    //public void runtimeEnableAutoInit() {
         // [START fcm_runtime_enable_auto_init]
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        //FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         // [END fcm_runtime_enable_auto_init]
-    }
+   // }
 
     //public void deviceGroupUpstream() {
         // [START fcm_device_group_upstream]
