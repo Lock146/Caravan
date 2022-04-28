@@ -734,7 +734,22 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
-        Database.get_instance().append_to_suggestions(googlePlaceModel);
+        if(Database.get_instance().get_suggested_stops() != null){
+            ArrayList<StopInfo> suggestions = new ArrayList<StopInfo>(Database.get_instance().get_suggested_stops());
+            boolean contains = false;
+            for(StopInfo suggestion : suggestions){
+                if(suggestion.equals(googlePlaceModel.placeID())){
+                    contains = true;
+                    break;
+                }
+            }
+            if(!contains){
+                Database.get_instance().append_to_suggestions(googlePlaceModel);
+            }
+        }
+        else{
+            Database.get_instance().append_to_suggestions(googlePlaceModel);
+        }
 
 
         // TODO: Add ability to remove stops
