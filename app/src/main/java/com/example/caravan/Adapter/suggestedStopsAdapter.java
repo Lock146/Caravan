@@ -10,9 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAdapter.ViewHolder>{
@@ -20,9 +22,11 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
 
     double MILES = 1609.344;
     double route_miles;
-    List<StopInfo> Route;
-    public suggestedStopsAdapter(List<StopInfo> route) {
-        Route = route;
+    ArrayList<StopInfo> m_suggestions;
+    public suggestedStopsAdapter(ArrayList<GooglePlaceModel> suggestions) {
+        for(GooglePlaceModel suggestion : suggestions){
+            m_suggestions.add(new StopInfo(suggestion, 0));
+        }
     }
 
     @NonNull
@@ -38,14 +42,14 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        route_miles = Route.get(position).distance()/MILES;
+        route_miles = m_suggestions.get(position).distance()/MILES;
         holder.rowCountTextView.setText(String.valueOf(route_miles));
-        holder.textView.setText(Route.get(position).name());
+        holder.textView.setText(m_suggestions.get(position).name());
     }
 
     @Override
     public int getItemCount() {
-        return Route.size();
+        return m_suggestions.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -71,7 +75,7 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(view.getContext(), Route.get(getAdapterPosition()).name(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), m_suggestions.get(getAdapterPosition()).name(), Toast.LENGTH_SHORT).show();
         }
     }
 }
