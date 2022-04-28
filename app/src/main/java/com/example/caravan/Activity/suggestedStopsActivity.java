@@ -81,7 +81,7 @@ public class suggestedStopsActivity extends AppCompatActivity {
             CurrentSuggestions.remove(position);
 
             suggestedStopsAdapters.notifyItemRemoved(position);
-            Snackbar.make(recyclerView, deletedRoute.name(), Snackbar.LENGTH_LONG)
+            Snackbar.make(recyclerView, deletedRoute.getName(), Snackbar.LENGTH_LONG)
                     .setAction("Undo", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

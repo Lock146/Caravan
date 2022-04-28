@@ -4,12 +4,30 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.IOException;
+import java.io.ObjectStreamException;
+
 public class StopInfo implements Parcelable
 {
     private static final String TAG = StopInfo.class.getSimpleName();
+    @SerializedName("placeID")
+    @Expose
     private String m_placeID;
+    @SerializedName("name")
+    @Expose
     private String m_name;
+    @SerializedName("distance")
+    @Expose
     private double m_distance;
+
+    public StopInfo() {
+        m_placeID = "";
+        m_name = "";
+        m_distance = 0.0;
+    }
 
     public StopInfo(GooglePlaceModel stop, double distance) {
         Log.d(TAG, "StopInfo constructed: " + stop);
@@ -18,18 +36,38 @@ public class StopInfo implements Parcelable
         m_distance = distance;
     }
 
-    public String name()
+    public StopInfo(String placeID, String name, double distance){
+        m_placeID = placeID;
+        m_name = name;
+        m_distance = distance;
+    }
+
+    public String getName()
     {
         return m_name;
     }
 
-    public String placeID(){
+    public String getPlaceID(){
         return m_placeID;
     }
 
-    public double distance()
+    public double getDistance()
     {
         return m_distance;
+    }
+
+    public void setName(String name)
+    {
+        m_name = name;
+    }
+
+    public void setPlaceID(String placeID){
+        m_placeID = placeID;
+    }
+
+    public void setDistance(double distance)
+    {
+        m_distance = distance;
     }
 
     protected StopInfo(Parcel in) {

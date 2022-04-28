@@ -40,9 +40,9 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        route_miles = m_suggestions.get(position).distance()/MILES;
+        route_miles = m_suggestions.get(position).getDistance()/MILES;
         holder.rowCountTextView.setText(String.valueOf(route_miles));
-        holder.textView.setText(m_suggestions.get(position).name());
+        holder.textView.setText(m_suggestions.get(position).getName());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(view.getContext(), m_suggestions.get(getAdapterPosition()).name(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), m_suggestions.get(getAdapterPosition()).getName(), Toast.LENGTH_SHORT).show();
         }
     }
 }

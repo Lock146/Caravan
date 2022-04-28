@@ -439,7 +439,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     private static int get_index_of_stop(ArrayList<StopInfo> stops, String placeID){
         for(int idx = 0; idx < stops.size(); idx += 1){
-            if(stops.get(idx).placeID().equals(placeID)){
+            if(stops.get(idx).getPlaceID().equals(placeID)){
                 return idx;
             }
         }

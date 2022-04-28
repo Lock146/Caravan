@@ -439,7 +439,21 @@ public class Database {
                     m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
                     m_memberLocations = (HashMap<String, ArrayList<Double>>) value.get(KEY_MEMBER_LOCATIONS);
                     m_route = (ArrayList<GooglePlaceModel>) value.get(KEY_ROUTE);
-                    m_suggestedStops = (ArrayList<StopInfo>) value.get(KEY_SUGG_STOPS);
+                    // TODO: See if there's another way to do this, it's fucking ugly
+                    ArrayList<HashMap<String, Object>> suggestions = (ArrayList<HashMap<String, Object>>) value.get(KEY_SUGG_STOPS);
+                    if(suggestions != null) {
+                        m_suggestedStops.clear();
+                        for (HashMap<String, Object> suggestion : suggestions) {
+                            StopInfo stop = new StopInfo();
+                            stop.setName((String) suggestion.get("name"));
+                            stop.setPlaceID((String) suggestion.get("placeID"));
+                            stop.setDistance((double) suggestion.get("distance"));
+                            m_suggestedStops.add(stop);
+                        }
+                    }
+                    else{
+                        m_suggestedStops = null;
+                    }
                 }
             }
         };
