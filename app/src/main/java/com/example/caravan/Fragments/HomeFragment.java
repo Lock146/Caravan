@@ -133,7 +133,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private EventListener<DocumentSnapshot> m_onGroupChange;
-    private ArrayList<GooglePlaceModel> m_stops;
+    private ArrayList<StopInfo> m_stops;
     private ActivityResultLauncher<Intent> m_timelineLauncher;
     public LatLng testLocation;
 
@@ -152,11 +152,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         Intent intent = result.getData();
                         if(intent != null) {
                             ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
-                            ArrayList<GooglePlaceModel> updatedStops = new ArrayList<>();
-                            for (GooglePlaceModel stop : m_stops) {
-                                int idx = get_index_of_stop(stops, stop.placeID());
+                            ArrayList<StopInfo> updatedStops = new ArrayList<>();
+                            for (StopInfo stop : m_stops) {
+                                int idx = get_index_of_stop(stops, stop.getPlaceID());
                                 if (idx == -1) {
-                                    mark_as_removed(stop.placeID());
+                                    mark_as_removed(stop.getPlaceID());
                                 } else {
                                     updatedStops.add(m_stops.get(idx));
                                 }
@@ -1085,8 +1085,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             m_stops = Database.get_instance().get_caravan_stops();
 
 
-            for (GooglePlaceModel stop : m_stops) {
-                destinations.add(new DestinationInfo(stop.placeID(), stop.getGeometry().getLocation().getLat(), stop.getGeometry().getLocation().getLng()));
+            for (StopInfo stop : m_stops) {
+                destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
             }
             //if (m_stops != null) {
             if (destinations.size() != 0) {
@@ -1137,6 +1137,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         m_timelineLauncher.launch(intent);
 
          */
+        Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
+        startActivity(intent);
     }
 
 
