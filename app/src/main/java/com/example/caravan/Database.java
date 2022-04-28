@@ -21,6 +21,7 @@ import com.example.caravan.Constant.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -58,7 +59,7 @@ public class Database {
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private ArrayList<StopInfo> m_suggestedStops;
-    private ArrayList<GooglePlaceModel> m_route;
+    private ArrayList<StopInfo> m_route;
     private static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
@@ -80,6 +81,7 @@ public class Database {
         public static final String Against = "against";
     }
     private HashMap<String, HashMap<String, ArrayList<String>>> m_votes;
+    private HashMap<String, Object> m_batchFieldUpdate;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -477,6 +479,7 @@ public class Database {
                     else{
                         m_suggestedStops = new ArrayList<>();
                     }
+
                     m_votes = (HashMap<String, HashMap<String, ArrayList<String>>>) value.get(Constants.KEY_VOTE);
                     if(m_votes != null && is_owner()){
                         tally_votes();
@@ -532,11 +535,22 @@ public class Database {
     }
 
     private void update_group_map(String key, Object value){
-        HashMap<String, Object> map = new HashMap<>();
-        map.put(key, value);
+        HashMap<String, Object> update = new HashMap<>();
+        update.put(key, value);
         m_database.collection(KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
-                .set(map, SetOptions.merge());
+                .set(update, SetOptions.merge());
+    }
+
+    private void batch_field_update(){
+        m_database.collection(KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .set(m_batchFieldUpdate, SetOptions.merge());
+        m_batchFieldUpdate.clear();
+    }
+
+    private void add_to_batch(String key, Object value){
+        m_batchFieldUpdate.put(key, value);
     }
 
     private void record_vote(String placeID, boolean vote){
@@ -575,29 +589,22 @@ public class Database {
                 int no = votes.get(MemberVotes.Against).size();
                 int memberCount = m_members.size();
                 if (yes + no == memberCount) {
+                    remove_from_voting(place);
+                    remove_suggested_stop(place);
                     if (yes > no) {
                         add_suggested_stop(place);
-                    } else if (yes < no) {
-                        remove_suggested_stop(place);
-                    } else {
+                    } else if (yes == no) {
                         if (votes.get(MemberVotes.For).contains(m_userID)){
                             add_suggested_stop(place);
                         }
-                        else{
-                            remove_suggested_stop(place);
-                        }
                     }
+                    batch_field_update();
                 }
             }
         }
     }
 
     private void remove_suggested_stop(String placeID){
-        assert m_votes != null;
-        HashMap<String, HashMap<String, ArrayList<String>>> votes = new HashMap<>(m_votes);
-        votes.remove(placeID);
-        update_group_map(Constants.KEY_VOTE, votes);
-
         assert m_suggestedStops != null;
         ArrayList<StopInfo> stops = new ArrayList<>(m_suggestedStops);
         for(int i = 0; i < stops.size(); i++){
@@ -606,11 +613,28 @@ public class Database {
                 break;
             }
         }
-        update_group_map(KEY_SUGG_STOPS, stops);
+        add_to_batch(KEY_SUGG_STOPS, stops);
     }
 
     private void add_suggested_stop(String placeID){
+        //remove_suggested_stop(placeID);
+        ArrayList<StopInfo> route = m_route != null ? new ArrayList<>(m_route) : new ArrayList<>();
+        for(StopInfo suggestion : m_suggestedStops){
+            if(suggestion.equals(placeID)){
+                //append_to_route(suggestion);
+                route.add(suggestion);
+                break;
+            }
+        }
+        add_to_batch(Constants.KEY_ROUTE, route);
+    }
 
+    private void remove_from_voting(String placeID){
+        assert m_votes != null;
+        HashMap<String, HashMap<String, ArrayList<String>>> votes = new HashMap<>(m_votes);
+        votes.remove(placeID);
+
+        add_to_batch(Constants.KEY_VOTE, votes);
     }
 
     // cleanup() is for getting the database (local class) in a state ready for another group
@@ -621,5 +645,7 @@ public class Database {
         }
 
         m_votes = new HashMap<>();
+        m_batchFieldUpdate = new HashMap<>();
+        m_route = new ArrayList<>();
     }
 }
