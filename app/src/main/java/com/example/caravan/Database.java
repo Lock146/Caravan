@@ -47,6 +47,7 @@ public class Database {
     private FirebaseFirestore m_database;
     private String m_userID;
     private String m_groupID;
+    private String m_owner;
     private String m_email;
     private String m_profilePicture;
     private String m_displayName;
@@ -445,6 +446,7 @@ public class Database {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Log.d(TAG, "Group event: " + (value != null ? value.toString() : "Error: " + error));
                 if(value != null){
+                    m_owner = value.get(KEY_GROUP_OWNER, String.class);
                     m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
                     m_memberLocations = (HashMap<String, ArrayList<Double>>) value.get(KEY_MEMBER_LOCATIONS);
                     m_route = (ArrayList<GooglePlaceModel>) value.get(KEY_ROUTE);
