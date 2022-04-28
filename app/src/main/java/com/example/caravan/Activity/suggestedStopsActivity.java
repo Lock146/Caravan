@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Adapter.suggestedStopsAdapter;
 import com.example.caravan.Constant.Constants;
+import com.example.caravan.Database;
+import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,26 +26,21 @@ import java.util.List;
 public class suggestedStopsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private suggestedStopsAdapter suggestedStopsAdapters;
-    private ArrayList<StopInfo> CurrentSuggestions;
+    private ArrayList<GooglePlaceModel> CurrentSuggestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routetimeline);
         Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if(extras.containsKey(Constants.KEY_STOPS)) {
-            CurrentSuggestions = extras.getParcelableArrayList(Constants.KEY_STOPS);
-        }
-        else{
-            CurrentSuggestions = new ArrayList<>();
-        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
-        suggestedStopsAdapters = new suggestedStopsAdapter(CurrentSuggestions);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        CurrentSuggestions = Database.get_instance().get_suggested_stops();
+        suggestedStopsAdapters = new suggestedStopsAdapter(CurrentSuggestions);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(suggestedStopsAdapters);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
@@ -55,9 +52,9 @@ public class suggestedStopsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        Intent result = new Intent(Intent.ACTION_GET_CONTENT);
-        result.putParcelableArrayListExtra(Constants.KEY_STOPS, CurrentSuggestions);
-        setResult(RESULT_OK, result);
+//        Intent result = new Intent(Intent.ACTION_GET_CONTENT);
+//        result.putParcelableArrayListExtra(Constants.KEY_STOPS, CurrentSuggestions);
+//        setResult(RESULT_OK, result);
         super.onBackPressed();
     }
 
@@ -73,7 +70,7 @@ public class suggestedStopsActivity extends AppCompatActivity {
 
             return false;
         }
-        StopInfo deletedRoute;
+        GooglePlaceModel deletedRoute;
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -84,7 +81,7 @@ public class suggestedStopsActivity extends AppCompatActivity {
             CurrentSuggestions.remove(position);
 
             suggestedStopsAdapters.notifyItemRemoved(position);
-            Snackbar.make(recyclerView, deletedRoute.name(), Snackbar.LENGTH_LONG)
+            Snackbar.make(recyclerView, deletedRoute.getName(), Snackbar.LENGTH_LONG)
                     .setAction("Undo", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
