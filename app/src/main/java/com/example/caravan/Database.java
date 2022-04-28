@@ -314,7 +314,7 @@ public class Database {
         });
     }
     public void append_to_suggestions(GooglePlaceModel suggestion) {
-        ArrayList<StopInfo> currentSuggestions = new ArrayList<>(m_suggestedStops);
+        ArrayList<StopInfo> currentSuggestions = m_suggestedStops == null ? new ArrayList<>() : new ArrayList<>(m_suggestedStops);
         currentSuggestions.add(new StopInfo(suggestion, 0.0));
         HashMap<String, Object> updatedSuggestions = new HashMap<>();
         updatedSuggestions.put(Constants.KEY_SUGG_STOPS, currentSuggestions);
