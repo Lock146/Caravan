@@ -549,11 +549,11 @@ public class Database {
     }
 
     private void cleanup(){
+        remove_group_listener();
         if(m_suggestedStops != null){
             m_suggestedStops.clear();
         }
 
         m_votes = new HashMap<>();
-        remove_group_listener();
     }
 }
