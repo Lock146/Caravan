@@ -74,12 +74,10 @@ public class Database {
     private HashMap<String, ArrayList<Double>> m_memberLocations;
 
     private static class MemberVotes{
-        public static final int For = 0;
-        public static final int Against = 1;
-        public static final int OwnerVote = 2;
-        public static final int size = 3;
+        public static final String For = "for";
+        public static final String Against = "against";
     }
-    private HashMap<String, ArrayList<Integer>> m_votes;
+    private HashMap<String, HashMap<String, ArrayList<String>>> m_votes;
 
     public static Database get_instance(){
         if(m_instance == null){
@@ -382,6 +380,14 @@ public class Database {
         }
     }
 
+    public void vote_for(String placeID){
+        record_vote(placeID, true);
+    }
+
+    public void vote_against(String placeID){
+        record_vote(placeID, false);
+    }
+
     private Database(){
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             Log.d(TAG, "Unable to get current Firebase user");
@@ -394,6 +400,13 @@ public class Database {
         m_suggestedStops = new ArrayList<>();
         m_route = new ArrayList<>();
         init_user_listener();
+    }
+
+    private HashMap<String, ArrayList<String>> init_votes(){
+        HashMap<String, ArrayList<String>> votes = new HashMap<>();
+        votes.put(MemberVotes.For, new ArrayList<>());
+        votes.put(MemberVotes.Against, new ArrayList<>());
+        return votes;
     }
 
     private void init_user_listener(){
@@ -463,6 +476,7 @@ public class Database {
                     else{
                         m_suggestedStops = new ArrayList<>();
                     }
+                    m_votes = (HashMap<String, HashMap<String, ArrayList<String>>>) value.get(Constants.KEY_VOTE);
                 }
             }
         };
@@ -510,11 +524,36 @@ public class Database {
                 .update(key, value);
     }
 
+    private void record_vote(String placeID, boolean vote){
+        HashMap<String, HashMap<String, ArrayList<String>>> votes = m_votes == null ? new HashMap<>() : new HashMap<>(m_votes);
+        if(!votes.containsKey(placeID)) {
+            votes.put(placeID, init_votes());
+        }
+        HashMap<String, ArrayList<String>> placeVote = votes.get(placeID);
+
+        assert placeVote != null;
+        boolean voted = Objects.requireNonNull(placeVote.get(MemberVotes.For)).contains(m_userID) ||
+                Objects.requireNonNull(placeVote.get(MemberVotes.Against)).contains(m_userID);
+        if (!voted) {
+            String selection = vote ? MemberVotes.For : MemberVotes.Against;
+            Objects.requireNonNull(placeVote.get(selection)).add(m_userID);
+
+            votes.put(placeID, placeVote);
+
+            HashMap<String, Object> voteMap = new HashMap<>();
+            voteMap.put(Constants.KEY_VOTE, votes);
+            m_database.collection(KEY_COLLECTION_GROUPS)
+                    .document(m_groupID)
+                    .set(voteMap, SetOptions.merge());
+        }
+    }
+
     private void cleanup(){
         if(m_suggestedStops != null){
             m_suggestedStops.clear();
         }
 
+        m_votes = new HashMap<>();
         remove_group_listener();
     }
 }
