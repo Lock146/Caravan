@@ -51,12 +51,13 @@ public class GroupActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if(extras.containsKey(Constants.KEY_STOPS)) {
-            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
-        }
-        else{
-            CurrentRoute = new ArrayList<>();
-        }
+//        if(extras.containsKey(Constants.KEY_STOPS)) {
+//            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
+//        }
+//        else{
+//            CurrentRoute = new ArrayList<>();
+//        }
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
