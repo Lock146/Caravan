@@ -1,8 +1,13 @@
 package com.example.caravan.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
@@ -24,6 +29,16 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            NotificationChannel channel= new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager =getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+
+
         Log.d("GroupActivity", "onCreateCalled");
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -71,7 +86,17 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void open_group_chat(){
-        startActivity(new Intent(this, GroupChatActivity.class));
+
+
+        String message="Hello Programming Digest";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"My Notification");
+        builder.setContentTitle("NotificationTitle");
+        builder.setContentText(message);
+        builder.setSmallIcon(R.drawable.ic_notifications);
+        builder.setAutoCancel(true);
+        NotificationManagerCompat managerCompat= NotificationManagerCompat.from(this);
+        managerCompat.notify(1,builder.build());
+        //startActivity(new Intent(this, GroupChatActivity.class));
     }
 
     private void disable_group_functionality(){
