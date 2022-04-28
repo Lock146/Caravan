@@ -50,6 +50,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private ActivityGroupChatBinding m_binding;
     private List<ChatMessage> m_chatMessages;
     private ChatAdapter m_chatAdapter;
+    private User receiverUser;
 
 
     @Override
@@ -70,6 +71,32 @@ public class GroupChatActivity extends AppCompatActivity {
     }
     private void sendMessage() {
         if (!m_binding.message.getText().toString().equals("")) {
+
+
+            try{
+                JSONArray tokens = new JSONArray();
+                tokens.put("fZtxACrzRmS5Ag2O5lrl8i:APA91bHq4nt0bi5DTIkKqSP3nKBPljgm5K2P3p6rFfwb72ZOHmisTVL_h7VaNgE9xRbCyCLTrTftwauNK80PIvAJItFzxxHER0SuQfd958DcqbsHjbiC0qf2wubHSL879CPz7ARKPNoC");
+                //tokens.put(receiverUser.token);
+                //Log.e(TAG, "sendMessage: " + receiverUser.token.toString() );
+
+                JSONObject data = new JSONObject();
+                data.put(Constants.KEY_USER_ID, "c91Fm3d4NoYsVIcItySJwwKXYyq2");
+                data.put(Constants.KEY_NAME, "Kyler Parker");
+                data.put(Constants.KEY_FCM_TOKEN, "e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
+                data.put(Constants.KEY_MESSAGE, "This is the message");
+
+                JSONObject body = new JSONObject();
+                body.put(Constants.REMOTE_MSG_DATA, data);
+                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
+
+                sendNotification(body.toString());
+            }
+            catch (Exception exception){
+                showToast(exception.getMessage());
+            }
+
+
+
             Log.d("GroupChatActivity", "Sending message: " + m_binding.message.getText().toString());
             Database.get_instance().send_message(m_binding.message.getText().toString());
             m_binding.message.setText(null);
@@ -106,27 +133,8 @@ public class GroupChatActivity extends AppCompatActivity {
                     message.dateObject = change.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     m_chatMessages.add(message);
                     //sendNotification("message received");
-                    if (!isReceiverAvalaible){
-                        try{
-                            JSONArray tokens = new JSONArray();
-                            tokens.put(receiverUser.token);
-
-                            JSONObject data = new JSONObject();
-                            data.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                            data.put(Constants.KEY_NAME, getString(Constants.KEY_NAME));
-                            data.put(Constants.KEY_FCM_TOKEN, getString(Constants.KEY_FCM_TOKEN));
-                            data.put(Constants.KEY_MESSAGE, getString(Constants.KEY_MESSAGE));
-
-                            JSONObject body = new JSONObject();
-                            body.put(Constants.REMOTE_MSG_DATA, data);
-                            body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
-
-                            sendNotification(body.toString());
-                        }
-                        catch (Exception exception){
-                            showToast(exception.getMessage());
-                        }
-                    }
+                   // if (!isReceiverAvalaible){
+                   // }
                 }
             }
             Collections.sort(m_chatMessages, (msg1, msg2) -> msg1.dateObject.compareTo(msg2.dateObject));
@@ -150,6 +158,10 @@ public class GroupChatActivity extends AppCompatActivity {
 
     private String getReadableDateTime(Date date) {
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
+    }
+
+    private void listenAvailabilityOfReceiver() {
+
     }
 
     private void sendNotification(String messageBody){

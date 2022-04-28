@@ -4,10 +4,12 @@ import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtName, txtEmail;
     private Timer m_currentLocationUpdater;
     private String image;
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
