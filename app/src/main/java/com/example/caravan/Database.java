@@ -378,6 +378,7 @@ public class Database {
         if(m_groupID != null){
             m_groupListenerRegistration.remove();
         }
+        cleanup();
     }
 
     public void vote_for(String placeID){
