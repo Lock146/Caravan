@@ -525,12 +525,14 @@ public class Database {
     }
 
     private void record_vote(String placeID, boolean vote){
+        // Copy voting info / make new HashMap if there is none
         HashMap<String, HashMap<String, ArrayList<String>>> votes = m_votes == null ? new HashMap<>() : new HashMap<>(m_votes);
         if(!votes.containsKey(placeID)) {
             votes.put(placeID, init_votes());
         }
         HashMap<String, ArrayList<String>> placeVote = votes.get(placeID);
 
+        // Vote
         assert placeVote != null;
         boolean voted = Objects.requireNonNull(placeVote.get(MemberVotes.For)).contains(m_userID) ||
                 Objects.requireNonNull(placeVote.get(MemberVotes.Against)).contains(m_userID);
@@ -540,6 +542,7 @@ public class Database {
 
             votes.put(placeID, placeVote);
 
+            // Update database
             HashMap<String, Object> voteMap = new HashMap<>();
             voteMap.put(Constants.KEY_VOTE, votes);
             m_database.collection(KEY_COLLECTION_GROUPS)
@@ -548,6 +551,7 @@ public class Database {
         }
     }
 
+    // cleanup() is for getting the database in a state ready for another group
     private void cleanup(){
         remove_group_listener();
         if(m_suggestedStops != null){
