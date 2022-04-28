@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 import java.io.ObjectStreamException;
+import java.util.HashMap;
 
 public class StopInfo implements Parcelable
 {
@@ -68,6 +69,14 @@ public class StopInfo implements Parcelable
     public void setDistance(double distance)
     {
         m_distance = distance;
+    }
+
+    public static StopInfo get_stop_info(HashMap<String, Object> hashedStop){
+        StopInfo stop = new StopInfo();
+        stop.setName((String) hashedStop.get("name"));
+        stop.setPlaceID((String) hashedStop.get("placeID"));
+        stop.setDistance((double) hashedStop.get("distance"));
+        return stop;
     }
 
     protected StopInfo(Parcel in) {

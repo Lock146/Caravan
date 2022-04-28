@@ -444,11 +444,7 @@ public class Database {
                     if(suggestions != null) {
                         m_suggestedStops.clear();
                         for (HashMap<String, Object> suggestion : suggestions) {
-                            StopInfo stop = new StopInfo();
-                            stop.setName((String) suggestion.get("name"));
-                            stop.setPlaceID((String) suggestion.get("placeID"));
-                            stop.setDistance((double) suggestion.get("distance"));
-                            m_suggestedStops.add(stop);
+                            m_suggestedStops.add(StopInfo.get_stop_info(suggestion));
                         }
                     }
                     else{
