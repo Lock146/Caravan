@@ -50,18 +50,10 @@ public class GroupActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-//        if(extras.containsKey(Constants.KEY_STOPS)) {
-//            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
-//        }
-//        else{
-//            CurrentRoute = new ArrayList<>();
-//        }
-
-
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
-        suggestedStopsAdapter = new suggestedStopsAdapter(CurrentRoute);
+
+        suggestedStopsAdapter = new suggestedStopsAdapter(Database.get_instance().get_suggested_stops());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(suggestedStopsAdapter);
