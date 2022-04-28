@@ -47,7 +47,7 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
 
     @Override
     public int getItemCount() {
-        return m_suggestions.size();
+        return m_suggestions == null ? 0 : m_suggestions.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
