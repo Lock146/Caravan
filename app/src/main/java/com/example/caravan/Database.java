@@ -628,11 +628,9 @@ public class Database {
     }
 
     private void add_suggested_stop(String placeID){
-        //remove_suggested_stop(placeID);
         ArrayList<StopInfo> route = m_route != null ? new ArrayList<>(m_route) : new ArrayList<>();
         for(StopInfo suggestion : m_suggestedStops){
             if(suggestion.equals(placeID)){
-                //append_to_route(suggestion);
                 route.add(suggestion);
                 break;
             }
