@@ -322,14 +322,11 @@ public class Database {
             }
         });
     }
+
     public void append_to_suggestions(GooglePlaceModel suggestion) {
         ArrayList<StopInfo> currentSuggestions = m_suggestedStops == null ? new ArrayList<>() : new ArrayList<>(m_suggestedStops);
         currentSuggestions.add(new StopInfo(suggestion, 0.0));
-        HashMap<String, Object> updatedSuggestions = new HashMap<>();
-        updatedSuggestions.put(Constants.KEY_SUGG_STOPS, currentSuggestions);
-        m_database.collection(Constants.KEY_COLLECTION_GROUPS)
-                .document(m_groupID)
-                .set(updatedSuggestions, SetOptions.merge());
+        update_group_map(KEY_SUGG_STOPS, currentSuggestions);
     }
 
     public void update_route(ArrayList<GooglePlaceModel> placeIDs){
