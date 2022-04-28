@@ -734,7 +734,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
-
+        Database.get_instance().append_to_suggestions(googlePlaceModel);
 
 
         // TODO: Add ability to remove stops
@@ -1006,9 +1006,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         Intent intent = new Intent(requireContext(), GroupActivity.class);
         ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
         ArrayList<String> placeIDs = new ArrayList<>();
-        if (Database.get_instance().get_suggested_stops() != null) {
 
-            m_stops = Database.get_instance().get_suggested_stops();
+        startActivity(intent);
+//        if (Database.get_instance().get_suggested_stops() != null) {
+
+//            m_stops = Database.get_instance().get_suggested_stops();
 
 
 //            for (GooglePlaceModel stop : m_stops) {
@@ -1021,13 +1023,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //                startActivity(intent);
 //
 //            }
-            startActivity(intent);
-        } else {
+//        } else {
 
 //            test2();
 
 
-        }
+//        }
         //Database.get_instance().suggest_stops(m_stops);
         //intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
         //startActivity(intent);
