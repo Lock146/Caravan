@@ -32,15 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupActivity extends AppCompatActivity {
+    private static final String TAG = GroupActivity.class.getSimpleName();
     private ActivityGroupBinding binding;
     private static final CharSequence LEAVE_GROUP = "Leave group";
     private static final CharSequence CREATE_GROUP = "Create group";
     private static final CharSequence ADD_USER = "Add user";
     private static final CharSequence OPEN_CHAT = "Open Chat";
-    private PreferenceManager m_preferenceManager;
     private RecyclerView recyclerView;
     private suggestedStopsAdapter suggestedStopsAdapter;
-    private ArrayList<StopInfo> CurrentRoute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,46 +60,12 @@ public class GroupActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        //itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
-
-
-        //routeTimelineAdapter = new RouteTimelineAdapter(CurrentRoute);
-        //binding.recyclerView.setAdapter(routeTimelineAdapter);
-        //Database.get_instance();
-
         setContentView(R.layout.activity_group);
-        //Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-//        if(extras.containsKey(Constants.KEY_STOPS)) {
-//            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
-//        }
-//        else{
-//            CurrentRoute = new ArrayList<>();
-//        }
         setListeners();
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         binding.groupMember.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
 
-
-//        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean b) {
-//                if(!view.hasFocus()){
-//                    Database.get_instance().update_group_name(binding.GroupName.getText().toString());
-//                }
-//            }
-//        });
-//        binding.groupMembership.setVisibility(Database.get_instance().in_group() ? View.VISIBLE : View.INVISIBLE);
-//        CharSequence groupMembership = "Leave group";
-//        binding.groupMembership.setText(groupMembership);
-//        binding.groupMembership.setOnClickListener(view -> {
-//            leave_group();
-//        });
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -192,6 +157,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        Log.d(TAG, "setListeners called");
         binding.btnBack.setOnClickListener(v -> onBackPressed());
         binding.groupMember.setOnClickListener(view -> go_to_group());
         binding.chat.setOnClickListener(view -> open_group_chat());
