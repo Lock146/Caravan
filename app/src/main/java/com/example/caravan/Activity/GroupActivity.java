@@ -60,11 +60,10 @@ public class GroupActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        setContentView(R.layout.activity_group);
         setListeners();
 
-        binding.groupMember.setOnClickListener(view -> add_user());
-        binding.chat.setOnClickListener(view -> open_group_chat());
+        //binding.groupMember.setOnClickListener(view -> add_user());
+        //binding.chat.setOnClickListener(view -> open_group_chat());
 
         binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -114,6 +113,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void open_group_chat(){
+        Log.d(TAG, "open_group_chat called");
         startActivity(new Intent(this, GroupChatActivity.class));
     }
     private void go_to_group(){
