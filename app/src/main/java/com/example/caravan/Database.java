@@ -397,9 +397,15 @@ public class Database {
         return m_members;
     }
 
+    public ArrayList<String> get_group_member(String userID){
+        return m_members.containsKey(userID) ? m_members.get(userID) : null;
+    }
+
     public void getToken(String token){
         Token = token;
-        upload_user_info();
+        if(in_group()){
+            upload_user_info();
+        }
         Log.e(TAG, "getToken: " + Token );
     }
 
