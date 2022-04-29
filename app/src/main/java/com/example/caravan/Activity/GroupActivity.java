@@ -1,5 +1,6 @@
 package com.example.caravan.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,11 +13,22 @@ import android.view.View;
 import android.view.textclassifier.ConversationActions;
 import android.widget.Toast;
 
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.Database;
 import com.example.caravan.R;
 import com.example.caravan.databinding.ActivityGroupBinding;
+import com.example.caravan.network.ApiClient;
+import com.example.caravan.network.ApiService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.Object;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupActivity extends AppCompatActivity {
     private ActivityGroupBinding binding;
@@ -117,5 +129,35 @@ public class GroupActivity extends AppCompatActivity {
         //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
         binding.groupMembership.setOnClickListener(view -> leave_group());
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show(); }
+
+    private void sendNotification(String messageBody){
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if(response.isSuccessful()){
+                            try {
+                                if(response.body() != null){
+                                    JSONObject responseJson = new JSONObject(response.body());
+                                    JSONArray results = responseJson.getJSONArray("results");
+                                    if(responseJson.getInt("failure")== 1){
+                                        JSONObject error = (JSONObject) results.get(0);
+                                        showToast(error.getString("error"));
+                                        return; } }
+                            } catch (JSONException e) {
+                                e.printStackTrace(); }
+                            showToast("Notification sent Successfully");
+                        } else{
+                            showToast("Error: "+ response.code()); } }
+                    @Override
+                    public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                        showToast(t.getMessage()); }
+                });
     }
 }
