@@ -78,6 +78,7 @@ public class GroupMembersFragment extends Fragment implements DestinationInterfa
         Query query = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Users");
 
+
         FirebaseRecyclerOptions<String> options = new FirebaseRecyclerOptions.Builder<String>()
                 .setQuery(query, String.class).build();
 
@@ -90,7 +91,6 @@ public class GroupMembersFragment extends Fragment implements DestinationInterfa
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-
                             DestinationModel destinationModel = snapshot.getValue(DestinationModel.class);
                             holder.binding.setDestinationModel(destinationModel);
                             holder.binding.setListener(destinationInterface);

@@ -133,7 +133,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private EventListener<DocumentSnapshot> m_onGroupChange;
-    private ArrayList<GooglePlaceModel> m_stops;
+    private ArrayList<StopInfo> m_stops;
     private ActivityResultLauncher<Intent> m_timelineLauncher;
     public LatLng testLocation;
 
@@ -152,11 +152,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         Intent intent = result.getData();
                         if(intent != null) {
                             ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
-                            ArrayList<GooglePlaceModel> updatedStops = new ArrayList<>();
-                            for (GooglePlaceModel stop : m_stops) {
-                                int idx = get_index_of_stop(stops, stop.placeID());
+                            ArrayList<StopInfo> updatedStops = new ArrayList<>();
+                            for (StopInfo stop : m_stops) {
+                                int idx = get_index_of_stop(stops, stop.getPlaceID());
                                 if (idx == -1) {
-                                    mark_as_removed(stop.placeID());
+                                    mark_as_removed(stop.getPlaceID());
                                 } else {
                                     updatedStops.add(m_stops.get(idx));
                                 }
@@ -439,7 +439,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     private static int get_index_of_stop(ArrayList<StopInfo> stops, String placeID){
         for(int idx = 0; idx < stops.size(); idx += 1){
-            if(stops.get(idx).placeID().equals(placeID)){
+            if(stops.get(idx).getPlaceID().equals(placeID)){
                 return idx;
             }
         }
@@ -733,17 +733,111 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
-        Log.d("HomeFragment", "onSaveClick called. GooglePlaceMode: " + googlePlaceModel.getName());
-        if(googlePlaceModel.in_timeline()){
-            googlePlaceModel.in_timeline(false);
-            m_stops.remove(googlePlaceModel);
+        Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
+        if(Database.get_instance().get_suggested_stops() != null){
+            ArrayList<StopInfo> suggestions = new ArrayList<StopInfo>(Database.get_instance().get_suggested_stops());
+            boolean contains = false;
+            for(StopInfo suggestion : suggestions){
+                if(suggestion.equals(googlePlaceModel.placeID())){
+                    contains = true;
+                    break;
+                }
+            }
+            if(!contains){
+                Database.get_instance().append_to_suggestions(googlePlaceModel);
+            }
         }
         else{
-            googlePlaceModel.in_timeline(true);
-            m_stops.add(googlePlaceModel);
+            Database.get_instance().append_to_suggestions(googlePlaceModel);
         }
-        googlePlaceAdapter.notifyDataSetChanged();
+
+
+        // TODO: Add ability to remove stops
+//        if(googlePlaceModel.in_timeline()){
+//            if (Database.get_instance().get_suggested_stops() != null) {
+//
+//
+//                googlePlaceModel.in_timeline(false);
+//
+//                m_stops = Database.get_instance().get_suggested_stops();
+//
+//
+//                int size = m_stops.size();
+//                while (size >= 1) {
+//                    Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getReference() );
+//
+//                    Log.e(TAG, "onSaveClick: " + googlePlaceModel.getReference());
+//
+//                    if (m_stops.get(size-1).getReference().equals(googlePlaceModel.getReference())){
+//                        m_stops.remove(size-1);
+//                        Log.e(TAG, "onSaveClick: " + "SUCCESSFUL DELETE");
+//                        break;
+//                    }
+//                    size--;
+//                }
+//
+//
+//
+//                m_stops.remove(googlePlaceModel);
+//
+//                Database.get_instance().suggest_stops(m_stops);
+//
+//
+//                //if (m_stops != null) {
+//            } else {
+//
+////                test3(googlePlaceModel);
+//
+//
+//            }
+//
+//
+//
+//        }
+//        else{
+//
+//
+//            if (Database.get_instance().get_suggested_stops() != null) {
+//
+//                googlePlaceModel.in_timeline(true);
+//
+//                m_stops = Database.get_instance().get_suggested_stops();
+//
+//                m_stops.add(googlePlaceModel);
+//
+//                Database.get_instance().suggest_stops(m_stops);
+//
+//                //if (m_stops != null) {
+//            } else {
+//
+////                test3(googlePlaceModel);
+//
+//
+//            }
+//
+//
+//        }
+//        googlePlaceAdapter.notifyDataSetChanged();
     }
+
+//    public void test3(GooglePlaceModel googlePlaceModel) {
+//        if (Database.get_instance().get_suggested_stops() != null) {
+//
+//            //m_stops = Database.get_instance().get_caravan_stops();
+//            onSaveClick(googlePlaceModel);
+//
+//
+//        } else {
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    test3(googlePlaceModel);
+//                }
+//            }, 50);
+//
+//        }
+//    }
 
 
     public void onLocationClick(GooglePlaceModel googlePlaceModel) {
@@ -923,8 +1017,61 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         if(!Database.get_instance().in_group()){
             Database.get_instance().create_group();
         }
-        startActivity(new Intent(requireContext(), GroupActivity.class));
+
+        Intent intent = new Intent(requireContext(), GroupActivity.class);
+        ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
+        ArrayList<String> placeIDs = new ArrayList<>();
+
+        startActivity(intent);
+//        if (Database.get_instance().get_suggested_stops() != null) {
+
+//            m_stops = Database.get_instance().get_suggested_stops();
+
+
+//            for (GooglePlaceModel stop : m_stops) {
+//                stops.add(new StopInfo(stop, 0));
+//                placeIDs.add(stop.placeID());
+//            }
+//            //if (m_stops != null) {
+//            if (stops.size() != 0) {
+//                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
+//                startActivity(intent);
+//
+//            }
+//        } else {
+
+//            test2();
+
+
+//        }
+        //Database.get_instance().suggest_stops(m_stops);
+        //intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
+        //startActivity(intent);
     }
+
+//    public void test2() {
+//        if (Database.get_instance().get_suggested_stops() != null) {
+//
+//            //m_stops = Database.get_instance().get_caravan_stops();
+//            open_group_activity();
+//
+//
+//        } else {
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    test2();
+//                }
+//            }, 50);
+//
+//        }
+//    }
+
+
+
+
+
 
     private void open_directions(){
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
@@ -938,8 +1085,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             m_stops = Database.get_instance().get_caravan_stops();
 
 
-            for (GooglePlaceModel stop : m_stops) {
-                destinations.add(new DestinationInfo(stop.placeID(), stop.getGeometry().getLocation().getLat(), stop.getGeometry().getLocation().getLng()));
+            for (StopInfo stop : m_stops) {
+                destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
             }
             //if (m_stops != null) {
             if (destinations.size() != 0) {
@@ -949,35 +1096,35 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             }
 
 
-
         } else {
 
-                    test();
+//                    test();
 
 
         }
 
     }
-    public void test() {
-        if (Database.get_instance().get_caravan_stops() != null) {
-
-            //m_stops = Database.get_instance().get_caravan_stops();
-            open_directions();
-
-
-        } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    test();
-                }
-            }, 50);
-
-        }
-    }
+//    public void test() {
+//        if (Database.get_instance().get_caravan_stops() != null) {
+//
+//            //m_stops = Database.get_instance().get_caravan_stops();
+//            open_directions();
+//
+//
+//        } else {
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    test();
+//                }
+//            }, 50);
+//
+//        }
+//    }
 
     private void open_timeline(){
+        /*
         Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
         ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
         ArrayList<String> placeIDs = new ArrayList<>();
@@ -988,6 +1135,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         Database.get_instance().update_route(m_stops);
         intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
         m_timelineLauncher.launch(intent);
+
+         */
+        Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
+        startActivity(intent);
     }
 
 

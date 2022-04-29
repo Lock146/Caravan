@@ -9,6 +9,7 @@ public class Constants {
     public static final String KEY_GROUP_ID = "groupID";
     public static final String KEY_GROUP_NAME = "groupName";
     public static final String KEY_GROUP_OWNER = "groupOwner";
+    public static final String KEY_VOTE = "vote";
     public static final String KEY_CHAT = "chat";
     public static final String KEY_MEMBER_LOCATIONS = "memberLocations";
     public static final String KEY_USER = "user";
@@ -39,6 +40,8 @@ public class Constants {
             return remoteMsgHeaders; }
 
     public static final String KEY_STOPS = "stops";
+    public static final String KEY_SUGG_STOPS = "suggestedStops";
+    public static final String KEY_SUGG_LIST = "suggestedStopsList";
     public static final String KEY_DESTINATIONS = "destinations";
     public static final String KEY_ROUTE = "route";
 }

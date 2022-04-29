@@ -58,9 +58,10 @@ public class GroupChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
         m_binding = ActivityGroupChatBinding.inflate(getLayoutInflater());
-        setContentView(m_binding.getRoot());
+        setContentView(R.layout.activity_group_chat);
         setListeners();
         loadReceiverDetails();
         init();

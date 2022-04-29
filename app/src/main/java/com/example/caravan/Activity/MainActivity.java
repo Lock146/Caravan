@@ -143,16 +143,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         Log.d("MainActivity", "onResume called");
         //getUserData();
+        Glide.with(MainActivity.this).load(Database.get_instance().get_profile_picture()).into(imgHeader);
         super.onResume();
     }
 
     @Override
     public void onBackPressed() {
 
+
         if (navDrawerLayoutBinding.navDrawer.isDrawerOpen(GravityCompat.START))
             navDrawerLayoutBinding.navDrawer.closeDrawer(GravityCompat.START);
-        else
+        else {
             super.onBackPressed();
+        }
+
+
     }
 
     @Override
