@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,14 +29,13 @@
         android:weightSum="3">
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:gravity="top|left"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0.8"
+            android:gravity="top|left">
 
             <ImageView
                 android:id="@+id/btnBack"
@@ -43,10 +43,10 @@
                 android:layout_height="45dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="20dp"
-                android:paddingEnd="10dp"
                 android:gravity="start|top"
+                android:paddingEnd="10dp"
                 android:src="@drawable/quantum_ic_arrow_back_grey600_24"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
             <EditText
                 android:id="@+id/GroupName"
@@ -72,8 +72,8 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
                 android:src="@drawable/ic_groups" />
 
         </LinearLayout>
@@ -81,11 +81,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="2.2"
             android:orientation="horizontal"
+            android:padding="10dp"
             android:paddingBottom="15dp"
-            android:layout_gravity="center_horizontal"
-            android:padding="10dp">
+            android:id="@+id/buttonHolder">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chat"
@@ -117,18 +118,19 @@
                 app:elevation="10dp" />
 
 
-
         </LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="550dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonHolder"
             tools:context=".Activity.RouteTimelineActivity">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

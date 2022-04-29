@@ -2,6 +2,7 @@ package com.example.caravan;
 
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
+import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_MEMBERS;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
@@ -17,8 +18,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.caravan.Constant.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,9 +34,12 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -55,6 +61,7 @@ public class Database {
     private ArrayList<StopInfo> m_route;
     private ArrayList<StopInfo> m_suggestedStops;
     private String Token;
+    private ArrayList<MemberInfo> m_member;
     public static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
@@ -485,6 +492,12 @@ public class Database {
                     m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
                     m_memberLocations = (HashMap<String, ArrayList<Double>>) value.get(KEY_MEMBER_LOCATIONS);
 
+//                    ArrayList<HashMap<String, Object>> members = (ArrayList<HashMap<String, Object>>) value.get(KEY_GROUP_MEMBERS);
+//                    for (HashMap<String, Object> member : members) {
+//                        m_member.add(MemberInfo.get_member_info(member));
+//                    }
+
+
                     // TODO: See if there's another way to do this, it's fucking ugly
                     ArrayList<HashMap<String, Object>> route = (ArrayList<HashMap<String, Object>>) value.get(KEY_ROUTE);
                     if(route != null){
@@ -509,6 +522,9 @@ public class Database {
                     else{
                         m_suggestedStops = new ArrayList<>();
                     }
+
+
+
 
                     m_votes = (HashMap<String, HashMap<String, ArrayList<String>>>) value.get(Constants.KEY_VOTE);
                     if(m_votes != null && is_owner()){

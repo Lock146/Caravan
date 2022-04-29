@@ -23,6 +23,7 @@ import com.example.caravan.databinding.ActivityGroupMembersBinding;
 import com.example.caravan.databinding.ActivityGrouplistBinding;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class GroupMembersActivity extends AppCompatActivity {
     private ActivityGroupMembersBinding binding;
@@ -46,6 +47,14 @@ public class GroupMembersActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
 
+
+        // MemberList = Database.get_instance().get_group_members();
+
+        MemberList = new ArrayList<>();
+        Collection<ArrayList<String>> memberList = Database.get_instance().get_group_members().values();
+        for(ArrayList<String> member : memberList){
+            MemberList.add(new MemberInfo(member.get(Database.MemberData.Name), member.get(Database.MemberData.ProfilePicture)));
+        }
         //suggestedStopsAdapter = new suggestedStopsAdapter(Database.get_instance().get_suggested_stops());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -60,12 +69,14 @@ public class GroupMembersActivity extends AppCompatActivity {
 
 
 
-        binding = ActivityGroupMembersBinding.inflate(getLayoutInflater());
+       // binding = ActivityGroupMembersBinding.inflate(getLayoutInflater());
         groupListAdapter = new GroupListAdapter(MemberList);
         binding.recyclerView.setAdapter(groupListAdapter);
-        setContentView(binding.getRoot());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       // setContentView(binding.getRoot());
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //Database.get_instance();
+        //recyclerView.addItemDecoration(dividerItemDecoration);
+
 
 
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
