@@ -65,28 +65,25 @@ public class GroupActivity extends AppCompatActivity {
         //itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
-        /*
 
-        binding = ActivityGroupBinding.inflate(getLayoutInflater());
-        routeTimelineAdapter = new RouteTimelineAdapter(CurrentRoute);
-        binding.recyclerView.setAdapter(routeTimelineAdapter);
-        setContentView(binding.getRoot());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //routeTimelineAdapter = new RouteTimelineAdapter(CurrentRoute);
+        //binding.recyclerView.setAdapter(routeTimelineAdapter);
         //Database.get_instance();
 
-        setContentView(R.layout.activity_routetimeline);
-        Intent intent = getIntent();
+        setContentView(R.layout.activity_group);
+        //Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if(extras.containsKey(Constants.KEY_STOPS)) {
-            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
-        }
-        else{
-            CurrentRoute = new ArrayList<>();
-        }
+//        if(extras.containsKey(Constants.KEY_STOPS)) {
+//            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
+//        }
+//        else{
+//            CurrentRoute = new ArrayList<>();
+//        }
         setListeners();
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //binding.addUser.setOnClickListener(view -> add_user());
+        binding.groupMember.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
 
 
@@ -113,13 +110,13 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        if(Database.get_instance().in_group()){
-            enable_group_functionality();
-        }
-        else{
-            disable_group_functionality();
-        }
-        */
+        //if(Database.get_instance().in_group()){
+            //enable_group_functionality();
+        //}
+        //else{
+        //    disable_group_functionality();
+        //}
+
 
     }
     private void leave_group(){
