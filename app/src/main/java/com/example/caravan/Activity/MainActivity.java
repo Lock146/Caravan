@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
         txtName = headerLayout.findViewById(R.id.txtHeaderName);
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
 
-
-        getUserData();
         getToken();
+        getUserData();
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -287,6 +287,8 @@ public class MainActivity extends AppCompatActivity {
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
                 .addOnSuccessListener(unused -> showToast("Token updated successfully"))
                 .addOnFailureListener(e -> showToast("Unable to update token"));
+        Database.get_instance().getToken(token);
+
     }
 
 }

@@ -15,6 +15,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.caravan.Activity.MainActivity;
 import com.example.caravan.Constant.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -53,12 +55,14 @@ public class Database {
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private ArrayList<GooglePlaceModel> m_stops1;
+    private String Token;
     private static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
         public static final int Name = 1;
         public static final int ProfilePicture = 2;
-        public static final int size = 3;
+        public static final int fmcToken = 3;
+        public static final int size = 4;
     }
     private HashMap<String, ArrayList<String>> m_members;
 
@@ -330,6 +334,12 @@ public class Database {
         }
     }
 
+    public void getToken(String token){
+        Token = token;
+        upload_user_info();
+        Log.e(TAG, "getToken: " + Token );
+    }
+
     private Database(){
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             Log.d(TAG, "Unable to get current Firebase user");
@@ -339,6 +349,7 @@ public class Database {
         m_userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         m_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         m_members = new HashMap<>();
+
         init_user_listener();
     }
 
@@ -431,6 +442,7 @@ public class Database {
         userInfo.add(MemberData.Email, m_email);
         userInfo.add(MemberData.Name, m_displayName);
         userInfo.add(MemberData.ProfilePicture, m_profilePicture);
+        userInfo.add(MemberData.fmcToken, Token);
         HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
         userInfoMap.put(m_userID, userInfo);
         return userInfoMap;

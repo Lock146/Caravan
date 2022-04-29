@@ -75,8 +75,10 @@ public class GroupChatActivity extends AppCompatActivity {
 
             try{
                 JSONArray tokens = new JSONArray();
+                tokens.put("e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
+                tokens.put("cQ2DJqX4ScuPxMXu0DJimW:APA91bFVSJQZ4ka5pNlqQDdCRcxUhZO2tm7-PDwKLWMM2hrsdaH30Eew1vZKT59kRogocbwPl4zrgeNmHlQeePiyTDKyfkQGQCKy0YGhtiblIk7950kXZxg3gGm9d-3iSDZGzjG-RNVg");
                 tokens.put("f3PF23maR5WevKikeHl5vE:APA91bFI_yMgbpWzVmPsGrP0qToiXnSuGVHFUCFnvlwnY5cZHc4BoMQZObXeXy_86-q9LW8hvce4yojpY2MJSZUT-hSPoI64fBY8q9dBbtfUF4j1DT9tGp4m6yvGEgwLW7oIlRFOy6fR");
-                //tokens.put(receiverUser.token);
+
                 //Log.e(TAG, "sendMessage: " + receiverUser.token.toString() );
 
                 JSONObject data = new JSONObject();
