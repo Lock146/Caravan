@@ -71,7 +71,7 @@ public class MessagingServices extends FirebaseMessagingService {
         builder.setContentTitle(Constants.KEY_NAME);
         builder.setContentText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE));
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE)));
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
 
@@ -85,28 +85,5 @@ public class MessagingServices extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel); }
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(notificationId, builder.build());
-
-
-//        String title = remoteMessage.getNotification().getTitle();
-//        String text = remoteMessage.getNotification().getBody();
-//        final String Channel_ID = "Heads Up Notification";
-//        NotificationChannel channel =  new NotificationChannel(
-//                Channel_ID,
-//                "Heads up Notification",NotificationManager.IMPORTANCE_HIGH
-//        );
-//        getSystemService(NotificationManager.class).createNotificationChannel(channel);
-//        Notification.Builder notification = new Notification.Builder(this, Channel_ID)
-//                .setContentTitle(title)
-//                .setContentText(text)
-//                .setSmallIcon(R.drawable.ic_notifications)
-//                .setAutoCancel(true);
-//        NotificationManagerCompat.from(this).notify(1, notification.build());
-
-        //Log.d("FCM", "Message: " + remoteMessage.getNotification().getBody());
-        //User user = new User();
-        //user.name = remoteMessage.getData().get(Constants.KEY_USER_ID);
     }
-
-
-
    }
