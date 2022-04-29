@@ -24,28 +24,19 @@ public class Constants {
     public static final String KEY_NAME = "displayName";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_TIMESTAMP = "timestamp";
-
     public static final String KEY_FCM_TOKEN = "fcmToken";
     public static final String REMOTE_MSG_AUTHORIZATION = "Authorization";
     public static final String REMOTE_MSG_CONTENT_TYPE = "Content-Type";
     public static final String REMOTE_MSG_DATA = "data";
     public static final String REMOTE_MSG_REGISTRATION_IDS = "registration_ids";
     public static HashMap<String, String> remoteMsgHeaders = null;
-    public String X_NAME = "masbns";
 
     public static HashMap<String, String> getRemoteMsgHeaders(){
         if(remoteMsgHeaders == null) {
             remoteMsgHeaders = new HashMap<>();
             remoteMsgHeaders.put(REMOTE_MSG_AUTHORIZATION,"key=AAAAAQUSFTc:APA91bEqVttlQUxYkjfSPD_X2IpXXRxGR4yk3qSsxm-1mlHg3sfgKXeXGOA-wp5_-Oe1VDEtnGhrHDv24bCcly_eHI3HTswPzeXCcWyqm-V5HKciGf1ws-9DQcP5HPTO4K3an4r-z_Su");
-            remoteMsgHeaders.put(REMOTE_MSG_CONTENT_TYPE,"application/json");
-        }
-            return remoteMsgHeaders;
-    }
-
-    //public static final Val Base_URL = "https://fcm.googleapis.com"
-    //public constant Val SERVER_KEY = "AAAAAQUSFTc:APA91bEqVttlQUxYkjfSPD_X2IpXXRxGR4yk3qSsxm-1mlHg3sfgKXeXGOA-wp5_-Oe1VDEtnGhrHDv24bCcly_eHI3HTswPzeXCcWyqm-V5HKciGf1ws-9DQcP5HPTO4K3an4r-z_Su"
-    //public Constant Val CONTENT_TYPE = "application/json"
-
+            remoteMsgHeaders.put(REMOTE_MSG_CONTENT_TYPE,"application/json"); }
+            return remoteMsgHeaders; }
 
     public static final String KEY_STOPS = "stops";
     public static final String KEY_DESTINATIONS = "destinations";

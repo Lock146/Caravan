@@ -1,5 +1,6 @@
 package com.example.caravan.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,11 +13,22 @@ import android.view.View;
 import android.view.textclassifier.ConversationActions;
 import android.widget.Toast;
 
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.Database;
 import com.example.caravan.R;
 import com.example.caravan.databinding.ActivityGroupBinding;
+import com.example.caravan.network.ApiClient;
+import com.example.caravan.network.ApiService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.Object;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupActivity extends AppCompatActivity {
     private ActivityGroupBinding binding;
@@ -65,6 +77,34 @@ public class GroupActivity extends AppCompatActivity {
         binding.groupMembership.setClickable(false);
 
         disable_group_functionality();
+//            try {
+//                JSONArray tokens = new JSONArray();
+//                //dawson fcm token
+//                //tokens.put("f3PF23maR5WevKikeHl5vE:APA91bFI_yMgbpWzVmPsGrP0qToiXnSuGVHFUCFnvlwnY5cZHc4BoMQZObXeXy_86-q9LW8hvce4yojpY2MJSZUT-hSPoI64fBY8q9dBbtfUF4j1DT9tGp4m6yvGEgwLW7oIlRFOy6fR");
+//                tokens.put("dU8mBhGNTwqJ_ssVwXsB5z:APA91bEe0BfsBUtzMsExAFYg40UYmJAdoKtLtS58OXR-xHPYv4LsEhb3JY9Li6t4cpZ-dgSyioPAcSQWO13A0E5_L5zfFkK0EL7ejS8M5fYo4vDTeHdpc4kbsjhm3alWq7IbvQNuv0GA");
+//                //tokens.put(receiverUser.token);
+//                //Log.e(TAG, "sendMessage: " + receiverUser.token.toString() );
+//
+//                JSONObject data = new JSONObject();
+//                //kyler userid - who is sending the message
+//                data.put(Constants.KEY_USER_ID, "c91Fm3d4NoYsVIcItySJwwKXYyq2");
+//                //colby user id
+//                //data.put(Constants.KEY_USER_ID, "czKfsrwV1ySS8xZ999APXBa9ErB2");
+//                //data.put(Constants.KEY_USER_ID, getResources().getString(Integer.parseInt(Constants.KEY_USER_ID)));
+//                data.put(Constants.KEY_NAME, "Group");
+//                //data.put(Constants.KEY_NAME, getResources().getString(Integer.parseInt(Constants.KEY_NAME)));
+//                //data.put(Constants.KEY_FCM_TOKEN, "e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
+//                data.put(Constants.KEY_MESSAGE, "You have been removed from the Group");
+//
+//
+//                JSONObject body = new JSONObject();
+//                body.put(Constants.REMOTE_MSG_DATA, data);
+//                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
+//
+//                sendNotification(body.toString());
+//            } catch (Exception exception) {
+//                showToast(exception.getMessage());
+//            }
     }
 
     private void create_group(){
@@ -117,5 +157,35 @@ public class GroupActivity extends AppCompatActivity {
         //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
         binding.groupMembership.setOnClickListener(view -> leave_group());
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show(); }
+
+    private void sendNotification(String messageBody){
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if(response.isSuccessful()){
+                            try {
+                                if(response.body() != null){
+                                    JSONObject responseJson = new JSONObject(response.body());
+                                    JSONArray results = responseJson.getJSONArray("results");
+                                    if(responseJson.getInt("failure")== 1){
+                                        JSONObject error = (JSONObject) results.get(0);
+                                        showToast(error.getString("error"));
+                                        return; } }
+                            } catch (JSONException e) {
+                                e.printStackTrace(); }
+                            showToast("Notification sent Successfully");
+                        } else{
+                            showToast("Error: "+ response.code()); } }
+                    @Override
+                    public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                        showToast(t.getMessage()); }
+                });
     }
 }

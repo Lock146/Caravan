@@ -82,8 +82,7 @@ public class MessagingServices extends FirebaseMessagingService {
             NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
             channel.setDescription(channelDescription);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+            notificationManager.createNotificationChannel(channel); }
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(notificationId, builder.build());
 
