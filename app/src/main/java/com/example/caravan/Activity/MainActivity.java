@@ -201,8 +201,8 @@ public class MainActivity extends AppCompatActivity {
             }, 500);
         }
         //imgHeader.setImageURI(Uri.parse(image));
-        if (Database.get_instance().get_user_username(firebaseAuth.getUid()) != null) {
-            txtName.setText(Database.get_instance().get_user_username(firebaseAuth.getUid()));
+        if (Database.get_instance().display_name() != null) {
+            txtName.setText(Database.get_instance().display_name());
         } else {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
