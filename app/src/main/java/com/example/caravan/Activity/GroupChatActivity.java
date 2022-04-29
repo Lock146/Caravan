@@ -79,7 +79,7 @@ public class GroupChatActivity extends AppCompatActivity {
                 JSONArray tokens = new JSONArray();
                 //dawson fcm token
                 tokens.put("f3PF23maR5WevKikeHl5vE:APA91bFI_yMgbpWzVmPsGrP0qToiXnSuGVHFUCFnvlwnY5cZHc4BoMQZObXeXy_86-q9LW8hvce4yojpY2MJSZUT-hSPoI64fBY8q9dBbtfUF4j1DT9tGp4m6yvGEgwLW7oIlRFOy6fR");
-                //tokens.put(receiverUser.token);
+
                 //Log.e(TAG, "sendMessage: " + receiverUser.token.toString() );
 
                 JSONObject data = new JSONObject();
