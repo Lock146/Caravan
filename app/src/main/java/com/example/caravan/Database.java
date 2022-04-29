@@ -58,7 +58,14 @@ public class Database {
     private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
-    private ArrayList<StopInfo> m_suggestedStops;
+    private ArrayList<GooglePlaceModel> m_stops1;
+    public static class MemberData {
+        // Changes will break compatibility with data in database. Be thorough.
+        public static final int Email = 0;
+        public static final int Name = 1;
+        public static final int ProfilePicture = 2;
+        public static final int size = 3;
+    }    private ArrayList<StopInfo> m_suggestedStops;
     private ArrayList<StopInfo> m_route;
     private static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
@@ -395,6 +402,10 @@ public class Database {
             Log.d(TAG, "is_owner: either m_owner or m_userID is null");
             return false;
         }
+    }
+
+    public HashMap<String, ArrayList<String>> get_group_members(){
+        return m_members;
     }
 
     private Database(){

@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Adapter.GroupListAdapter;
+import com.example.caravan.Database;
 import com.example.caravan.MemberInfo;
 import com.example.caravan.R;
 import com.google.maps.android.quadtree.PointQuadTree;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public class GroupListActivity extends AppCompatActivity
@@ -33,6 +36,10 @@ public class GroupListActivity extends AppCompatActivity
          setContentView(R.layout.activity_grouplist);
 
          groupMember = new ArrayList<>();
+         Collection<ArrayList<String>> memberList = Database.get_instance().get_group_members().values();
+         for(ArrayList<String> member : memberList){
+             groupMember.add(new MemberInfo(member.get(Database.MemberData.Name), member.get(Database.MemberData.ProfilePicture)));
+         }
 
          recyclerView = findViewById(R.id.recyclerView2);
          groupListAdapter = new GroupListAdapter(groupMember);
@@ -41,19 +48,6 @@ public class GroupListActivity extends AppCompatActivity
 
          DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
          recyclerView.addItemDecoration(dividerItemDecoration);
-
-
-
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_fish_avatar_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-         groupMember.add(new MemberInfo("Cameron",R.mipmap.ic_unfathomable_round));
-
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);

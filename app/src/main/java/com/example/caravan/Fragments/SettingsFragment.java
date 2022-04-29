@@ -266,7 +266,7 @@ public class SettingsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
-        Glide.with(requireContext()).load(firebaseAuth.getCurrentUser().getPhotoUrl()).into(binding.imgProfile);
+        Glide.with(requireContext()).load(Database.get_instance().get_profile_picture()).into(binding.imgProfile);
 
     }
 

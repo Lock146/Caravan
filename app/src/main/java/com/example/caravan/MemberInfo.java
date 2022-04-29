@@ -4,23 +4,23 @@ import androidx.annotation.DrawableRes;
 
 public class MemberInfo
 {
-    String memberName;
-    @DrawableRes int profilePicture;
+    private String m_memberName;
+    private String m_profilePicture;
 
 
-    public MemberInfo(String name, @DrawableRes int picture)
+    public MemberInfo(String name, String profilePicture)
     {
-        memberName = name;
-        profilePicture = picture;
+        m_memberName = name;
+        m_profilePicture = profilePicture;
     }
 
     public String getMemberName() {
-        return memberName;
+        return m_memberName;
     }
 
-    public @DrawableRes int getProfilePicture()
+    public String getProfilePicture()
     {
-        return profilePicture;
+        return m_profilePicture;
     }
 
 }
