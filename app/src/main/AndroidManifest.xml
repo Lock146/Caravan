@@ -36,6 +36,7 @@
         <activity android:name=".Activity.suggestedStopsActivity" />
         <activity android:name=".Activity.PPMenuActivity"/>
         <activity android:name=".Activity.GroupListActivity"/>
+        <activity android:name=".Activity.GroupMembersActivity"/>
         <activity android:name=".Activity.SplashActivity">
 
             <intent-filter>
