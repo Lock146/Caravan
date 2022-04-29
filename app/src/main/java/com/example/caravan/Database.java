@@ -2,7 +2,6 @@ package com.example.caravan;
 
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_GROUPS;
 import static com.example.caravan.Constant.Constants.KEY_COLLECTION_USERS;
-import static com.example.caravan.Constant.Constants.KEY_CURRENT_LOCATION;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_ID;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_MEMBERS;
 import static com.example.caravan.Constant.Constants.KEY_GROUP_NAME;
@@ -17,9 +16,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.caravan.Activity.MainActivity;
 import com.example.caravan.Constant.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,14 +30,10 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -60,15 +53,14 @@ public class Database {
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private ArrayList<StopInfo> m_route;
-    public static class MemberData {
-    private ArrayList<GooglePlaceModel> m_stops1;
+    private ArrayList<StopInfo> m_suggestedStops;
     private String Token;
-    private static class MemberData {
+    public static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
         public static final int Name = 1;
         public static final int ProfilePicture = 2;
-        public static final int fmcToken = 3;
+        public static final int fcmToken = 3;
         public static final int size = 4;
     }
     private HashMap<String, ArrayList<String>> m_members;
@@ -541,7 +533,7 @@ public class Database {
         userInfo.add(MemberData.Email, m_email);
         userInfo.add(MemberData.Name, m_displayName);
         userInfo.add(MemberData.ProfilePicture, m_profilePicture);
-        userInfo.add(MemberData.fmcToken, Token);
+        userInfo.add(MemberData.fcmToken, Token);
         HashMap<String, ArrayList<String>> userInfoMap = new HashMap<>();
         userInfoMap.put(m_userID, userInfo);
         return userInfoMap;
