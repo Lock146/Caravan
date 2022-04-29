@@ -21,8 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_map"
-        />
+        app:srcCompat="@drawable/ic_map" />
 
     <TextView
         android:id="@+id/rowCountTextView"
@@ -49,33 +48,24 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btnLike"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="100dp"
-        android:background="@drawable/ic_circle"
-        android:text="Like"
-        app:tint="?android:colorPrimary"
-        app:backgroundTint="?android:textColorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_liked" />
-
-    <ImageButton
-        android:id="@+id/btnDislike"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="5dp"
-        android:scaleY="-1"
-        android:text="Dislike"
-        app:tint="?android:colorPrimary"
-        app:backgroundTint="?android:textColorPrimary"
-        android:background="@drawable/ic_circle"
+        android:text="Like"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_liked" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnDislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="30dp"
+        android:text="Dislike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -113,10 +113,7 @@ public class SettingsFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(directions);
 
         });
-        binding.cardLeaveGroup.setOnClickListener(view -> {
 
-            Database.get_instance().leave_group();
-        });
         binding.cardLogout.setOnClickListener(view -> {
             firebaseAuth.signOut();
             Intent intent = new Intent(requireContext(), LoginActivity.class);
