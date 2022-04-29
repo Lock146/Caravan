@@ -161,8 +161,5 @@ public class GroupActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
         binding.groupMember.setOnClickListener(view -> go_to_group());
         binding.chat.setOnClickListener(view -> open_group_chat());
-        //binding.groupMembership.setOnClickListener(view -> leave_group());
-        //binding.groupMembership.setOnClickListener(view -> leave_group());
-        //binding.groupList.setOnClickListener(view -> open_list());
     }
 }
