@@ -734,7 +734,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
+
         if(Database.get_instance().get_suggested_stops() != null){
+
             ArrayList<StopInfo> suggestions = new ArrayList<StopInfo>(Database.get_instance().get_suggested_stops());
             boolean contains = false;
             for(StopInfo suggestion : suggestions){
@@ -745,11 +747,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             }
             if(!contains){
                 Database.get_instance().append_to_suggestions(googlePlaceModel);
+                googlePlaceModel.in_timeline(true);
             }
         }
         else{
             Database.get_instance().append_to_suggestions(googlePlaceModel);
+            googlePlaceModel.in_timeline(true);
         }
+
+        googlePlaceAdapter.notifyDataSetChanged();
 
 
         // TODO: Add ability to remove stops
