@@ -289,6 +289,12 @@ public class Database {
         }
     }
 
+    public void update_profilePicture() {
+        m_database.collection(KEY_COLLECTION_USERS)
+                .document(m_userID)
+                .update("profilePicture", m_profilePicture.toString());
+    }
+
     public void add_message_listener(EventListener<QuerySnapshot> listener){
         FirebaseFirestore.getInstance().collection(KEY_COLLECTION_GROUPS)
                 .document(m_groupID)

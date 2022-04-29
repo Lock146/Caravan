@@ -8,6 +8,7 @@
     android:weightSum="2"
     tools:context=".Fragments.SettingsFragment">
 
+
     <com.github.florent37.shapeofview.shapes.ArcView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,6 +18,7 @@
         app:shape_arc_position="bottom">
 
         <RelativeLayout
+            android:id="@+id/frag"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:colorPrimary">

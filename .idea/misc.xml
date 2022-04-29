@@ -85,6 +85,34 @@
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_home.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/fragment_notifications.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layout/activity_direction.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/activity_group.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/activity_grouplist.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/activity_profile_menu.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_routetimeline.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/current_item_layout.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_about.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_current_locations.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_email_change.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_email_confirmation.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_groups.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_password_change.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1656534954407295" />
+        <entry key="app/src/main/res/layout/info_window_layout.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/item_container_received_message.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/item_container_sent_message.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/nav_drawer_layout.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/place_item_layout.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/row_item.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/toolbar_layout.xml" value="0.340625" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_typist.xml" value="0.1525" />
       </map>
     </option>
   </component>
