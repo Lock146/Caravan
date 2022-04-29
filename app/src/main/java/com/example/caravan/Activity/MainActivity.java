@@ -149,15 +149,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-
         if (navDrawerLayoutBinding.navDrawer.isDrawerOpen(GravityCompat.START))
             navDrawerLayoutBinding.navDrawer.closeDrawer(GravityCompat.START);
         else {
             super.onBackPressed();
         }
-
-
     }
 
     @Override
@@ -242,52 +238,17 @@ public class MainActivity extends AppCompatActivity {
     //}
         //});
 
-    //public void runtimeEnableAutoInit() {
-        // [START fcm_runtime_enable_auto_init]
-        //FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        // [END fcm_runtime_enable_auto_init]
-   // }
-
-    //public void deviceGroupUpstream() {
-        // [START fcm_device_group_upstream]
-        //String to = "a_unique_key"; // the notification key
-        //AtomicInteger msgId = new AtomicInteger();
-        //FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(to)
-                //.setMessageId(String.valueOf(msgId.get()))
-                //.addData("hello", "world")
-                //.build());
-        // [END fcm_device_group_upstream]
-    //}
-
-    //public void sendUpstream() {
-       // final String SENDER_ID = "YOUR_SENDER_ID";
-        //final int messageId = 0; // Increment for each
-        // [START fcm_send_upstream]
-       // FirebaseMessaging fm = FirebaseMessaging.getInstance();
-        //fm.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
-               // .setMessageId(Integer.toString(messageId))
-               // .addData("my_message", "Hello World")
-                //.addData("my_action","SAY_HELLO")
-               //.build());
-        // [END fcm_send_upstream]
-    //}
-
     private void showToast(String message){
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
 
     private void getToken(){
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
-
-
     }
 
     public void updateToken(String token){
-        //preferenceManager.putString(Constants.KEY_FCM_TOKEN, token);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS)
-                //n_preferenceManager.getString(  )
-                //.document(Constants.KEY_USER);
         .document(FirebaseAuth.getInstance().getUid());
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
                 .addOnSuccessListener(unused -> showToast("Token updated successfully"))
