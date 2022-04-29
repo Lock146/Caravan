@@ -83,6 +83,7 @@ public class GroupMembersActivity extends AppCompatActivity {
 
         //binding.addUser.setOnClickListener(view -> add_user());
         binding.chat.setOnClickListener(view -> open_group_chat());
+        binding.btnBack.setOnClickListener(view -> onBackPressed());
 
 
 //        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
