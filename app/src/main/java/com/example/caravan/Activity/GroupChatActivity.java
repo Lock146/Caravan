@@ -49,7 +49,7 @@ public class GroupChatActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
         m_binding = ActivityGroupChatBinding.inflate(getLayoutInflater());
-        setContentView(R.layout.activity_group_chat);
+        setContentView(m_binding.getRoot());
         setListeners();
         loadReceiverDetails();
         init();

@@ -46,6 +46,7 @@ public class GroupMembersActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
 
+        MemberList = Database.get_instance().get_group_members();
         //suggestedStopsAdapter = new suggestedStopsAdapter(Database.get_instance().get_suggested_stops());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -60,12 +61,14 @@ public class GroupMembersActivity extends AppCompatActivity {
 
 
 
-        binding = ActivityGroupMembersBinding.inflate(getLayoutInflater());
+       // binding = ActivityGroupMembersBinding.inflate(getLayoutInflater());
         groupListAdapter = new GroupListAdapter(MemberList);
         binding.recyclerView.setAdapter(groupListAdapter);
-        setContentView(binding.getRoot());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       // setContentView(binding.getRoot());
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //Database.get_instance();
+        //recyclerView.addItemDecoration(dividerItemDecoration);
+
 
 
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));

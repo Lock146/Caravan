@@ -83,7 +83,6 @@ public class GroupActivity extends AppCompatActivity {
 
 //        binding.groupMembership.setVisibility(View.INVISIBLE);
 //        binding.groupMembership.setClickable(false);
-
         disable_group_functionality();
     }
 
@@ -93,14 +92,14 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void add_user(){
-        //if(!binding.addEmail.getText().toString().isEmpty()) {
-        //    String email = binding.addEmail.getText().toString();
-        //    binding.addEmail.setText(null);
-        //    Database.get_instance().add_user(email);
-        //}
-        //else{
-        //    Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
-        //}
+//        if(!binding.addEmail.getText().toString().isEmpty()) {
+//            String email = binding.addEmail.getText().toString();
+//            binding.addEmail.setText(null);
+//            Database.get_instance().add_user(email);
+//        }
+//        else{
+//            Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private void open_group_chat(){
