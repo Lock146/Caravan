@@ -2,7 +2,6 @@ package com.example.caravan.Activity;
 
 import static android.content.ContentValues.TAG;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,9 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.caravan.Database;
 import com.example.caravan.R;
 import com.example.caravan.databinding.ActivityProfileMenuBinding;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.storage.FirebaseStorage;
 
 public class PPMenuActivity extends AppCompatActivity {
 
