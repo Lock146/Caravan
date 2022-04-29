@@ -78,9 +78,7 @@ public class GroupChatActivity extends AppCompatActivity {
     }
     private void sendMessage() {
         if (!m_binding.message.getText().toString().equals("")) {
-
             try{
-
                 Set<String> members = Database.get_instance().get_group_members().keySet();
                 for(String member : members){
                     if(!member.equals(Database.get_instance().get_userID())){
@@ -89,20 +87,16 @@ public class GroupChatActivity extends AppCompatActivity {
                                 .get_group_member(member)
                                 .get(Database.MemberData.fcmToken);
                         token.put(memberToken);
-
                         JSONObject data = new JSONObject();
                         data.put(Constants.KEY_MESSAGE, "New Message");
-
                         JSONObject body = new JSONObject();
                         body.put(Constants.REMOTE_MSG_DATA, data);
                         body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, token);
-
                         sendNotification(body.toString());
                     }
                 }
 
                 //Log.e(TAG, "sendMessage: " + receiverUser.token.toString() );
-
 
                 //kyler userid
                 //data.put(Constants.KEY_USER_ID, "c91Fm3d4NoYsVIcItySJwwKXYyq2");
@@ -110,7 +104,6 @@ public class GroupChatActivity extends AppCompatActivity {
                 //data.put(Constants.KEY_NAME, "Kyler Parker");
                 //data.put(Constants.KEY_NAME, getResources().getString(Integer.parseInt(Constants.KEY_NAME)));
                 //data.put(Constants.KEY_FCM_TOKEN, "e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
-
             }
             catch (Exception exception){
                 showToast(exception.getMessage());
