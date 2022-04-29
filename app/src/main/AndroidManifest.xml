@@ -21,10 +21,14 @@
         android:theme="@style/Theme.Caravan">
         <activity
             android:name=".Activity.GroupActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity
             android:name=".Activity.GroupChatActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.GroupMembersActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activity.DirectionActivity"
             android:theme="@style/ActionBarTheme" />
@@ -32,12 +36,10 @@
         <activity android:name=".Activity.SignUpActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.MainActivity" />
-        <activity android:name=".Activity.GroupMembersActivity" />
         <activity android:name=".Activity.RouteTimelineActivity" />
         <activity android:name=".Activity.suggestedStopsActivity" />
         <activity android:name=".Activity.PPMenuActivity"/>
         <activity android:name=".Activity.GroupListActivity"/>
-        <activity android:name=".Activity.GroupMembersActivity"/>
         <activity android:name=".Activity.SplashActivity">
 
             <intent-filter>

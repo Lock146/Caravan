@@ -87,23 +87,10 @@
             android:layout_gravity="center_horizontal"
             android:padding="10dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/chat"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="0dp"
-                android:backgroundTint="@color/primaryDarkColor"
-                android:padding="15dp"
-                android:text="Chat"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:cornerRadius="20dp"
-                app:elevation="10dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addUser"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginStart="0dp"
