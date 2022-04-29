@@ -58,7 +58,7 @@ public class Database {
     private ListenerRegistration m_userListenerRegistration;
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
-    private ArrayList<GooglePlaceModel> m_stops1;
+    private ArrayList<StopInfo> m_route;
     public static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
@@ -66,14 +66,6 @@ public class Database {
         public static final int ProfilePicture = 2;
         public static final int size = 3;
     }    private ArrayList<StopInfo> m_suggestedStops;
-    private ArrayList<StopInfo> m_route;
-    private static class MemberData {
-        // Changes will break compatibility with data in database. Be thorough.
-        public static final int Email = 0;
-        public static final int Name = 1;
-        public static final int ProfilePicture = 2;
-        public static final int size = 3;
-    }
     private HashMap<String, ArrayList<String>> m_members;
 
     private static class MemberLocation{
