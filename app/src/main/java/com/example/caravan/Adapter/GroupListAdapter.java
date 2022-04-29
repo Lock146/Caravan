@@ -12,13 +12,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.caravan.Database;
 import com.example.caravan.MemberInfo;
 import com.example.caravan.R;
-import com.squareup.picasso.Picasso;
+import com.example.caravan.databinding.RowItemBinding;
 
 import java.util.List;
 
-public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.ViewHolder> {
+public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.ViewHolder> {
 
     //List<String> groupMembers;
     List<MemberInfo> groupMember;
@@ -40,13 +42,7 @@ public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.Vie
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(groupMember.get(position).getMemberName());
-        holder.blank.setText("");
-
-       // Picasso.get()
-         //       .load("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Fish.png?alt=media&token=a606def0-d6df-4915-92fe-e7a933dc0077")
-           //     .into(holder.imageView2);
-        holder.imageView2.setImageDrawable(Drawable.createFromStream(null,"https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Fish.png?alt=media&token=a606def0-d6df-4915-92fe-e7a933dc0077"));
+        holder.setData(groupMember.get(position));
     }
 
     @Override
@@ -55,20 +51,23 @@ public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.Vie
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         ImageView imageView2;
         TextView textView,blank;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-
             imageView2 = itemView.findViewById(R.id.imageView);
-
             textView = itemView.findViewById(R.id.textView);
             blank = itemView.findViewById(R.id.rowCountTextView);
 
             itemView.setOnClickListener(this);
+        }
+
+        void setData(MemberInfo memberInfo){
+            textView.setText(memberInfo.getMemberName());
+            Glide.with(itemView).load(memberInfo.getProfilePicture()).into(imageView2);
+            blank.setText("");
         }
 
         @Override

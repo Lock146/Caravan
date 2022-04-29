@@ -53,7 +53,7 @@ public class Database {
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private ArrayList<GooglePlaceModel> m_stops1;
-    private static class MemberData {
+    public static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
         public static final int Name = 1;
@@ -334,6 +334,10 @@ public class Database {
         if(m_groupID != null){
             m_groupListenerRegistration.remove();
         }
+    }
+
+    public HashMap<String, ArrayList<String>> get_group_members(){
+        return m_members;
     }
 
     private Database(){
