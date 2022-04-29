@@ -2,6 +2,8 @@ package com.example.caravan;
 
 import androidx.annotation.DrawableRes;
 
+import java.util.HashMap;
+
 public class MemberInfo
 {
     private String m_memberName;
@@ -12,6 +14,11 @@ public class MemberInfo
     {
         m_memberName = name;
         m_profilePicture = profilePicture;
+    }
+
+    public MemberInfo() {
+            m_memberName = "";
+            m_profilePicture = "";
     }
 
     public String getMemberName() {
@@ -32,6 +39,14 @@ public class MemberInfo
     {
         m_profilePicture = pic;
     }
+
+    public static MemberInfo get_member_info(HashMap<String, Object> hashedStop){
+        MemberInfo info = new MemberInfo();
+        info.setMemberName("Name");
+        info.setProfilePicture("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Cat.png?alt=media&token=072603f3-b678-4209-98e8-47dc4bc92850");
+        return info;
+    }
+
 
     public static MemberInfo getMemberInfo()
     {

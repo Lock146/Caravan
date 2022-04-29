@@ -59,6 +59,7 @@ public class Database {
     private EventListener<DocumentSnapshot> m_groupListener;
     private ListenerRegistration m_groupListenerRegistration;
     private ArrayList<StopInfo> m_route;
+    private ArrayList<MemberInfo> m_member;
     public static class MemberData {
         // Changes will break compatibility with data in database. Be thorough.
         public static final int Email = 0;
@@ -475,6 +476,12 @@ public class Database {
                     m_members = (HashMap<String, ArrayList<String>>) value.get(KEY_GROUP_MEMBERS);
                     m_memberLocations = (HashMap<String, ArrayList<Double>>) value.get(KEY_MEMBER_LOCATIONS);
 
+//                    ArrayList<HashMap<String, Object>> members = (ArrayList<HashMap<String, Object>>) value.get(KEY_GROUP_MEMBERS);
+//                    for (HashMap<String, Object> member : members) {
+//                        m_member.add(MemberInfo.get_member_info(member));
+//                    }
+
+
                     // TODO: See if there's another way to do this, it's fucking ugly
                     ArrayList<HashMap<String, Object>> route = (ArrayList<HashMap<String, Object>>) value.get(KEY_ROUTE);
                     if(route != null){
@@ -499,6 +506,9 @@ public class Database {
                     else{
                         m_suggestedStops = new ArrayList<>();
                     }
+
+
+
 
                     m_votes = (HashMap<String, HashMap<String, ArrayList<String>>>) value.get(Constants.KEY_VOTE);
                     if(m_votes != null && is_owner()){
