@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -87,14 +88,14 @@ public class GroupMembersActivity extends AppCompatActivity {
 //        binding.groupMembership.setOnClickListener(view -> {
 //            leave_group();
 //        });
-        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(!view.hasFocus()){
-                    Database.get_instance().update_group_name(binding.GroupName.getText().toString());
-                }
-            }
-        });
+//        binding.GroupName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                if(!view.hasFocus()){
+//                    Database.get_instance().update_group_name(binding.GroupName.getText().toString());
+//                }
+//            }
+//        });
 
         if(Database.get_instance().in_group()){
             enable_group_functionality();
@@ -124,14 +125,14 @@ public class GroupMembersActivity extends AppCompatActivity {
     }
 
     private void add_user(){
-        //if(!binding.addEmail.getText().toString().isEmpty()) {
-        //    String email = binding.addEmail.getText().toString();
-        //    binding.addEmail.setText(null);
-        //    Database.get_instance().add_user(email);
-        //}
-        //else{
-        //    Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
-        //}
+        if(!binding.addEmail.getText().toString().isEmpty()) {
+            String email = binding.addEmail.getText().toString();
+            binding.addEmail.setText(null);
+            Database.get_instance().add_user(email);
+        }
+        else{
+            Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void open_group_chat(){

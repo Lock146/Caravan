@@ -31,15 +31,17 @@
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2703125" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/ic_info.xml" value="0.9375" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/ic_send.xml" value="0.1675" />
+        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/ic_timeline.xml" value="0.138" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/splash_image.xml" value="0.2703125" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/font/playfair_display.xml" value="0.2265625" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_direction.xml" value="0.264" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_display_message.xml" value="0.176" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_forget.xml" value="0.2" />
-        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_group.xml" value="0.2" />
+        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_group.xml" value="0.264" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_group_chat.xml" value="0.264" />
+        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_group_members.xml" value="0.536" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_login.xml" value="0.264" />
-        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_main.xml" value="0.38928067700987307" />
+        <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_maps.xml" value="0.14375" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_route_list.xml" value="0.14375" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/layout/activity_routetimeline.xml" value="0.15833333333333333" />
@@ -78,8 +80,6 @@
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/menu/menu_group_chat.xml" value="0.2" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/menu/nav_menu.xml" value="0.4" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/mipmap-anydpi-v26/ic_Google.xml" value="0.19427083333333334" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/item_container_received_message.xml" value="0.19270833333333334" />
-        <entry key="..\:/Users/apple/Documents/Programming/Android/Caravan/app/src/main/res/layout/row_item.xml" value="0.1" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/activity_display_message.xml" value="0.22" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/jimne/Documents/Github-Caravan/app/src/main/res/layout/activity_maps.xml" value="0.20520833333333333" />

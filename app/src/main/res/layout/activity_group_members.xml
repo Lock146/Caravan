@@ -49,7 +49,7 @@
                 app:tint="@color/white"/>
 
             <EditText
-                android:id="@+id/GroupName"
+                android:id="@+id/addEmail"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
@@ -60,7 +60,7 @@
 
                 android:drawableTint="@color/white"
                 android:fontFamily="@font/playfair_display"
-                android:hint="Group Name:"
+                android:hint="User's Email:"
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingStart="-10dp"
@@ -110,7 +110,7 @@
                 android:layout_marginTop="0dp"
                 android:backgroundTint="@color/primaryDarkColor"
                 android:padding="15dp"
-                android:text="Group Members"
+                android:text="Add User"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:cornerRadius="20dp"

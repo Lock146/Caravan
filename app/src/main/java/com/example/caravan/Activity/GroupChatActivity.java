@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.caravan.Adapter.ChatAdapter;
 import com.example.caravan.Database;
 import com.example.caravan.Model.ChatMessage;
+import com.example.caravan.R;
 import com.example.caravan.User;
 import com.example.caravan.databinding.ActivityGroupChatBinding;
 import com.example.caravan.Constant.Constants;
@@ -45,10 +46,10 @@ public class GroupChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
-        //Database.get_instance();
         m_binding = ActivityGroupChatBinding.inflate(getLayoutInflater());
-        setContentView(m_binding.getRoot());
+        setContentView(R.layout.activity_group_chat);
         setListeners();
         loadReceiverDetails();
         init();
