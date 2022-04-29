@@ -48,7 +48,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
 
     @Override
     public int getItemCount() {
-        return groupMember.size();
+        return groupMember == null ? 0 : groupMember.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
