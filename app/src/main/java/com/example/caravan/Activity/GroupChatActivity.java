@@ -88,6 +88,7 @@ public class GroupChatActivity extends AppCompatActivity {
                                 .get(Database.MemberData.fcmToken);
                         token.put(memberToken);
                         JSONObject data = new JSONObject();
+                       // data.put(Constants.KEY_USER,Constants.KEY_NAME);
                         data.put(Constants.KEY_MESSAGE, "New Message");
                         JSONObject body = new JSONObject();
                         body.put(Constants.REMOTE_MSG_DATA, data);
