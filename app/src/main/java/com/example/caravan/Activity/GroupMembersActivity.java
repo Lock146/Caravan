@@ -235,4 +235,29 @@ public class GroupMembersActivity extends AppCompatActivity {
         //binding.groupMembership.setOnClickListener(view -> leave_group());
         //binding.groupList.setOnClickListener(view -> open_list());
     }
+    private void sendNotification(String messageBody){
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if(response.isSuccessful()){
+                            try {
+                                if(response.body() != null){
+                                    JSONObject responseJson = new JSONObject(response.body());
+                                    JSONArray results = responseJson.getJSONArray("results");
+                                    if(responseJson.getInt("failure")== 1){
+                                        JSONObject error = (JSONObject) results.get(0);
+                                        showToast(error.getString("error"));
+                                        return; } }
+                            } catch (JSONException e) {
+                                e.printStackTrace(); }
+                            showToast("Notification sent Successfully");
+                        } else{
+                            showToast("Error: "+ response.code()); } }
+                    @Override
+                    public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                        showToast(t.getMessage()); }
+                }); }
 }
