@@ -3,6 +3,7 @@ package com.example.caravan.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.RemoteInput;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -57,7 +58,8 @@ public class GroupChatActivity extends AppCompatActivity {
     private ActivityGroupChatBinding m_binding;
     private List<ChatMessage> m_chatMessages;
     private ChatAdapter m_chatAdapter;
-
+    //trying to set up for reply on notification
+    private static final String KEY_TEXT_REPLY = "key_text_reply";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,15 +103,6 @@ public class GroupChatActivity extends AppCompatActivity {
                         sendNotification(body.toString());
                     }
                 }
-
-                //Log.e(TAG, "sendMessage: " + receiverUser.token.toString() );
-
-                //kyler userid
-                //data.put(Constants.KEY_USER_ID, "c91Fm3d4NoYsVIcItySJwwKXYyq2");
-                //data.put(Constants.KEY_USER_ID, getResources().getString(Integer.parseInt(Constants.KEY_USER_ID)));
-                //data.put(Constants.KEY_NAME, "Kyler Parker");
-                //data.put(Constants.KEY_NAME, getResources().getString(Integer.parseInt(Constants.KEY_NAME)));
-                //data.put(Constants.KEY_FCM_TOKEN, "e1wcHntoRTSdd4A5lJ0uP7:APA91bHrpNCRvPsKs8_vAmSPZ59CPM8qmClfJClxEXHPmORa50I4IRutjC5GklV4a2fz5wJGgZVvZkv3WLVT5bBx9ABrJZ-8gaVlVas-cQE8PpMAtEISLlRjoIbyi60rePzcvT-nr2Tl");
             }
             catch (Exception exception){
                 showToast(exception.getMessage());
