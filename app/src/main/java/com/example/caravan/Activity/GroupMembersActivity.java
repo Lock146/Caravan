@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Adapter.GroupListAdapter;
 import com.example.caravan.Adapter.suggestedStopsAdapter;
+import com.example.caravan.Constant.Constants;
 import com.example.caravan.Database;
 import com.example.caravan.MemberInfo;
 import com.example.caravan.R;
@@ -21,9 +23,20 @@ import com.example.caravan.StopInfo;
 import com.example.caravan.databinding.ActivityGroupBinding;
 import com.example.caravan.databinding.ActivityGroupMembersBinding;
 import com.example.caravan.databinding.ActivityGrouplistBinding;
+import com.example.caravan.network.ApiClient;
+import com.example.caravan.network.ApiService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupMembersActivity extends AppCompatActivity {
     private ActivityGroupMembersBinding binding;
@@ -141,6 +154,32 @@ public class GroupMembersActivity extends AppCompatActivity {
             String email = binding.addEmail.getText().toString();
             binding.addEmail.setText(null);
             Database.get_instance().add_user(email);
+            try{
+                Set<String> members = Database.get_instance().get_group_members().keySet();
+                for(String member : members){
+                    if(!member.equals(Database.get_instance().get_userID())){
+                        JSONArray token = new JSONArray();
+                        String memberToken = Database.get_instance()
+                                .get_group_member(member)
+                                .get(Database.MemberData.fcmToken);
+                        token.put(memberToken);
+
+                        JSONObject data = new JSONObject();
+                        data.put(Constants.KEY_NAME, Database.get_instance()
+                                .display_name());
+                        data.put(Constants.KEY_MESSAGE, "Added to a Group");
+
+                        JSONObject body = new JSONObject();
+                        body.put(Constants.REMOTE_MSG_DATA, data);
+                        body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, token);
+
+                        sendNotification(body.toString());
+                    }
+                }
+            }
+            catch (Exception exception){
+                showToast(exception.getMessage());
+            }
         }
         else{
             Toast.makeText(this, "Must provide email", Toast.LENGTH_SHORT).show();
