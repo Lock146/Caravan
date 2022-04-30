@@ -78,6 +78,7 @@ public class GroupChatActivity extends AppCompatActivity {
     }
     private void sendMessage() {
         if (!m_binding.message.getText().toString().equals("")) {
+            String message = m_binding.message.getText().toString();
             try{
                 Set<String> members = Database.get_instance().get_group_members().keySet();
                 for(String member : members){
@@ -87,12 +88,16 @@ public class GroupChatActivity extends AppCompatActivity {
                                 .get_group_member(member)
                                 .get(Database.MemberData.fcmToken);
                         token.put(memberToken);
+
                         JSONObject data = new JSONObject();
-                       // data.put(Constants.KEY_USER,Constants.KEY_NAME);
-                        data.put(Constants.KEY_MESSAGE, "New Message");
+                        data.put(Constants.KEY_NAME, Database.get_instance()
+                                .display_name());
+                        data.put(Constants.KEY_MESSAGE, message);
+
                         JSONObject body = new JSONObject();
                         body.put(Constants.REMOTE_MSG_DATA, data);
                         body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, token);
+
                         sendNotification(body.toString());
                     }
                 }

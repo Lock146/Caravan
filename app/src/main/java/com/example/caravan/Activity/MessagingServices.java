@@ -68,7 +68,7 @@ public class MessagingServices extends FirebaseMessagingService {
         builder.setSmallIcon(R.drawable.ic_notifications);
         //needs to be changed
 
-        builder.setContentTitle(Constants.KEY_NAME);
+        builder.setContentTitle(remoteMessage.getData().get(Constants.KEY_NAME));
         builder.setContentText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE));
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(remoteMessage.getData().get(com.example.caravan.Constant.Constants.KEY_MESSAGE)));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
