@@ -165,9 +165,9 @@ public class GroupMembersActivity extends AppCompatActivity {
                         token.put(memberToken);
 
                         JSONObject data = new JSONObject();
-                        data.put(Constants.KEY_NAME, Database.get_instance()
-                                .display_name());
-                        data.put(Constants.KEY_MESSAGE, "Added to a Group");
+                        data.put(Constants.KEY_NAME, " Group Add");
+                        data.put(Constants.KEY_MESSAGE, Database.get_instance()
+                                .display_name() + " added you to their group");
 
                         JSONObject body = new JSONObject();
                         body.put(Constants.REMOTE_MSG_DATA, data);
@@ -253,7 +253,7 @@ public class GroupMembersActivity extends AppCompatActivity {
                                         return; } }
                             } catch (JSONException e) {
                                 e.printStackTrace(); }
-                            showToast("Notification sent Successfully");
+                            showToast("User Added to Group");
                         } else{
                             showToast("Error: "+ response.code()); } }
                     @Override
