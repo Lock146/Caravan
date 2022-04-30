@@ -260,4 +260,7 @@ public class GroupMembersActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                         showToast(t.getMessage()); }
                 }); }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show(); }
 }
