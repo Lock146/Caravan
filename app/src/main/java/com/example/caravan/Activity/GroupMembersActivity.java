@@ -166,8 +166,7 @@ public class GroupMembersActivity extends AppCompatActivity {
 
                         JSONObject data = new JSONObject();
                         data.put(Constants.KEY_NAME, " Group Add");
-                        data.put(Constants.KEY_MESSAGE, Database.get_instance()
-                                .display_name() + " added you to their group");
+                        data.put(Constants.KEY_MESSAGE, Database.get_instance().display_name() + " added you to their group");
 
                         JSONObject body = new JSONObject();
                         body.put(Constants.REMOTE_MSG_DATA, data);
