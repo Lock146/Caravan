@@ -166,7 +166,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
 
 
-        binding.enableTraffic.setOnClickListener(view -> {
+        binding.route.setOnClickListener(view -> {
             if (isTrafficEnable) {
                 if (mGoogleMap != null) {
                     mGoogleMap.setTrafficEnabled(false);

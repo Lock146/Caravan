@@ -138,6 +138,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 }
         }
     };
+
     private final EventListener<DocumentSnapshot> m_routeListener = (value, error) -> {
         if(Database.get_instance().has_routes()){
             m_binding.route.setImageTintList(getResources().getColorStateList(R.color.primaryColor, null));
