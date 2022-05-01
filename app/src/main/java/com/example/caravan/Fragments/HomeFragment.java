@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private FragmentHomeBinding m_binding;
     private GoogleMap mGoogleMap;
     private AppPermissions appPermissions;
-    private boolean isLocationPermissionOk, isTrafficEnable;
+    private boolean isLocationPermissionOk;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -125,7 +125,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private InfoWindowAdapter infoWindowAdapter;
     private ArrayList<String> userSavedLocationId;
     private ArrayList<String> userCurrentLocationId;
-    private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private ArrayList<StopInfo> m_stops;
     public LatLng testLocation;
     private ListenerRegistration m_groupChangeRegistration;
@@ -179,12 +178,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         googlePlaceModelList = new ArrayList<>();
         userSavedLocationId = new ArrayList<>();
         userCurrentLocationId = new ArrayList<>();
-        locationReference = FirebaseDatabase.getInstance().getReference("Places");
-        userLocationReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Saved Locations");
-        locationCurrentReference = FirebaseDatabase.getInstance().getReference("Locations");
-        userCurrentReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Current Locations");
 
         m_stops = new ArrayList<>();
 
@@ -793,131 +786,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //
 //        }
 //    }
-
-
-    public void onLocationClick(GooglePlaceModel googlePlaceModel) {
-        if (userSavedLocationId.contains(googlePlaceModel.placeID())) {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Remove Place")
-                    .setMessage("Are you sure to remove this place?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            removePlace(googlePlaceModel);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .create().show();
-        }
-        else {
-            loadingDialog.startLoading();
-            locationCurrentReference.child(googlePlaceModel.placeID()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (!snapshot.exists()) {
-
-                        DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
-                                googlePlaceModel.placeID(), googlePlaceModel.getRating(),
-                                googlePlaceModel.getUserRatingsTotal(),
-                                googlePlaceModel.getGeometry().getLocation().getLat(),
-                                googlePlaceModel.getGeometry().getLocation().getLng());
-
-                        saveCurrentLocation(destinationModel);
-                    }
-
-                    saveUserCurrentLocation(googlePlaceModel.placeID());
-
-                    int index = googlePlaceModelList.indexOf(googlePlaceModel);
-                    googlePlaceModelList.get(index).setCurrentLocation(true);
-                    googlePlaceAdapter.notifyDataSetChanged();
-                    loadingDialog.stopLoading();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-    }
-
-    private void removePlace(GooglePlaceModel googlePlaceModel) {
-        userSavedLocationId.remove(googlePlaceModel.placeID());
-        int index = googlePlaceModelList.indexOf(googlePlaceModel);
-        googlePlaceModelList.get(index).setSaved(false);
-        googlePlaceAdapter.notifyDataSetChanged();
-
-        Snackbar.make(m_binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        userSavedLocationId.add(googlePlaceModel.placeID());
-                        googlePlaceModelList.get(index).setSaved(true);
-                        googlePlaceAdapter.notifyDataSetChanged();
-
-                    }
-                })
-                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-
-                        userLocationReference.setValue(userSavedLocationId);
-                    }
-                }).show();
-
-    }
-
-    private void removeCurrentPlace(GooglePlaceModel googlePlaceModel) {
-        userCurrentLocationId.remove(googlePlaceModel.placeID());
-        int index = googlePlaceModelList.indexOf(googlePlaceModel);
-        googlePlaceModelList.get(index).setCurrentLocation(false);
-        googlePlaceAdapter.notifyDataSetChanged();
-
-        Snackbar.make(m_binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        userCurrentLocationId.add(googlePlaceModel.placeID());
-                        googlePlaceModelList.get(index).setCurrentLocation(true);
-                        googlePlaceAdapter.notifyDataSetChanged();
-
-                    }
-                })
-                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-
-                        userCurrentReference.setValue(userCurrentLocationId);
-                    }
-                }).show();
-    }
-
-    private void saveUserLocation(String placeId) {
-        userSavedLocationId.add(placeId);
-        userLocationReference.setValue(userSavedLocationId);
-        Snackbar.make(m_binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
-    }
-
-    private void saveUserCurrentLocation(String placeId) {
-        userCurrentLocationId.add(placeId);
-        userCurrentReference.setValue(userCurrentLocationId);
-        Snackbar.make(m_binding.getRoot(), "Location Saved", Snackbar.LENGTH_LONG).show();
-    }
-
-    private void saveLocation(SavedPlaceModel savedPlaceModel) {
-        locationReference.child(savedPlaceModel.getPlaceId()).setValue(savedPlaceModel);
-    }
-
-    private void saveCurrentLocation(DestinationModel destinationModel) {
-        locationCurrentReference.child(destinationModel.getPlaceId()).setValue(destinationModel);
-    }
 
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
