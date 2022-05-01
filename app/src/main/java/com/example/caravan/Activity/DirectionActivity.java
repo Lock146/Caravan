@@ -154,15 +154,19 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                     "&mode=" + mode +
                     "&key=" + getResources().getString(R.string.MAPS_API_KEY) +
                     "&waypoints=";
+            StringBuilder chain = new StringBuilder();
             for(int i = 0; i < m_destinations.size(); i += 1){
-                url += ((i == 0 ? "" : "|") + "place_id:" + m_destinations.get(i).placeID());
+                chain.append(i == 0 ? "" : "|")
+                        .append("place_id:")
+                        .append(m_destinations.get(i).placeID());
+
                 double latitude = m_destinations.get(i).latitude();
                 double longitude = m_destinations.get(i).longitude();
                 mGoogleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(latitude, longitude))
                         .title("End Location"));
             }
-
+            url += chain;
             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
                 @Override
                 public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
