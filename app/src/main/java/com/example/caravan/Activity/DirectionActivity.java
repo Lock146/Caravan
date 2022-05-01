@@ -128,7 +128,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 //        Log.e(TAG, "onStartClick: " + moreStops);
 
 
-
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         appPermissions = new AppPermissions();
         loadingDialog = new LoadingDialog(this);
@@ -148,6 +148,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.directionMap);
 
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
 
