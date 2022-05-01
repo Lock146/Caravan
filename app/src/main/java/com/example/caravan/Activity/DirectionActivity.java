@@ -66,7 +66,7 @@ import retrofit2.Response;
 
 public class DirectionActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private static String TAG = "help";
+    private static final String TAG = DirectionActivity.class.getSimpleName();
 
     private static ActivityDirectionBinding binding;
     private static GoogleMap mGoogleMap;
