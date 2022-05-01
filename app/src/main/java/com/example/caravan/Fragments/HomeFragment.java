@@ -700,7 +700,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     private void open_timeline(){
         Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
-        startActivity(intent);
+
+        ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
+        if(m_stops.size() != 0 || Database.get_instance().has_routes()){
+            if(!Database.get_instance().in_group()){
+                for (StopInfo stop : m_stops) {
+                    destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
+                }
+                intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
+            }
+            startActivity(intent);
+        }
     }
 
     private void add_route_listener(){
