@@ -325,10 +325,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             PopupMenu popupMenu = new PopupMenu(requireContext(), view);
             popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.btnNormal:
-                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        break;
+                if (item.getItemId() == R.id.btnNormal) {
+                    mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 }
                 return true;
             });
