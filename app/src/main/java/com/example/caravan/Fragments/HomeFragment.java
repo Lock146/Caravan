@@ -657,116 +657,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
-
-        if(Database.get_instance().get_suggested_stops() != null){
-
-            ArrayList<StopInfo> suggestions = new ArrayList<StopInfo>(Database.get_instance().get_suggested_stops());
-            boolean contains = false;
-            for(StopInfo suggestion : suggestions){
-                if(suggestion.equals(googlePlaceModel.placeID())){
-                    contains = true;
-                    break;
-                }
-            }
-            if(!contains){
+        if(Database.get_instance().in_group()){
+            if(!Database.get_instance().has_suggested_stop(googlePlaceModel)){
                 Database.get_instance().append_to_suggestions(googlePlaceModel);
-                googlePlaceModel.in_timeline(true);
             }
         }
         else{
-            Database.get_instance().append_to_suggestions(googlePlaceModel);
-            googlePlaceModel.in_timeline(true);
+            m_stops.add(new StopInfo(googlePlaceModel, 0.0));
         }
+        googlePlaceModel.in_timeline(true);
+        update_route_icon();
 
         googlePlaceAdapter.notifyDataSetChanged();
 
-
         // TODO: Add ability to remove stops
-//        if(googlePlaceModel.in_timeline()){
-//            if (Database.get_instance().get_suggested_stops() != null) {
-//
-//
-//                googlePlaceModel.in_timeline(false);
-//
-//                m_stops = Database.get_instance().get_suggested_stops();
-//
-//
-//                int size = m_stops.size();
-//                while (size >= 1) {
-//                    Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getReference() );
-//
-//                    Log.e(TAG, "onSaveClick: " + googlePlaceModel.getReference());
-//
-//                    if (m_stops.get(size-1).getReference().equals(googlePlaceModel.getReference())){
-//                        m_stops.remove(size-1);
-//                        Log.e(TAG, "onSaveClick: " + "SUCCESSFUL DELETE");
-//                        break;
-//                    }
-//                    size--;
-//                }
-//
-//
-//
-//                m_stops.remove(googlePlaceModel);
-//
-//                Database.get_instance().suggest_stops(m_stops);
-//
-//
-//                //if (m_stops != null) {
-//            } else {
-//
-////                test3(googlePlaceModel);
-//
-//
-//            }
-//
-//
-//
-//        }
-//        else{
-//
-//
-//            if (Database.get_instance().get_suggested_stops() != null) {
-//
-//                googlePlaceModel.in_timeline(true);
-//
-//                m_stops = Database.get_instance().get_suggested_stops();
-//
-//                m_stops.add(googlePlaceModel);
-//
-//                Database.get_instance().suggest_stops(m_stops);
-//
-//                //if (m_stops != null) {
-//            } else {
-//
-////                test3(googlePlaceModel);
-//
-//
-//            }
-//
-//
-//        }
-//        googlePlaceAdapter.notifyDataSetChanged();
     }
-
-//    public void test3(GooglePlaceModel googlePlaceModel) {
-//        if (Database.get_instance().get_suggested_stops() != null) {
-//
-//            //m_stops = Database.get_instance().get_caravan_stops();
-//            onSaveClick(googlePlaceModel);
-//
-//
-//        } else {
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test3(googlePlaceModel);
-//                }
-//            }, 50);
-//
-//        }
-//    }
 
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
