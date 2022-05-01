@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.Database;
 import com.example.caravan.DestinationInfo;
-import com.example.caravan.DestinationModel;
 import com.example.caravan.DeviceInfo;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionLegModel;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionResponseModel;
@@ -30,6 +28,7 @@ import com.example.caravan.Model.DirectionPlaceModel.DirectionRouteModel;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionStepModel;
 import com.example.caravan.Permissions.AppPermissions;
 import com.example.caravan.R;
+import com.example.caravan.StopInfo;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.WebServices.RetrofitAPI;
 import com.example.caravan.WebServices.RetrofitClient;
@@ -86,7 +85,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         binding = ActivityDirectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        m_destinations = getIntent().getParcelableArrayListExtra(Constants.KEY_DESTINATIONS);
+        get_destinations();
 
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -371,5 +370,20 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
         return path;
 
+    }
+
+    private void get_destinations(){
+        if(Database.get_instance().in_group()){
+            ArrayList<StopInfo> destinations = Database.get_instance().get_caravan_stops();
+            m_destinations = new ArrayList<>(destinations.size());
+            for(StopInfo destination : destinations){
+                m_destinations.add(new DestinationInfo(destination.getPlaceID(),
+                        destination.getLatitude(),
+                        destination.getLongitude()));
+            }
+        }
+        else{
+            m_destinations = getIntent().getParcelableArrayListExtra(Constants.KEY_DESTINATIONS);
+        }
     }
 }
