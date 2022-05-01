@@ -86,6 +86,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import com.google.gson.Gson;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -118,23 +119,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public LatLng testLocation;
     private ListenerRegistration m_groupChangeRegistration;
     private ListenerRegistration m_routeRegistration;
+    enum GroupStatus{
+        ACTIVE, INACTIVE,
+    }
     private final EventListener<DocumentSnapshot> m_onGroupChange = (value, error) -> {
         if(value == null){
             Log.d(TAG, "m_onGroupChange error: " + error);
             assert false;
         }
         else {
-            assert value.get(Constants.KEY_GROUP_ID) != null;
-            String groupID = value.get(Constants.KEY_GROUP_ID).toString();
-            if(groupID != null){
-                add_route_listener();
-            }
-            else{
-                remove_route_listener();
-            }
-            m_binding.group.setImageDrawable(AppCompatResources.getDrawable(
-                    requireContext(),
-                    value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
+                String groupID = value.get(Constants.KEY_GROUP_ID, String.class);
+                if (groupID != null) {
+                    add_route_listener();
+                    update_icons(GroupStatus.ACTIVE);
+                } else {
+                    remove_route_listener();
+                    update_icons(GroupStatus.INACTIVE);
+                }
         }
     };
     private final EventListener<DocumentSnapshot> m_routeListener = (value, error) -> {
@@ -816,6 +817,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private void remove_route_listener(){
         if(m_routeRegistration != null){
             m_routeRegistration.remove();
+        }
+    }
+
+    private void update_icons(GroupStatus status){
+        m_binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                requireContext(),
+                status == GroupStatus.INACTIVE ? R.drawable.ic_add : R.drawable.ic_groups));
+        if(status == GroupStatus.ACTIVE){
+        }
+        else{
+
         }
     }
 }
