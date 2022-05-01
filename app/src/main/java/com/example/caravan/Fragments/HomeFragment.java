@@ -18,10 +18,6 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -42,7 +38,6 @@ import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.DestinationInfo;
-import com.example.caravan.DestinationModel;
 import com.example.caravan.Database;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
@@ -51,11 +46,11 @@ import com.example.caravan.Permissions.AppPermissions;
 import com.example.caravan.PlaceModel;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
-import com.example.caravan.SavedPlaceModel;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.WebServices.RetrofitAPI;
 import com.example.caravan.WebServices.RetrofitClient;
 import com.example.caravan.databinding.FragmentHomeBinding;
+
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -75,23 +70,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
+
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -101,7 +92,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, NearLocationInterface {
@@ -114,13 +104,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location currentLocation;
-    private FirebaseAuth firebaseAuth;
     private Marker currentMarker;
     private LoadingDialog loadingDialog;
     private int radius = 5000;
     private RetrofitAPI retrofitAPI;
     private List<GooglePlaceModel> googlePlaceModelList;
-    private PlaceModel selectedPlaceModel;
     private GooglePlaceAdapter googlePlaceAdapter;
     private InfoWindowAdapter infoWindowAdapter;
     private ArrayList<String> userSavedLocationId;
@@ -152,7 +140,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         set_listeners();
 
         appPermissions = new AppPermissions();
-        firebaseAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(requireActivity());
         retrofitAPI = RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
         googlePlaceModelList = new ArrayList<>();
@@ -223,9 +210,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
 
         setUpRecyclerView();
-        getUserSavedLocations();
-        getUserCurrentLocations();
-
     }
 
     @Override
@@ -347,8 +331,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                 if (checkedId != -1) {
                     PlaceModel placeModel = AllConstant.placesName.get(checkedId - 1);
-                    //binding.edtPlaceName.setText(placeModel.getName());
-                    selectedPlaceModel = placeModel;
                     getPlaces(placeModel.getPlaceType());
                 }
             }
@@ -501,7 +483,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 .position(new LatLng(latitude, longitude))
                 .title("Current Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .snippet(firebaseAuth.getCurrentUser().getDisplayName());
+                .snippet(Database.get_instance().display_name());
 
         if (currentMarker != null) {
             currentMarker.remove();
@@ -770,49 +752,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onDirectionClick: " + googlePlaceModel);
-    }
-
-    private void getUserSavedLocations() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Saved Locations");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String placeId = ds.getValue(String.class);
-                        userSavedLocationId.add(placeId);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getUserCurrentLocations() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Current Locations");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String placeId = ds.getValue(String.class);
-                        userCurrentLocationId.add(placeId);
-
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void open_group_activity() {
