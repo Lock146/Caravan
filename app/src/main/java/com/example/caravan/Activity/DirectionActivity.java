@@ -169,7 +169,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             url += chain;
             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
                 @Override
-                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
+                public void onResponse(@NonNull Call<DirectionResponseModel> call, @NonNull Response<DirectionResponseModel> response) {
                     Gson gson = new Gson();
                     String res = gson.toJson(response.body());
                     Log.d(TAG, "onResponse: " + res);
