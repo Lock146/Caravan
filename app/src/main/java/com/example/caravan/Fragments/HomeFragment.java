@@ -657,14 +657,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
-        if(Database.get_instance().in_group()){
-            if(!Database.get_instance().has_suggested_stop(googlePlaceModel)){
-                Database.get_instance().append_to_suggestions(googlePlaceModel);
-            }
-        }
-        else{
-            m_stops.add(new StopInfo(googlePlaceModel, 0.0));
-        }
+        append_stop(googlePlaceModel);
         googlePlaceModel.in_timeline(true);
         update_route_icon();
 
@@ -728,6 +721,33 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
         else{
 
+        }
+    }
+
+    private void update_route_icon(){
+        if(Database.get_instance().has_routes() || m_stops.size() != 0){
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.primaryColor, null));
+        }
+        else{
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.colorBackground, null));
+        }
+    }
+
+    private void append_stop(StopInfo stop){
+        if(Database.get_instance().in_group()){
+            Database.get_instance().append_to_suggestions(stop);
+        }
+        else{
+            m_stops.add(stop);
+        }
+    }
+
+    private void append_stop(GooglePlaceModel stop){
+        if(Database.get_instance().in_group()){
+            Database.get_instance().append_to_suggestions(stop);
+        }
+        else{
+            m_stops.add(new StopInfo(stop, 0.0));
         }
     }
 }
