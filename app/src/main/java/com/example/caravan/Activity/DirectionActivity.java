@@ -68,13 +68,13 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
     private static final String TAG = DirectionActivity.class.getSimpleName();
 
-    private static ActivityDirectionBinding binding;
+    private ActivityDirectionBinding binding;
     private static GoogleMap mGoogleMap;
     private AppPermissions appPermissions;
     private static boolean isLocationPermissionOk;
     private boolean isTrafficEnable;
     private BottomSheetBehavior<RelativeLayout> bottomSheetBehavior;
-    private static BottomSheetLayoutBinding bottomSheetLayoutBinding;
+    private BottomSheetLayoutBinding bottomSheetLayoutBinding;
     private static RetrofitAPI retrofitAPI;
     private LoadingDialog loadingDialog;
     private static DirectionStepAdapter adapter;
@@ -240,7 +240,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                 }
 
                 @Override
-                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
+                public void onFailure(@NonNull Call<DirectionResponseModel> call, @NonNull Throwable t) {
 
                 }
             });
