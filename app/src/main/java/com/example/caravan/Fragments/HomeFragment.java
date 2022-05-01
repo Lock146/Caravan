@@ -125,7 +125,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private final EventListener<DocumentSnapshot> m_onGroupChange = (value, error) -> {
         if(value == null){
             Log.d(TAG, "m_onGroupChange error: " + error);
-            assert false;
         }
         else {
                 String groupID = value.get(Constants.KEY_GROUP_ID, String.class);
