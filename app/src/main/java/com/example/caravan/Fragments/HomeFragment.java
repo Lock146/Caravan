@@ -178,42 +178,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     }
                 });
 
-//                new ActivityResultLauncher<ArrayList<StopInfo>>() {
-//            @Override
-//            public void launch(ArrayList<StopInfo> input, @Nullable ActivityOptionsCompat options) {
-//
-//            }
-//
-//            @Override
-//            public void unregister() {
-//
-//            }
-//
-//            @NonNull
-//            @Override
-//            public ActivityResultContract<ArrayList<StopInfo>, ArrayList<StopInfo>> getContract() {
-//                return new ActivityResultContract<ArrayList<StopInfo>, ArrayList<StopInfo>>() {
-//                    @NonNull
-//                    @Override
-//                    public Intent createIntent(@NonNull Context context, ArrayList<StopInfo> input) {
-//                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                        intent.putParcelableArrayListExtra(Constants.KEY_STOPS, input);
-//                        return intent;
-//                    }
-//
-//                    @Override
-//                    public ArrayList<StopInfo> parseResult(int resultCode, @Nullable Intent intent) {
-//                        if(intent == null || !intent.getExtras().containsKey(Constants.KEY_STOPS)){
-//                            return null;
-//                        }
-//                        else{
-//                            return intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
-//                        }
-//                    }
-//                };
-//            }
-//        };
-        //m_stops = null;
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -313,17 +277,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 final LatLng location = place.getLatLng();
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
                 testLocation = location;
-
-                //String placeId = place.getId();
-                //Double lat = location.latitude;
-                //Double lng = location.longitude;
-
-                //Intent intent = new Intent(requireContext(), DirectionActivity.class);
-                //intent.putExtra("placeId", placeId);
-                //intent.putExtra("lat", lat);
-                //intent.putExtra("lng", lng);
-
-                //startActivity(intent);
             }
 
             @Override
@@ -1023,8 +976,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         });
     }
 
-    private void open_group_activity(){
-        if(!Database.get_instance().in_group()){
+    private void open_group_activity() {
+        if (!Database.get_instance().in_group()) {
             Database.get_instance().create_group();
         }
 
@@ -1033,123 +986,28 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         ArrayList<String> placeIDs = new ArrayList<>();
 
         startActivity(intent);
-//        if (Database.get_instance().get_suggested_stops() != null) {
-
-//            m_stops = Database.get_instance().get_suggested_stops();
-
-
-//            for (GooglePlaceModel stop : m_stops) {
-//                stops.add(new StopInfo(stop, 0));
-//                placeIDs.add(stop.placeID());
-//            }
-//            //if (m_stops != null) {
-//            if (stops.size() != 0) {
-//                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-//                startActivity(intent);
-//
-//            }
-//        } else {
-
-//            test2();
-
-
-//        }
-        //Database.get_instance().suggest_stops(m_stops);
-        //intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-        //startActivity(intent);
     }
-
-//    public void test2() {
-//        if (Database.get_instance().get_suggested_stops() != null) {
-//
-//            //m_stops = Database.get_instance().get_caravan_stops();
-//            open_group_activity();
-//
-//
-//        } else {
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test2();
-//                }
-//            }, 50);
-//
-//        }
-//    }
-
-
-
-
-
 
     private void open_directions(){
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
         ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
 
-        //String m_groupID = Database.get_instance().get_groupID();
-            //m_stops = Database.get_instance().get_caravan_stops();
-
         if (Database.get_instance().get_caravan_stops() != null) {
-
             m_stops = Database.get_instance().get_caravan_stops();
-
 
             for (StopInfo stop : m_stops) {
                 destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
             }
-            //if (m_stops != null) {
+
             if (destinations.size() != 0) {
                 intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
                 startActivity(intent);
-
             }
-
-
-        } else {
-
-//                    test();
-
-
         }
-
     }
-//    public void test() {
-//        if (Database.get_instance().get_caravan_stops() != null) {
-//
-//            //m_stops = Database.get_instance().get_caravan_stops();
-//            open_directions();
-//
-//
-//        } else {
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test();
-//                }
-//            }, 50);
-//
-//        }
-//    }
 
     private void open_timeline(){
-        /*
-        Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
-        ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
-        ArrayList<String> placeIDs = new ArrayList<>();
-        for(GooglePlaceModel stop : m_stops){
-            stops.add(new StopInfo(stop, 0));
-            placeIDs.add(stop.placeID());
-        }
-        Database.get_instance().update_route(m_stops);
-        intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-        m_timelineLauncher.launch(intent);
-
-         */
         Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
         startActivity(intent);
     }
-
-
 }
