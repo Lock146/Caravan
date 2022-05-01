@@ -78,28 +78,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private static RetrofitAPI retrofitAPI;
     private LoadingDialog loadingDialog;
     private static DirectionStepAdapter adapter;
-    private ArrayList<DestinationModel> destinationModelArrayList;
     private ArrayList<DestinationInfo> m_destinations;
-
-    public static void getList(ArrayList<DestinationModel> destinationModelArrayList) {
-
-        while (!destinationModelArrayList.isEmpty()) {
-            if (destinationModelArrayList.get(0).getLat() != null && destinationModelArrayList.get(0).getLng() != null) {
-                //Log.e(TAG, "onStartClick: " + destinationModelArrayList.get(0).getPlaceId());
-                //placeId2 = destinationModelArrayList.get(0).getPlaceId();
-                //endLat = destinationModelArrayList.get(0).getLat();
-                //endLng = destinationModelArrayList.get(0).getLng();
-               // getDirection("driving");
-
-            } else {
-
-            }
-
-            destinationModelArrayList.remove(0);
-        }
-    }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -363,11 +342,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         else
             super.onBackPressed();
     }
-    
-    
-    public ArrayList<DestinationModel> getList() {
-        return destinationModelArrayList;
-    } 
 
     private List<com.google.maps.model.LatLng> decode(String points) {
 
