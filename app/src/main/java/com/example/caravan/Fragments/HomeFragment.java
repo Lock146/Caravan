@@ -139,26 +139,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
         }
     };
-    private final ActivityResultLauncher<Intent> m_timelineLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Intent intent = result.getData();
-                    if(intent != null) {
-                        ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
-                        ArrayList<StopInfo> updatedStops = new ArrayList<>();
-                        for (StopInfo stop : m_stops) {
-                            int idx = get_index_of_stop(stops, stop.getPlaceID());
-                            if (idx == -1) {
-                                mark_as_removed(stop.getPlaceID());
-                            } else {
-                                updatedStops.add(m_stops.get(idx));
-                            }
-                        }
-                        m_stops = updatedStops;
-                    }
-                }
-            });
 
     public HomeFragment() {
     }
