@@ -2,7 +2,6 @@ package com.example.caravan.Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,9 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,14 +21,11 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -40,7 +34,6 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.bumptech.glide.Glide;
 import com.example.caravan.Activity.DirectionActivity;
 import com.example.caravan.Activity.GroupActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
@@ -113,7 +106,7 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, NearLocationInterface {
     private static final String TAG = HomeFragment.class.getSimpleName();
-    private FragmentHomeBinding binding;
+    private FragmentHomeBinding m_binding;
     private GoogleMap mGoogleMap;
     private AppPermissions appPermissions;
     private boolean isLocationPermissionOk, isTrafficEnable;
@@ -143,7 +136,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             assert false;
         }
         else {
-            binding.group.setImageDrawable(AppCompatResources.getDrawable(
+            m_binding.group.setImageDrawable(AppCompatResources.getDrawable(
                     requireContext(),
                     value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
         }
@@ -178,7 +171,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     }
                 });
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        m_binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(requireActivity());
@@ -193,54 +186,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         userCurrentReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Current Locations");
 
-        binding.btnMapType.setOnClickListener(view -> {
-            PopupMenu popupMenu = new PopupMenu(requireContext(), view);
-            popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.btnNormal:
-                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        break;
-
-                }
-                return true;
-            });
-            popupMenu.show();
-        });
-
-        binding.enableTraffic.setOnClickListener(enableTraffic ->
-
-                open_directions()
-
-        );
-
-        binding.enableTraffic.setOnLongClickListener(view -> {
-            open_timeline();
-            return true;
-        });
-
-        binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
-
-        binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup group, int checkedId) {
-
-                if (checkedId != -1) {
-                    PlaceModel placeModel = AllConstant.placesName.get(checkedId - 1);
-                    //binding.edtPlaceName.setText(placeModel.getName());
-                    selectedPlaceModel = placeModel;
-                    getPlaces(placeModel.getPlaceType());
-                }
-            }
-        });
-
-        binding.group.setOnClickListener(view -> open_group_activity());
-        binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
-                Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
-
         m_stops = new ArrayList<>();
 
-        return binding.getRoot();
+        return m_binding.getRoot();
     }
 
     @Override
@@ -298,7 +246,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             chip.setCheckable(true);
             chip.setCheckedIconVisible(false);
 
-            binding.placesGroup.addView(chip);
+            m_binding.placesGroup.addView(chip);
         }
 
         setUpRecyclerView();
@@ -392,6 +340,50 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         } else {
             requestLocation();
         }
+    }
+
+    private void set_listeners(){
+        m_binding.btnMapType.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+            popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.btnNormal:
+                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        break;
+                }
+                return true;
+            });
+            popupMenu.show();
+        });
+
+        m_binding.enableTraffic.setOnClickListener(enableTraffic ->
+                open_directions()
+        );
+
+        m_binding.enableTraffic.setOnLongClickListener(view -> {
+            open_timeline();
+            return true;
+        });
+
+        m_binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
+
+        m_binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+
+                if (checkedId != -1) {
+                    PlaceModel placeModel = AllConstant.placesName.get(checkedId - 1);
+                    //binding.edtPlaceName.setText(placeModel.getName());
+                    selectedPlaceModel = placeModel;
+                    getPlaces(placeModel.getPlaceType());
+                }
+            }
+        });
+
+        m_binding.group.setOnClickListener(view -> open_group_activity());
+        m_binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
+                Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
     }
 
     private static int get_index_of_stop(ArrayList<StopInfo> stops, String placeID){
@@ -598,7 +590,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                                     googlePlaceAdapter.setGooglePlaceModels(googlePlaceModelList);
 
                                 } else if (response.body().getError() != null) {
-                                    Snackbar.make(binding.getRoot(),
+                                    Snackbar.make(m_binding.getRoot(),
                                             response.body().getError(),
                                             Snackbar.LENGTH_LONG).show();
                                 } else {
@@ -654,16 +646,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void setUpRecyclerView() {
-        binding.placesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.placesRecyclerView.setHasFixedSize(false);
+        m_binding.placesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        m_binding.placesRecyclerView.setHasFixedSize(false);
         googlePlaceAdapter = new GooglePlaceAdapter(this);
-        binding.placesRecyclerView.setAdapter(googlePlaceAdapter);
+        m_binding.placesRecyclerView.setAdapter(googlePlaceAdapter);
 
         SnapHelper snapHelper = new PagerSnapHelper();
 
-        snapHelper.attachToRecyclerView(binding.placesRecyclerView);
+        snapHelper.attachToRecyclerView(m_binding.placesRecyclerView);
 
-        binding.placesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        m_binding.placesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -684,7 +676,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         int markerTag = (int) marker.getTag();
         Log.d("HomeFragment", "onMarkerClick: " + markerTag);
 
-        binding.placesRecyclerView.scrollToPosition(markerTag);
+        m_binding.placesRecyclerView.scrollToPosition(markerTag);
         return false;
     }
 
@@ -860,7 +852,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         googlePlaceModelList.get(index).setSaved(false);
         googlePlaceAdapter.notifyDataSetChanged();
 
-        Snackbar.make(binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
+        Snackbar.make(m_binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -887,7 +879,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         googlePlaceModelList.get(index).setCurrentLocation(false);
         googlePlaceAdapter.notifyDataSetChanged();
 
-        Snackbar.make(binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
+        Snackbar.make(m_binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -910,13 +902,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private void saveUserLocation(String placeId) {
         userSavedLocationId.add(placeId);
         userLocationReference.setValue(userSavedLocationId);
-        Snackbar.make(binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(m_binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
     }
 
     private void saveUserCurrentLocation(String placeId) {
         userCurrentLocationId.add(placeId);
         userCurrentReference.setValue(userCurrentLocationId);
-        Snackbar.make(binding.getRoot(), "Location Saved", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(m_binding.getRoot(), "Location Saved", Snackbar.LENGTH_LONG).show();
     }
 
     private void saveLocation(SavedPlaceModel savedPlaceModel) {
