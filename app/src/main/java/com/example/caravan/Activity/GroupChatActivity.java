@@ -32,6 +32,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.database.core.Context;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.EventListener;
 import org.json.JSONArray;
@@ -58,6 +59,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private ActivityGroupChatBinding m_binding;
     private List<ChatMessage> m_chatMessages;
     private ChatAdapter m_chatAdapter;
+    private ListenerRegistration m_chatListener;
     //trying to set up for reply on notification
     private static final String KEY_TEXT_REPLY = "key_text_reply";
 
@@ -71,6 +73,15 @@ public class GroupChatActivity extends AppCompatActivity {
         loadReceiverDetails();
         init();
         listenMessages();
+    }
+
+    @Override
+    protected void onDestroy(){
+        Log.d(TAG, "onDestroy called");
+        if(m_chatListener != null) {
+            m_chatListener.remove();
+        }
+        super.onDestroy();
     }
 
     private void init() {
@@ -123,7 +134,7 @@ public class GroupChatActivity extends AppCompatActivity {
     }
 
     private void listenMessages(){
-        Database.get_instance().add_message_listener(eventListener);
+        m_chatListener = Database.get_instance().add_message_listener(eventListener);
     }
 
     private final EventListener<QuerySnapshot> eventListener = (value, error) ->{

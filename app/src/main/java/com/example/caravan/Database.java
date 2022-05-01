@@ -298,8 +298,8 @@ public class Database {
                 .update("profilePicture", m_profilePicture.toString());
     }
 
-    public void add_message_listener(EventListener<QuerySnapshot> listener){
-        FirebaseFirestore.getInstance().collection(KEY_COLLECTION_GROUPS)
+    public ListenerRegistration add_message_listener(EventListener<QuerySnapshot> listener){
+        return m_database.collection(KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
                 .collection(Constants.KEY_CHAT)
                 .addSnapshotListener(listener);
