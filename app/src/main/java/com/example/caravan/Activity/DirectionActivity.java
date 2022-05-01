@@ -167,6 +167,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                         .title("End Location"));
             }
             url += chain;
+
             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
                 @Override
                 public void onResponse(@NonNull Call<DirectionResponseModel> call, @NonNull Response<DirectionResponseModel> response) {
