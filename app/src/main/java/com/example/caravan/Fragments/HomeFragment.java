@@ -98,6 +98,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -132,10 +133,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<String> userSavedLocationId;
     private ArrayList<String> userCurrentLocationId;
     private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
-    private EventListener<DocumentSnapshot> m_onGroupChange;
     private ArrayList<StopInfo> m_stops;
     private ActivityResultLauncher<Intent> m_timelineLauncher;
     public LatLng testLocation;
+    private ListenerRegistration m_groupChangeRegistration;
+    private final EventListener<DocumentSnapshot> m_onGroupChange= (value, error) -> {
+        if(value == null){
+            Log.d(TAG, "m_onGroupChange error: " + error);
+            assert false;
+        }
+        else {
+            binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                    requireContext(),
+                    value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
+        }
+    };
 
     public HomeFragment() {
     }
@@ -261,18 +273,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         binding.group.setOnClickListener(view -> open_group_activity());
         binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
                 Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
-        m_onGroupChange = (value, error) -> {
-            if(value == null){
-                Log.d(TAG, "m_onGroupChange error: " + error);
-                assert false;
-            }
-            else {
-                binding.group.setImageDrawable(AppCompatResources.getDrawable(
-                        requireContext(),
-                        value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
-            }
-        };
-        Database.get_instance().add_group_join_listener(m_onGroupChange);
 
         m_stops = new ArrayList<>();
 
@@ -363,6 +363,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onStart(){
         Log.d(TAG, "onStart called");
+        m_groupChangeRegistration = Database.get_instance().add_group_join_listener(m_onGroupChange);
         super.onStart();
     }
 
@@ -392,6 +393,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onStop(){
         Log.d(TAG, "onStop called");
+        if(m_groupChangeRegistration != null){
+            m_groupChangeRegistration.remove();
+        }
         super.onStop();
     }
 

@@ -305,8 +305,8 @@ public class Database {
                 .addSnapshotListener(listener);
     }
 
-    public void add_group_join_listener(EventListener<DocumentSnapshot> listener){
-        m_database.collection(Constants.KEY_COLLECTION_USERS)
+    public ListenerRegistration add_group_join_listener(EventListener<DocumentSnapshot> listener){
+        return m_database.collection(Constants.KEY_COLLECTION_USERS)
                 .document(m_userID)
                 .addSnapshotListener(listener);
     }
