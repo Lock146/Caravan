@@ -161,12 +161,10 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                     public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
                         Gson gson = new Gson();
                         String res = gson.toJson(response.body());
-                        Log.d("TAG", "onResponse: " + res);
+                        Log.d(TAG, "onResponse: " + res);
 
                         if (response.errorBody() == null) {
                             if (response.body() != null) {
-
-
                                 if (response.body().getDirectionRouteModels().size() > 0) {
                                     DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
 
@@ -178,7 +176,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
                                     bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
                                     bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
-
 
                                     mGoogleMap.addMarker(new MarkerOptions()
                                             .position(new LatLng(endingLatitude, endingLongitude))
@@ -222,7 +219,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                                     LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
                                     LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
 
-
                                     mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
 
                                 } else {
@@ -232,7 +228,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                                 Toast.makeText(DirectionActivity.this, "No route find", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Log.d("TAG", "onResponse: " + response);
+                            Log.d(TAG, "onResponse: " + response);
                         }
 
                         loadingDialog.stopLoading();
@@ -252,8 +248,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
         if (appPermissions.isLocationOk(this)) {
@@ -309,7 +304,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
