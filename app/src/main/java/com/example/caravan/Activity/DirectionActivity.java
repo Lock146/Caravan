@@ -77,18 +77,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private static BottomSheetLayoutBinding bottomSheetLayoutBinding;
     private static RetrofitAPI retrofitAPI;
     private LoadingDialog loadingDialog;
-    private static Location currentLocation;
-    private Double endLat;
-    private Double endLng;
-    private Double endLat2;
-    private Double endLng2;
-    private Double endLat3;
-    private Double endLng3;
-    private String placeId;
-    private String placeId2;
-    private String placeId3;
-    private int currentMode;
-    private boolean moreStops;
     private static DirectionStepAdapter adapter;
     private ArrayList<DestinationModel> destinationModelArrayList;
     private ArrayList<DestinationInfo> m_destinations;
@@ -118,9 +106,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         binding = ActivityDirectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        moreStops = true;
-        placeId2 = null;
-        endLat2 = 0.0;
 
         m_destinations = getIntent().getParcelableArrayListExtra(Constants.KEY_DESTINATIONS);
 //        endLat = getIntent().getDoubleExtra("lat", 0.0);
@@ -718,8 +703,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
-                    currentLocation = location;
-
                     try {
                         getDirection("driving");
                     } catch (InterruptedException e) {
