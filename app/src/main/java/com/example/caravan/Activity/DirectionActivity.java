@@ -184,19 +184,16 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
                 if (checkedId != -1) {
-                    switch (checkedId) {
-                        case R.id.btnChipDriving:
-                            try {
-                                getDirection("driving");
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            break;
+                    if(checkedId == R.id.btnChipDriving) {
+                        try {
+                            getDirection("driving");
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         });
-
     }
 
     private void getDirection(String mode) throws InterruptedException {
