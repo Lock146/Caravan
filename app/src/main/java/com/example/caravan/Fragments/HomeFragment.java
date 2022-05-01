@@ -789,17 +789,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
         ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
 
-        if (Database.get_instance().get_caravan_stops() != null) {
-            m_stops = Database.get_instance().get_caravan_stops();
-
-            for (StopInfo stop : m_stops) {
-                destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
-            }
-
-            if (destinations.size() != 0) {
+        if(m_stops.size() != 0 || Database.get_instance().has_routes()){
+            if(!Database.get_instance().in_group()){
+                for (StopInfo stop : m_stops) {
+                    destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
+                }
                 intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
-                startActivity(intent);
             }
+            startActivity(intent);
         }
     }
 
