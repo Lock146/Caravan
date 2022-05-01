@@ -140,10 +140,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     };
     private final EventListener<DocumentSnapshot> m_routeListener = (value, error) -> {
         if(Database.get_instance().has_routes()){
-            m_binding.enableTraffic.setImageTintList(getResources().getColorStateList(R.color.primaryColor, null));
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.primaryColor, null));
         }
         else{
-            m_binding.enableTraffic.setImageTintList(getResources().getColorStateList(R.color.colorBackground, null));
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.colorBackground, null));
         }
     };
 
@@ -335,11 +335,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             popupMenu.show();
         });
 
-        m_binding.enableTraffic.setOnClickListener(enableTraffic ->
+        m_binding.route.setOnClickListener(route ->
                 open_directions()
         );
 
-        m_binding.enableTraffic.setOnLongClickListener(view -> {
+        m_binding.route.setOnLongClickListener(view -> {
             open_timeline();
             return true;
         });

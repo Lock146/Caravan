@@ -20,7 +20,7 @@
         layout="@layout/bottom_sheet_layout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/enableTraffic"
+        android:id="@+id/route"
         android:layout_width="38dp"
         android:layout_height="37dp"
         android:layout_gravity="center_vertical|end"
