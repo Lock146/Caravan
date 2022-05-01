@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,19 +117,37 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<StopInfo> m_stops;
     public LatLng testLocation;
     private ListenerRegistration m_groupChangeRegistration;
-    private final EventListener<DocumentSnapshot> m_onGroupChange= (value, error) -> {
+    private ListenerRegistration m_routeRegistration;
+    private final EventListener<DocumentSnapshot> m_onGroupChange = (value, error) -> {
         if(value == null){
             Log.d(TAG, "m_onGroupChange error: " + error);
             assert false;
         }
         else {
+            assert value.get(Constants.KEY_GROUP_ID) != null;
+            String groupID = value.get(Constants.KEY_GROUP_ID).toString();
+            if(groupID != null){
+                add_route_listener();
+            }
+            else{
+                remove_route_listener();
+            }
             m_binding.group.setImageDrawable(AppCompatResources.getDrawable(
                     requireContext(),
                     value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
         }
     };
+    private final EventListener<DocumentSnapshot> m_routeListener = (value, error) -> {
+        if(Database.get_instance().has_routes()){
+            m_binding.enableTraffic.setImageTintList(getResources().getColorStateList(R.color.primaryColor, null));
+        }
+        else{
+            m_binding.enableTraffic.setImageTintList(getResources().getColorStateList(R.color.colorBackground, null));
+        }
+    };
 
     public HomeFragment() {
+
     }
 
     @Override
@@ -254,6 +273,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         if(m_groupChangeRegistration != null){
             m_groupChangeRegistration.remove();
         }
+        remove_route_listener();
         super.onStop();
     }
 
@@ -787,5 +807,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private void open_timeline(){
         Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
         startActivity(intent);
+    }
+
+    private void add_route_listener(){
+        m_routeRegistration = Database.get_instance().add_group_listener(m_routeListener);
+    }
+
+    private void remove_route_listener(){
+        if(m_routeRegistration != null){
+            m_routeRegistration.remove();
+        }
     }
 }

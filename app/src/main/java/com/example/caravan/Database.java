@@ -311,6 +311,12 @@ public class Database {
                 .addSnapshotListener(listener);
     }
 
+    public ListenerRegistration add_group_listener(EventListener<DocumentSnapshot> listener){
+        return m_database.collection(Constants.KEY_COLLECTION_GROUPS)
+                .document(m_groupID)
+                .addSnapshotListener(listener);
+    }
+
     public void update_group_name(String newName){
         m_database.collection(Constants.KEY_COLLECTION_GROUPS)
                 .document(m_groupID)
@@ -414,6 +420,10 @@ public class Database {
             upload_user_info();
         }
         Log.e(TAG, "getToken: " + Token );
+    }
+
+    public boolean has_routes(){
+        return m_route != null && m_route.size() != 0;
     }
 
     private Database(){
