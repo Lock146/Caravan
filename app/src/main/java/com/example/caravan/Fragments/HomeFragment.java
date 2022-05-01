@@ -942,7 +942,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         String placeId = ds.getValue(String.class);
                         userSavedLocationId.add(placeId);
-
                     }
                 }
             }
