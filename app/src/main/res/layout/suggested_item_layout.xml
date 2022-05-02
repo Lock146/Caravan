@@ -20,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_map"
+        android:foreground="?android:attr/selectableItemBackground"
         app:tint="?android:textColorPrimary" />
 
     <TextView
@@ -60,6 +61,7 @@
         android:layout_marginEnd="88dp"
         android:background="@drawable/ic_circle"
         android:backgroundTint="@color/primaryColor"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleX="1.2"
         android:scaleY="1.2"
         android:src="@drawable/ic_liked"

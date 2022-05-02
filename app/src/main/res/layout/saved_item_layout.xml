@@ -48,7 +48,7 @@
                     android:layout_height="30dp"
                     android:layout_weight="0.2"
                     android:onClick="@{()->listener.onLocationClick(savedPlaceModel)}"
-                    android:src="@drawable/ic_gas_station"
+                    android:src="@drawable/ic_map"
                     app:tint="@color/primaryColor" />
 
             </LinearLayout>
