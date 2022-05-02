@@ -31,15 +31,20 @@ public class RouteTimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routetimeline);
-//        Intent intent = getIntent();
-//        Bundle extras = intent.getExtras();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
 //        if(extras.containsKey(Constants.KEY_STOPS)) {
 //            CurrentRoute = extras.getParcelableArrayList(Constants.KEY_STOPS);
 //        }
 //        else{
 //            CurrentRoute = new ArrayList<>();
 //        }
-        CurrentRoute = Database.get_instance().get_caravan_stops();
+        if(Database.get_instance().in_group()) {
+            CurrentRoute = Database.get_instance().get_caravan_stops();
+        }
+        else{
+            CurrentRoute = extras.containsKey(Constants.KEY_STOPS) ? extras.getParcelableArrayList(Constants.KEY_STOPS) : new ArrayList<>();
+        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);

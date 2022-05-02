@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.caravan.Database;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.NearLocationInterface;
 import com.example.caravan.R;
@@ -37,6 +38,16 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             GooglePlaceModel placeModel = googlePlaceModels.get(position);
             holder.binding.setGooglePlaceModel(placeModel);
             holder.binding.setListener(nearLocationInterface);
+
+            // Set image
+            if(Database.get_instance().in_group()){
+                holder.binding.addRemoveLocation.setImageResource(R.drawable.ic_suggest_stop);
+            }
+            else{
+                holder.binding.addRemoveLocation.setImageResource(R.drawable.ic_add);
+            }
+
+            // Set Rotation
             if(placeModel.in_timeline()){
                 holder.binding.addRemoveLocation.setRotation(45);
             }
