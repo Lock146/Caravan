@@ -168,6 +168,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 }
             }
             m_stops = updatedStops;
+            update_route_icon();
         }
     });
 
@@ -681,9 +682,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
-        append_stop(googlePlaceModel);
-        googlePlaceModel.in_timeline(true);
+        if(googlePlaceModel.in_timeline()){
+            StopInfo removed = new StopInfo(googlePlaceModel, 0.0);
+            for(int i = 0; i < m_stops.size(); i += 1){
+                if(m_stops.get(i).equals(removed.getPlaceID())){
+                    m_stops.remove(i);
+                    break;
+                }
+            }
+        }
+        else {
+            append_stop(googlePlaceModel);
+        }
         update_route_icon();
+        googlePlaceModel.in_timeline(!googlePlaceModel.in_timeline());
 
         googlePlaceAdapter.notifyDataSetChanged();
 
