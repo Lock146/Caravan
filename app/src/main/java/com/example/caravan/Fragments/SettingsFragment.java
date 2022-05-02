@@ -103,6 +103,14 @@ public class SettingsFragment extends Fragment {
             //startActivity(intent);
 
         });
+        binding.cardLeave.setOnClickListener(view -> {
+
+            Database.get_instance().leave_group();
+
+            //Intent intent = new Intent(requireContext(), GroupListActivity.class);
+            //startActivity(intent);
+
+        });
 
         binding.cardPassword.setOnClickListener(view -> {
 
