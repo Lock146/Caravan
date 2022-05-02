@@ -2,7 +2,6 @@ package com.example.caravan.Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,10 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,14 +22,11 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -40,7 +35,6 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.bumptech.glide.Glide;
 import com.example.caravan.Activity.DirectionActivity;
 import com.example.caravan.Activity.GroupActivity;
 import com.example.caravan.Activity.RouteTimelineActivity;
@@ -49,7 +43,6 @@ import com.example.caravan.Adapter.InfoWindowAdapter;
 import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.DestinationInfo;
-import com.example.caravan.DestinationModel;
 import com.example.caravan.Database;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
@@ -58,11 +51,11 @@ import com.example.caravan.Permissions.AppPermissions;
 import com.example.caravan.PlaceModel;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
-import com.example.caravan.SavedPlaceModel;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.WebServices.RetrofitAPI;
 import com.example.caravan.WebServices.RetrofitClient;
 import com.example.caravan.databinding.FragmentHomeBinding;
+
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -82,25 +75,22 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.ListenerRegistration;
+
 import com.google.gson.Gson;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -109,47 +99,81 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class HomeFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, NearLocationInterface {
     private static final String TAG = HomeFragment.class.getSimpleName();
-    private FragmentHomeBinding binding;
+    private FragmentHomeBinding m_binding;
     private GoogleMap mGoogleMap;
     private AppPermissions appPermissions;
-    private boolean isLocationPermissionOk, isTrafficEnable;
+    private boolean isLocationPermissionOk;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location currentLocation;
-    private FirebaseAuth firebaseAuth;
     private Marker currentMarker;
     private LoadingDialog loadingDialog;
     private int radius = 5000;
     private RetrofitAPI retrofitAPI;
     private List<GooglePlaceModel> googlePlaceModelList;
-    private PlaceModel selectedPlaceModel;
     private GooglePlaceAdapter googlePlaceAdapter;
     private InfoWindowAdapter infoWindowAdapter;
     private ArrayList<String> userSavedLocationId;
     private ArrayList<String> userCurrentLocationId;
-    private DatabaseReference locationReference, userLocationReference, locationCurrentReference,  userCurrentReference;
     private ArrayList<StopInfo> m_stops;
-    private ActivityResultLauncher<Intent> m_timelineLauncher;
     public LatLng testLocation;
     private ListenerRegistration m_groupChangeRegistration;
-    private final EventListener<DocumentSnapshot> m_onGroupChange= (value, error) -> {
+    private ListenerRegistration m_routeRegistration;
+    enum GroupStatus{
+        ACTIVE, INACTIVE,
+    }
+    private final EventListener<DocumentSnapshot> m_onGroupChange = (value, error) -> {
         if(value == null){
             Log.d(TAG, "m_onGroupChange error: " + error);
-            assert false;
         }
         else {
-            binding.group.setImageDrawable(AppCompatResources.getDrawable(
-                    requireContext(),
-                    value.get(Constants.KEY_GROUP_ID) == null ? R.drawable.ic_add : R.drawable.ic_groups));
+                String groupID = value.get(Constants.KEY_GROUP_ID, String.class);
+                if (groupID != null) {
+                    add_route_listener();
+                    update_icons(GroupStatus.ACTIVE);
+                } else {
+                    remove_route_listener();
+                    update_icons(GroupStatus.INACTIVE);
+                }
         }
     };
 
+    private final EventListener<DocumentSnapshot> m_routeListener = (value, error) -> {
+        if(Database.get_instance().has_routes()){
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.primaryColor, null));
+        }
+        else{
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.colorBackground, null));
+        }
+    };
+
+    private ActivityResultLauncher<Intent> m_timelineLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            Intent intent = result.getData();
+            ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
+            ArrayList<StopInfo> updatedStops = new ArrayList<>();
+            for(StopInfo stop : m_stops){
+                int idx = get_index_of_stop(stops, stop.getPlaceID());
+                if(idx == -1){
+                    mark_as_removed(stop.getPlaceID());
+                }
+                else{
+                    updatedStops.add(m_stops.get(idx));
+                }
+            }
+            m_stops = updatedStops;
+            update_route_icon();
+        }
+    });
+
     public HomeFragment() {
+
     }
 
     @Override
@@ -157,126 +181,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                              Bundle savedInstanceState) {
         Log.d("HomeFragment", "onCreateView");
 
-        m_timelineLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        Intent intent = result.getData();
-                        if(intent != null) {
-                            ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
-                            ArrayList<StopInfo> updatedStops = new ArrayList<>();
-                            for (StopInfo stop : m_stops) {
-                                int idx = get_index_of_stop(stops, stop.getPlaceID());
-                                if (idx == -1) {
-                                    mark_as_removed(stop.getPlaceID());
-                                } else {
-                                    updatedStops.add(m_stops.get(idx));
-                                }
-                            }
-                            m_stops = updatedStops;
-                        }
-                    }
-                });
+        m_binding = FragmentHomeBinding.inflate(inflater, container, false);
+        set_listeners();
 
-//                new ActivityResultLauncher<ArrayList<StopInfo>>() {
-//            @Override
-//            public void launch(ArrayList<StopInfo> input, @Nullable ActivityOptionsCompat options) {
-//
-//            }
-//
-//            @Override
-//            public void unregister() {
-//
-//            }
-//
-//            @NonNull
-//            @Override
-//            public ActivityResultContract<ArrayList<StopInfo>, ArrayList<StopInfo>> getContract() {
-//                return new ActivityResultContract<ArrayList<StopInfo>, ArrayList<StopInfo>>() {
-//                    @NonNull
-//                    @Override
-//                    public Intent createIntent(@NonNull Context context, ArrayList<StopInfo> input) {
-//                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                        intent.putParcelableArrayListExtra(Constants.KEY_STOPS, input);
-//                        return intent;
-//                    }
-//
-//                    @Override
-//                    public ArrayList<StopInfo> parseResult(int resultCode, @Nullable Intent intent) {
-//                        if(intent == null || !intent.getExtras().containsKey(Constants.KEY_STOPS)){
-//                            return null;
-//                        }
-//                        else{
-//                            return intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
-//                        }
-//                    }
-//                };
-//            }
-//        };
-        //m_stops = null;
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
-        firebaseAuth = FirebaseAuth.getInstance();
         loadingDialog = new LoadingDialog(requireActivity());
         retrofitAPI = RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
         googlePlaceModelList = new ArrayList<>();
         userSavedLocationId = new ArrayList<>();
         userCurrentLocationId = new ArrayList<>();
-        locationReference = FirebaseDatabase.getInstance().getReference("Places");
-        userLocationReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Saved Locations");
-        locationCurrentReference = FirebaseDatabase.getInstance().getReference("Locations");
-        userCurrentReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Current Locations");
-
-        binding.btnMapType.setOnClickListener(view -> {
-            PopupMenu popupMenu = new PopupMenu(requireContext(), view);
-            popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.btnNormal:
-                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        break;
-
-                }
-                return true;
-            });
-            popupMenu.show();
-        });
-
-        binding.enableTraffic.setOnClickListener(enableTraffic ->
-
-                open_directions()
-
-        );
-
-        binding.enableTraffic.setOnLongClickListener(view -> {
-            open_timeline();
-            return true;
-        });
-
-        binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
-
-        binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup group, int checkedId) {
-
-                if (checkedId != -1) {
-                    PlaceModel placeModel = AllConstant.placesName.get(checkedId - 1);
-                    //binding.edtPlaceName.setText(placeModel.getName());
-                    selectedPlaceModel = placeModel;
-                    getPlaces(placeModel.getPlaceType());
-                }
-            }
-        });
-
-        binding.group.setOnClickListener(view -> open_group_activity());
-        binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
-                Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
 
         m_stops = new ArrayList<>();
 
-        return binding.getRoot();
+        return m_binding.getRoot();
     }
 
     @Override
@@ -313,17 +230,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 final LatLng location = place.getLatLng();
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
                 testLocation = location;
-
-                //String placeId = place.getId();
-                //Double lat = location.latitude;
-                //Double lng = location.longitude;
-
-                //Intent intent = new Intent(requireContext(), DirectionActivity.class);
-                //intent.putExtra("placeId", placeId);
-                //intent.putExtra("lat", lat);
-                //intent.putExtra("lng", lng);
-
-                //startActivity(intent);
             }
 
             @Override
@@ -345,13 +251,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             chip.setCheckable(true);
             chip.setCheckedIconVisible(false);
 
-            binding.placesGroup.addView(chip);
+            m_binding.placesGroup.addView(chip);
         }
 
         setUpRecyclerView();
-        getUserSavedLocations();
-        getUserCurrentLocations();
-
     }
 
     @Override
@@ -396,6 +299,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         if(m_groupChangeRegistration != null){
             m_groupChangeRegistration.remove();
         }
+        remove_route_listener();
         super.onStop();
     }
 
@@ -439,6 +343,46 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         } else {
             requestLocation();
         }
+    }
+
+    private void set_listeners(){
+        m_binding.btnMapType.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+            popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.btnNormal) {
+                    mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                }
+                return true;
+            });
+            popupMenu.show();
+        });
+
+        m_binding.route.setOnClickListener(route ->
+                open_directions()
+        );
+
+        m_binding.route.setOnLongClickListener(view -> {
+            open_timeline();
+            return true;
+        });
+
+        m_binding.currentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
+
+        m_binding.placesGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+
+                if (checkedId != -1) {
+                    PlaceModel placeModel = AllConstant.placesName.get(checkedId - 1);
+                    getPlaces(placeModel.getPlaceType());
+                }
+            }
+        });
+
+        m_binding.group.setOnClickListener(view -> open_group_activity());
+        m_binding.group.setImageDrawable(AppCompatResources.getDrawable(requireContext(),
+                Database.get_instance().in_group() ? R.drawable.ic_groups : R.drawable.ic_add));
     }
 
     private static int get_index_of_stop(ArrayList<StopInfo> stops, String placeID){
@@ -583,7 +527,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 .position(new LatLng(latitude, longitude))
                 .title("Current Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .snippet(firebaseAuth.getCurrentUser().getDisplayName());
+                .snippet(Database.get_instance().display_name());
 
         if (currentMarker != null) {
             currentMarker.remove();
@@ -645,7 +589,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                                     googlePlaceAdapter.setGooglePlaceModels(googlePlaceModelList);
 
                                 } else if (response.body().getError() != null) {
-                                    Snackbar.make(binding.getRoot(),
+                                    Snackbar.make(m_binding.getRoot(),
                                             response.body().getError(),
                                             Snackbar.LENGTH_LONG).show();
                                 } else {
@@ -701,16 +645,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void setUpRecyclerView() {
-        binding.placesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.placesRecyclerView.setHasFixedSize(false);
+        m_binding.placesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        m_binding.placesRecyclerView.setHasFixedSize(false);
         googlePlaceAdapter = new GooglePlaceAdapter(this);
-        binding.placesRecyclerView.setAdapter(googlePlaceAdapter);
+        m_binding.placesRecyclerView.setAdapter(googlePlaceAdapter);
 
         SnapHelper snapHelper = new PagerSnapHelper();
 
-        snapHelper.attachToRecyclerView(binding.placesRecyclerView);
+        snapHelper.attachToRecyclerView(m_binding.placesRecyclerView);
 
-        binding.placesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        m_binding.placesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -731,247 +675,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         int markerTag = (int) marker.getTag();
         Log.d("HomeFragment", "onMarkerClick: " + markerTag);
 
-        binding.placesRecyclerView.scrollToPosition(markerTag);
+        m_binding.placesRecyclerView.scrollToPosition(markerTag);
         return false;
     }
 
     @Override
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
-
-        if(Database.get_instance().get_suggested_stops() != null){
-
-            ArrayList<StopInfo> suggestions = new ArrayList<StopInfo>(Database.get_instance().get_suggested_stops());
-            boolean contains = false;
-            for(StopInfo suggestion : suggestions){
-                if(suggestion.equals(googlePlaceModel.placeID())){
-                    contains = true;
+        if(googlePlaceModel.in_timeline()){
+            StopInfo removed = new StopInfo(googlePlaceModel, 0.0);
+            for(int i = 0; i < m_stops.size(); i += 1){
+                if(m_stops.get(i).equals(removed.getPlaceID())){
+                    m_stops.remove(i);
                     break;
                 }
             }
-            if(!contains){
-                Database.get_instance().append_to_suggestions(googlePlaceModel);
-                googlePlaceModel.in_timeline(true);
-            }
-        }
-        else{
-            Database.get_instance().append_to_suggestions(googlePlaceModel);
-            googlePlaceModel.in_timeline(true);
-        }
-
-        googlePlaceAdapter.notifyDataSetChanged();
-
-
-        // TODO: Add ability to remove stops
-//        if(googlePlaceModel.in_timeline()){
-//            if (Database.get_instance().get_suggested_stops() != null) {
-//
-//
-//                googlePlaceModel.in_timeline(false);
-//
-//                m_stops = Database.get_instance().get_suggested_stops();
-//
-//
-//                int size = m_stops.size();
-//                while (size >= 1) {
-//                    Log.e(TAG, "onSaveClick: " + m_stops.get(size-1).getReference() );
-//
-//                    Log.e(TAG, "onSaveClick: " + googlePlaceModel.getReference());
-//
-//                    if (m_stops.get(size-1).getReference().equals(googlePlaceModel.getReference())){
-//                        m_stops.remove(size-1);
-//                        Log.e(TAG, "onSaveClick: " + "SUCCESSFUL DELETE");
-//                        break;
-//                    }
-//                    size--;
-//                }
-//
-//
-//
-//                m_stops.remove(googlePlaceModel);
-//
-//                Database.get_instance().suggest_stops(m_stops);
-//
-//
-//                //if (m_stops != null) {
-//            } else {
-//
-////                test3(googlePlaceModel);
-//
-//
-//            }
-//
-//
-//
-//        }
-//        else{
-//
-//
-//            if (Database.get_instance().get_suggested_stops() != null) {
-//
-//                googlePlaceModel.in_timeline(true);
-//
-//                m_stops = Database.get_instance().get_suggested_stops();
-//
-//                m_stops.add(googlePlaceModel);
-//
-//                Database.get_instance().suggest_stops(m_stops);
-//
-//                //if (m_stops != null) {
-//            } else {
-//
-////                test3(googlePlaceModel);
-//
-//
-//            }
-//
-//
-//        }
-//        googlePlaceAdapter.notifyDataSetChanged();
-    }
-
-//    public void test3(GooglePlaceModel googlePlaceModel) {
-//        if (Database.get_instance().get_suggested_stops() != null) {
-//
-//            //m_stops = Database.get_instance().get_caravan_stops();
-//            onSaveClick(googlePlaceModel);
-//
-//
-//        } else {
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test3(googlePlaceModel);
-//                }
-//            }, 50);
-//
-//        }
-//    }
-
-
-    public void onLocationClick(GooglePlaceModel googlePlaceModel) {
-        if (userSavedLocationId.contains(googlePlaceModel.placeID())) {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Remove Place")
-                    .setMessage("Are you sure to remove this place?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            removePlace(googlePlaceModel);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .create().show();
         }
         else {
-            loadingDialog.startLoading();
-            locationCurrentReference.child(googlePlaceModel.placeID()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (!snapshot.exists()) {
-
-                        DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
-                                googlePlaceModel.placeID(), googlePlaceModel.getRating(),
-                                googlePlaceModel.getUserRatingsTotal(),
-                                googlePlaceModel.getGeometry().getLocation().getLat(),
-                                googlePlaceModel.getGeometry().getLocation().getLng());
-
-                        saveCurrentLocation(destinationModel);
-                    }
-
-                    saveUserCurrentLocation(googlePlaceModel.placeID());
-
-                    int index = googlePlaceModelList.indexOf(googlePlaceModel);
-                    googlePlaceModelList.get(index).setCurrentLocation(true);
-                    googlePlaceAdapter.notifyDataSetChanged();
-                    loadingDialog.stopLoading();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            append_stop(googlePlaceModel);
         }
-    }
+        update_route_icon();
+        googlePlaceModel.in_timeline(!googlePlaceModel.in_timeline());
 
-    private void removePlace(GooglePlaceModel googlePlaceModel) {
-        userSavedLocationId.remove(googlePlaceModel.placeID());
-        int index = googlePlaceModelList.indexOf(googlePlaceModel);
-        googlePlaceModelList.get(index).setSaved(false);
         googlePlaceAdapter.notifyDataSetChanged();
 
-        Snackbar.make(binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        userSavedLocationId.add(googlePlaceModel.placeID());
-                        googlePlaceModelList.get(index).setSaved(true);
-                        googlePlaceAdapter.notifyDataSetChanged();
-
-                    }
-                })
-                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-
-                        userLocationReference.setValue(userSavedLocationId);
-                    }
-                }).show();
-
-    }
-
-    private void removeCurrentPlace(GooglePlaceModel googlePlaceModel) {
-        userCurrentLocationId.remove(googlePlaceModel.placeID());
-        int index = googlePlaceModelList.indexOf(googlePlaceModel);
-        googlePlaceModelList.get(index).setCurrentLocation(false);
-        googlePlaceAdapter.notifyDataSetChanged();
-
-        Snackbar.make(binding.getRoot(), "Place removed", Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        userCurrentLocationId.add(googlePlaceModel.placeID());
-                        googlePlaceModelList.get(index).setCurrentLocation(true);
-                        googlePlaceAdapter.notifyDataSetChanged();
-
-                    }
-                })
-                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-
-                        userCurrentReference.setValue(userCurrentLocationId);
-                    }
-                }).show();
-    }
-
-    private void saveUserLocation(String placeId) {
-        userSavedLocationId.add(placeId);
-        userLocationReference.setValue(userSavedLocationId);
-        Snackbar.make(binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
-    }
-
-    private void saveUserCurrentLocation(String placeId) {
-        userCurrentLocationId.add(placeId);
-        userCurrentReference.setValue(userCurrentLocationId);
-        Snackbar.make(binding.getRoot(), "Location Saved", Snackbar.LENGTH_LONG).show();
-    }
-
-    private void saveLocation(SavedPlaceModel savedPlaceModel) {
-        locationReference.child(savedPlaceModel.getPlaceId()).setValue(savedPlaceModel);
-    }
-
-    private void saveCurrentLocation(DestinationModel destinationModel) {
-        locationCurrentReference.child(destinationModel.getPlaceId()).setValue(destinationModel);
+        // TODO: Add ability to remove stops
     }
 
     @Override
@@ -1026,52 +754,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private void getUserSavedLocations() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Saved Locations");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String placeId = ds.getValue(String.class);
-                        userSavedLocationId.add(placeId);
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getUserCurrentLocations() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Current Locations");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String placeId = ds.getValue(String.class);
-                        userCurrentLocationId.add(placeId);
-
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void open_group_activity(){
-        if(!Database.get_instance().in_group()){
+    private void open_group_activity() {
+        if (!Database.get_instance().in_group()) {
             Database.get_instance().create_group();
         }
 
@@ -1080,123 +764,80 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         ArrayList<String> placeIDs = new ArrayList<>();
 
         startActivity(intent);
-//        if (Database.get_instance().get_suggested_stops() != null) {
-
-//            m_stops = Database.get_instance().get_suggested_stops();
-
-
-//            for (GooglePlaceModel stop : m_stops) {
-//                stops.add(new StopInfo(stop, 0));
-//                placeIDs.add(stop.placeID());
-//            }
-//            //if (m_stops != null) {
-//            if (stops.size() != 0) {
-//                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-//                startActivity(intent);
-//
-//            }
-//        } else {
-
-//            test2();
-
-
-//        }
-        //Database.get_instance().suggest_stops(m_stops);
-        //intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-        //startActivity(intent);
     }
-
-//    public void test2() {
-//        if (Database.get_instance().get_suggested_stops() != null) {
-//
-//            //m_stops = Database.get_instance().get_caravan_stops();
-//            open_group_activity();
-//
-//
-//        } else {
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test2();
-//                }
-//            }, 50);
-//
-//        }
-//    }
-
-
-
-
-
 
     private void open_directions(){
         Intent intent = new Intent(requireContext(), DirectionActivity.class);
         ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
 
-        //String m_groupID = Database.get_instance().get_groupID();
-            //m_stops = Database.get_instance().get_caravan_stops();
-
-        if (Database.get_instance().get_caravan_stops() != null) {
-
-            m_stops = Database.get_instance().get_caravan_stops();
-
-
-            for (StopInfo stop : m_stops) {
-                destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
+        if(m_stops.size() != 0 || Database.get_instance().has_routes()){
+            if(!Database.get_instance().in_group()){
+                for (StopInfo stop : m_stops) {
+                    destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
+                }
+                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, destinations);
             }
-            //if (m_stops != null) {
-            if (destinations.size() != 0) {
-                intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
-                startActivity(intent);
-
-            }
-
-
-        } else {
-
-//                    test();
-
-
+            startActivity(intent);
         }
-
     }
-//    public void test() {
-//        if (Database.get_instance().get_caravan_stops() != null) {
-//
-//            //m_stops = Database.get_instance().get_caravan_stops();
-//            open_directions();
-//
-//
-//        } else {
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test();
-//                }
-//            }, 50);
-//
-//        }
-//    }
 
     private void open_timeline(){
-        /*
         Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
-        ArrayList<StopInfo> stops = new ArrayList<StopInfo>();
-        ArrayList<String> placeIDs = new ArrayList<>();
-        for(GooglePlaceModel stop : m_stops){
-            stops.add(new StopInfo(stop, 0));
-            placeIDs.add(stop.placeID());
-        }
-        Database.get_instance().update_route(m_stops);
-        intent.putParcelableArrayListExtra(Constants.KEY_STOPS, stops);
-        m_timelineLauncher.launch(intent);
 
-         */
-        Intent intent = new Intent(requireContext(), RouteTimelineActivity.class);
-        startActivity(intent);
+        ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
+        if(m_stops.size() != 0 || Database.get_instance().has_routes()){
+            if(!Database.get_instance().in_group()){
+                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, m_stops);
+            }
+            m_timelineLauncher.launch(intent);
+        }
     }
 
+    private void add_route_listener(){
+        m_routeRegistration = Database.get_instance().add_group_listener(m_routeListener);
+    }
 
+    private void remove_route_listener(){
+        if(m_routeRegistration != null){
+            m_routeRegistration.remove();
+        }
+    }
+
+    private void update_icons(GroupStatus status){
+        m_binding.group.setImageDrawable(AppCompatResources.getDrawable(
+                requireContext(),
+                status == GroupStatus.INACTIVE ? R.drawable.ic_add : R.drawable.ic_groups));
+        if(status == GroupStatus.ACTIVE){
+        }
+        else{
+
+        }
+    }
+
+    private void update_route_icon(){
+        if(Database.get_instance().has_routes() || m_stops.size() != 0){
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.primaryColor, null));
+        }
+        else{
+            m_binding.route.setImageTintList(getResources().getColorStateList(R.color.colorBackground, null));
+        }
+    }
+
+    private void append_stop(StopInfo stop){
+        if(Database.get_instance().in_group()){
+            Database.get_instance().append_to_suggestions(stop);
+        }
+        else{
+            m_stops.add(stop);
+        }
+    }
+
+    private void append_stop(GooglePlaceModel stop){
+        if(Database.get_instance().in_group()){
+            Database.get_instance().append_to_suggestions(stop);
+        }
+        else{
+            m_stops.add(new StopInfo(stop, 0.0));
+        }
+    }
 }
