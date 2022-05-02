@@ -43,7 +43,6 @@ public class GroupMembersActivity extends AppCompatActivity {
     private static final CharSequence LEAVE_GROUP = "Leave group";
     private static final CharSequence CREATE_GROUP = "Create group";
     private static final CharSequence ADD_USER = "Add user";
-    private static final CharSequence OPEN_CHAT = "Open Chat";
     private PreferenceManager m_preferenceManager;
     private RecyclerView recyclerView;
     private GroupListAdapter groupListAdapter;
@@ -85,7 +84,7 @@ public class GroupMembersActivity extends AppCompatActivity {
        // binding = ActivityGroupMembersBinding.inflate(getLayoutInflater());
         groupListAdapter = new GroupListAdapter(MemberList);
         binding.recyclerView.setAdapter(groupListAdapter);
-       // setContentView(binding.getRoot());
+       setContentView(binding.getRoot());
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //Database.get_instance();
         //recyclerView.addItemDecoration(dividerItemDecoration);
@@ -95,7 +94,6 @@ public class GroupMembersActivity extends AppCompatActivity {
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //binding.addUser.setOnClickListener(view -> add_user());
-        binding.chat.setOnClickListener(view -> open_group_chat());
         binding.btnBack.setOnClickListener(view -> onBackPressed());
 
 
@@ -131,18 +129,18 @@ public class GroupMembersActivity extends AppCompatActivity {
 
 
     }
-    private void leave_group(){
-        Database.get_instance().leave_group();
-        binding.chat.setText(CREATE_GROUP);
-        binding.chat.setOnClickListener(view -> {
-            create_group();
-        });
+    //private void leave_group(){
+        //Database.get_instance().leave_group();
+        //binding.chat.setText(CREATE_GROUP);
+        //binding.chat.setOnClickListener(view -> {
+            //create_group();
+        //});
 
 //        binding.groupMembership.setVisibility(View.INVISIBLE);
 //        binding.groupMembership.setClickable(false);
 
-        disable_group_functionality();
-    }
+        //disable_group_functionality();
+    //}
 
     private void create_group(){
         Database.get_instance().create_group();
@@ -185,9 +183,9 @@ public class GroupMembersActivity extends AppCompatActivity {
         }
     }
 
-    private void open_group_chat(){
-        startActivity(new Intent(this, GroupChatActivity.class));
-    }
+    //private void open_group_chat(){
+        //startActivity(new Intent(this, GroupChatActivity.class));
+    //}
 
     private void disable_group_functionality(){
         binding.addUser.setText(CREATE_GROUP);
@@ -195,8 +193,8 @@ public class GroupMembersActivity extends AppCompatActivity {
             create_group();
         });
 
-        binding.chat.setVisibility(View.INVISIBLE);
-        binding.chat.setClickable(false);
+//        binding.chat.setVisibility(View.INVISIBLE);
+//        binding.chat.setClickable(false);
         //binding.groupMembership.setVisibility(View.INVISIBLE);
         //binding.groupMembership.setClickable(false);
 //        binding.groupMembership.setVisibility(View.INVISIBLE);
@@ -212,8 +210,8 @@ public class GroupMembersActivity extends AppCompatActivity {
             add_user();
         });
 
-        binding.chat.setVisibility(View.VISIBLE);
-        binding.chat.setClickable(true);
+//        binding.chat.setVisibility(View.VISIBLE);
+//        binding.chat.setClickable(true);
         //binding.groupMembership.setVisibility(View.VISIBLE);
         //binding.groupMembership.setClickable(true);
         //binding.groupMembership.setVisibility(View.VISIBLE);
@@ -229,7 +227,7 @@ public class GroupMembersActivity extends AppCompatActivity {
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
         binding.addUser.setOnClickListener(view -> add_user());
-        binding.chat.setOnClickListener(view -> open_group_chat());
+        //binding.chat.setOnClickListener(view -> open_group_chat());
         //binding.groupMembership.setOnClickListener(view -> leave_group());
         //binding.groupMembership.setOnClickListener(view -> leave_group());
         //binding.groupList.setOnClickListener(view -> open_list());

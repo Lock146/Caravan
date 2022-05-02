@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +59,7 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView;
         TextView textView, rowCountTextView;
-        Button like, dislike;
+        ImageButton like, dislike;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
