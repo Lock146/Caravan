@@ -203,9 +203,11 @@ public class Database {
                     Object userEmail = user.get(Constants.KEY_EMAIL);
                     if(userEmail != null && userEmail.equals(email)){
                         // Update user's group info
+                        HashMap<String, Object> newUser = new HashMap<>();
+                        newUser.put(Constants.KEY_GROUP_ID, m_groupID);
                         m_database.collection(Constants.KEY_COLLECTION_USERS)
                                 .document(user.getId())
-                                .update(Constants.KEY_GROUP_ID, m_groupID);
+                                .set(newUser, SetOptions.merge());
                     }
                 }
             });
