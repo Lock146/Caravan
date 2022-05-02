@@ -19,6 +19,10 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -146,6 +150,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             m_binding.route.setImageTintList(getResources().getColorStateList(R.color.colorBackground, null));
         }
     };
+
+    private ActivityResultLauncher<Intent> m_timelineLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            Intent intent = result.getData();
+            ArrayList<StopInfo> stops = intent.getExtras().getParcelableArrayList(Constants.KEY_STOPS);
+            ArrayList<StopInfo> updatedStops = new ArrayList<>();
+            for(StopInfo stop : m_stops){
+                int idx = get_index_of_stop(stops, stop.getPlaceID());
+                if(idx == -1){
+                    mark_as_removed(stop.getPlaceID());
+                }
+                else{
+                    updatedStops.add(m_stops.get(idx));
+                }
+            }
+            m_stops = updatedStops;
+        }
+    });
 
     public HomeFragment() {
 
@@ -692,7 +716,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 for (StopInfo stop : m_stops) {
                     destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
                 }
-                intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
+                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, destinations);
             }
             startActivity(intent);
         }
@@ -704,12 +728,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         ArrayList<DestinationInfo> destinations = new ArrayList<DestinationInfo>();
         if(m_stops.size() != 0 || Database.get_instance().has_routes()){
             if(!Database.get_instance().in_group()){
-                for (StopInfo stop : m_stops) {
-                    destinations.add(new DestinationInfo(stop.getPlaceID(), stop.getLatitude(), stop.getLongitude()));
-                }
-                intent.putParcelableArrayListExtra(Constants.KEY_DESTINATIONS, destinations);
+                intent.putParcelableArrayListExtra(Constants.KEY_STOPS, m_stops);
             }
-            startActivity(intent);
+            m_timelineLauncher.launch(intent);
         }
     }
 

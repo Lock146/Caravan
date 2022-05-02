@@ -388,7 +388,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
         else{
-            m_destinations = getIntent().getParcelableArrayListExtra(Constants.KEY_DESTINATIONS);
+            m_destinations = getIntent().getParcelableArrayListExtra(Constants.KEY_STOPS);
         }
     }
 }
