@@ -14,7 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.caravan.Constant.AllConstant;
+import com.example.caravan.Constant.Constants;
+import com.example.caravan.Database;
 import com.example.caravan.Permissions.AppPermissions;
+import com.example.caravan.R;
 import com.example.caravan.UserModel;
 import com.example.caravan.Utility.LoadingDialog;
 import com.example.caravan.databinding.ActivitySignUpBinding;
@@ -51,6 +54,14 @@ public class SignUpActivity extends AppCompatActivity {
         loadingDialog = new LoadingDialog(this);
         storageReference = FirebaseStorage.getInstance().getReference();
 
+
+        //imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Bunny.png?alt=media&token=35bf15dd-9af7-48eb-9d56-7addc22b7401");
+        imageUri = Uri.parse("android.resource://com.example.caravan/" + R.drawable.ic_person_outline);
+
+                //getDrawable(R.mipmap.ic_bunny_avatar_round);
+        //Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/caravan-338702.appspot.com/o/Bunny.png?alt=media&token=35bf15dd-9af7-48eb-9d56-7addc22b7401").into(binding.imgPick);
+        Glide.with(this).load(("android.resource://com.example.caravan/" + R.drawable.ic_person_outline)).into(binding.imgPick);
+
         binding.btnBack.setOnClickListener(view -> {
             onBackPressed();
         });
@@ -70,11 +81,15 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.imgPick.setOnClickListener(view -> {
-            if (appPermissions.isStorageOk(this)) {
-                pickImage();
-            } else {
-                appPermissions.requestStoragePermission(this);
-            }
+
+
+//            Intent intent = new Intent(this, PPMenuActivity.class);
+//            startActivity(intent);
+//            if (appPermissions.isStorageOk(this)) {
+//                pickImage();
+//            } else {
+//                appPermissions.requestStoragePermission(this);
+//            }
         });
     }
 
@@ -122,7 +137,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void signUp() {
         loadingDialog.startLoading();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        CollectionReference databaseReference = FirebaseFirestore.getInstance().collection("Users");
+        CollectionReference databaseReference = FirebaseFirestore.getInstance().collection(Constants.KEY_COLLECTION_USERS);
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> signUp) {
@@ -159,6 +174,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                                                 public void onSuccess(Void aVoid) {
                                                                                     loadingDialog.stopLoading();
                                                                                     Toast.makeText(SignUpActivity.this, "Verify email", Toast.LENGTH_SHORT).show();
+                                                                                    Database.get_instance().display_name(username);
+                                                                                    Database.get_instance().set_profile_picture(url);
                                                                                     onBackPressed();
                                                                                 }
                                                                             });

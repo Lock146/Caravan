@@ -74,7 +74,7 @@ public class About extends Fragment {
 
     @Override
     public void onDestroyView() {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Caravan");
         super.onDestroyView();
     }
 }

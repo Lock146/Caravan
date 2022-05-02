@@ -211,7 +211,22 @@ public class MainActivity extends AppCompatActivity {
             //getUserData();
         }
         //Log.e(TAG, "getUserData: " + firebaseAuth.getUid() );
-        txtEmail.setText(Database.get_instance().get_user_email(userID));
+        if (Database.get_instance().get_user_email(userID) != null) {
+            txtEmail.setText(Database.get_instance().get_user_email(userID));
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getUserData();
+                }
+            }, 500);
+            //getUserData();
+        }
+
+
+
+
         //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 //.child(firebaseAuth.getUid());
         //databaseReference.addValueEventListener(new ValueEventListener() {

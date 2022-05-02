@@ -976,7 +976,54 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
-        Log.d(TAG, "onDirectionClick: " + googlePlaceModel);
+        if (userSavedLocationId.contains(googlePlaceModel.placeID())) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Remove Place")
+                    .setMessage("Are you sure to remove this place?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            removePlace(googlePlaceModel);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .create().show();
+        }
+        else {
+            loadingDialog.startLoading();
+            locationCurrentReference.child(googlePlaceModel.placeID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!snapshot.exists()) {
+
+                        DestinationModel destinationModel = new DestinationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
+                                googlePlaceModel.placeID(), googlePlaceModel.getRating(),
+                                googlePlaceModel.getUserRatingsTotal(),
+                                googlePlaceModel.getGeometry().getLocation().getLat(),
+                                googlePlaceModel.getGeometry().getLocation().getLng());
+
+                        saveCurrentLocation(destinationModel);
+                    }
+
+                    saveUserLocation(googlePlaceModel.placeID());
+
+                    int index = googlePlaceModelList.indexOf(googlePlaceModel);
+                    googlePlaceModelList.get(index).setCurrentLocation(true);
+                    googlePlaceAdapter.notifyDataSetChanged();
+                    loadingDialog.stopLoading();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 
     private void getUserSavedLocations() {

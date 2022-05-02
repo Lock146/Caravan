@@ -148,7 +148,7 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
 
     @Override
     public void onDestroyView() {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Caravan");
         super.onDestroyView();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {

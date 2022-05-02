@@ -133,7 +133,7 @@ public class GroupMembersFragment extends Fragment implements DestinationInterfa
 
     @Override
     public void onDestroyView() {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(" ");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Caravan");
         super.onDestroyView();
     }
 

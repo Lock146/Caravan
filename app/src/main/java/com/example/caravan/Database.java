@@ -576,9 +576,11 @@ public class Database {
 
     // Helper function to update a field for the user's info in Firestore
     private void update_user_field(String key, String value){
+        HashMap<String, Object> userInfo = new HashMap<>();
+        userInfo.put(key, value);
         m_database.collection(KEY_COLLECTION_USERS)
                 .document(m_userID)
-                .update(key, value);
+                .set(userInfo, SetOptions.merge());
     }
 
     private void update_group_map(String key, Object value){
