@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -170,7 +171,18 @@ public class GroupChatActivity extends AppCompatActivity {
     private void setListeners() {
         m_binding.imageBack.setOnClickListener(v -> onBackPressed());
         m_binding.layoutSend.setOnClickListener(v -> sendMessage());
-        m_binding.imageInfo.setOnClickListener(v -> list_members()); }
+        m_binding.imageInfo.setOnClickListener(v -> list_members());
+        m_binding.message.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if(i == KeyEvent.KEYCODE_ENTER){
+                    sendMessage();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
     private String getReadableDateTime(Date date) {
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
