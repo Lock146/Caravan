@@ -53,10 +53,10 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
             holder.dislike.setClickable(false);
             holder.like.setClickable(false);
             if(Database.get_instance().voted_for(suggestion.getPlaceID())){
-               holder.dislike.setBackgroundColor(ContextCompat.getColor(holder.dislike.getContext(), R.color.midGray));
+               holder.dislike.setBackgroundTintList(ContextCompat.getColorStateList(holder.dislike.getContext(), R.color.midGray));
             }
             else{
-                holder.like.setBackgroundColor(ContextCompat.getColor(holder.dislike.getContext(), R.color.midGray));
+                holder.like.setBackgroundTintList(ContextCompat.getColorStateList(holder.dislike.getContext(), R.color.midGray));
             }
         }
         else {
