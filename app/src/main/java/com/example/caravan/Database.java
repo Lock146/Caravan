@@ -458,6 +458,28 @@ public class Database {
         return m_route != null && m_route.size() != 0;
     }
 
+    public boolean has_vote_cast(String placeID){
+        if(m_votes.containsKey(placeID)){
+            HashMap<String, ArrayList<String>> votes = (HashMap<String, ArrayList<String>>) m_votes.get(placeID);
+            return votes.get(MemberVotes.For).contains(m_userID) || votes.get(MemberVotes.Against).contains(m_userID);
+        }
+        return false;
+    }
+
+    public boolean voted_for(String placeID){
+        if(has_vote_cast(placeID)){
+            return m_votes.get(placeID).get(MemberVotes.For).contains(m_userID);
+        }
+        return false;
+    }
+
+    public boolean voted_against(String placeID){
+        if(has_vote_cast(placeID)){
+            return m_votes.get(placeID).get(MemberVotes.Against).contains(m_userID);
+        }
+        return false;
+    }
+
     private Database(){
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             Log.d(TAG, "Unable to get current Firebase user");
