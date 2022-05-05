@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caravan.Database;
@@ -44,11 +45,24 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        route_miles = m_suggestions.get(position).getDistance()/MILES;
+        StopInfo suggestion = m_suggestions.get(position);
+        route_miles = suggestion.getDistance()/MILES;
         holder.rowCountTextView.setText(String.valueOf(route_miles));
-        holder.textView.setText(m_suggestions.get(position).getName());
-        holder.like.setOnClickListener(trigger -> Database.get_instance().vote_for(m_suggestions.get(position).getPlaceID()));
-        holder.dislike.setOnClickListener(trigger -> Database.get_instance().vote_against(m_suggestions.get(position).getPlaceID()));
+        holder.textView.setText(suggestion.getName());
+        if(Database.get_instance().has_vote_cast(suggestion.getPlaceID())){
+            holder.dislike.setClickable(false);
+            holder.like.setClickable(false);
+            if(Database.get_instance().voted_for(suggestion.getPlaceID())){
+               holder.dislike.setBackgroundTintList(ContextCompat.getColorStateList(holder.dislike.getContext(), R.color.midGray));
+            }
+            else{
+                holder.like.setBackgroundTintList(ContextCompat.getColorStateList(holder.dislike.getContext(), R.color.midGray));
+            }
+        }
+        else {
+            holder.like.setOnClickListener(trigger -> Database.get_instance().vote_for(suggestion.getPlaceID()));
+            holder.dislike.setOnClickListener(trigger -> Database.get_instance().vote_against(suggestion.getPlaceID()));
+        }
     }
 
     @Override
