@@ -1,35 +1,29 @@
 package com.example.caravan.Activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.caravan.Adapter.ChatAdapter;
-import com.example.caravan.Adapter.RouteTimelineAdapter;
 import com.example.caravan.Adapter.suggestedStopsAdapter;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.Database;
-import com.example.caravan.Model.ChatMessage;
 import com.example.caravan.R;
 import com.example.caravan.StopInfo;
-import com.example.caravan.User;
 import com.example.caravan.databinding.ActivityGroupBinding;
-import com.example.caravan.databinding.ActivityGroupChatBinding;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GroupActivity extends AppCompatActivity {
     private static final String TAG = GroupActivity.class.getSimpleName();
@@ -40,8 +34,18 @@ public class GroupActivity extends AppCompatActivity {
     private static final CharSequence OPEN_CHAT = "Open Chat";
     private PreferenceManager m_preferenceManager;
     private RecyclerView recyclerView;
-    private suggestedStopsAdapter suggestedStopsAdapter;
-    private ArrayList<StopInfo> CurrentRoute;
+    private suggestedStopsAdapter m_suggestedStopsAdapter;
+    private ArrayList<StopInfo> m_suggestedStops;
+    private final EventListener<DocumentSnapshot> m_suggestedStopsListener = new EventListener<DocumentSnapshot>() {
+        @Override
+        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+            if(value != null && value.contains(Constants.KEY_SUGG_STOPS)){
+                m_suggestedStopsAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+    private ListenerRegistration m_suggestedStopsRegistration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +58,10 @@ public class GroupActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setFitsSystemWindows(true);
 
-        suggestedStopsAdapter = new suggestedStopsAdapter(Database.get_instance().get_suggested_stops());
+        m_suggestedStopsAdapter = new suggestedStopsAdapter(Database.get_instance().get_suggested_stops());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerView.setAdapter(suggestedStopsAdapter);
+        recyclerView.setAdapter(m_suggestedStopsAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
@@ -72,6 +76,14 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStop(){
+        if(m_suggestedStopsRegistration != null){
+            m_suggestedStopsRegistration.remove();
+        }
+        super.onStop();
     }
 
     private void open_group_chat(){
@@ -91,5 +103,7 @@ public class GroupActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> onBackPressed());
         binding.groupMember.setOnClickListener(view -> go_to_group());
         binding.chat.setOnClickListener(view -> open_group_chat());
+
+        m_suggestedStopsRegistration =  Database.get_instance().add_group_listener(m_suggestedStopsListener);
     }
 }
