@@ -115,6 +115,14 @@
                 app:cornerRadius="20dp"
                 app:elevation="10dp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text=""
+                android:textColor="@color/white"
+                tools:visibility="invisible" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,17 +135,6 @@
                     android:layout_height="1dp"
                     android:background="@color/white" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:text="OR"
-                    android:textColor="@color/white" />
-
-                <View
-                    android:layout_width="120dp"
-                    android:layout_height="1dp"
-                    android:background="@color/white" />
             </LinearLayout>
 
         </LinearLayout>
@@ -154,6 +151,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/ic_gas_station"
+                android:visibility="invisible"
                 app:srcCompat="@mipmap/ic_facebook_foreground" />
 
             <ImageView
@@ -162,6 +160,7 @@
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="20dp"
                 android:src="@drawable/ic_gas_station"
+                android:visibility="invisible"
                 tools:srcCompat="@mipmap/ic_go_ogle_logo_foreground" />
 
             <ImageView
@@ -169,6 +168,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/ic_gas_station"
+                android:visibility="invisible"
                 app:srcCompat="@mipmap/ic_instagram_foreground" />
 
         </LinearLayout>
