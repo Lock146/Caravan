@@ -210,19 +210,23 @@ public class MainActivity extends AppCompatActivity {
             }, 500);
             //getUserData();
         }
+        txtEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
+
+
+
         //Log.e(TAG, "getUserData: " + firebaseAuth.getUid() );
-        if (Database.get_instance().get_user_email(userID) != null) {
-            txtEmail.setText(Database.get_instance().get_user_email(userID));
-        } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getUserData();
-                }
-            }, 500);
-            //getUserData();
-        }
+//        if ((FirebaseAuth.getInstance().getCurrentUser().getEmail()); != null) {
+//            txtEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+//        } else {
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    getUserData();
+//                }
+//            }, 500);
+//            //getUserData();
+//        }
 
 
 
