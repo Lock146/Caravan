@@ -4,8 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.io.ObjectStreamException;
@@ -38,7 +40,7 @@ public class StopInfo implements Parcelable
         m_longitude = 0.0;
     }
 
-    public StopInfo(GooglePlaceModel stop, double distance) {
+    public StopInfo(GooglePlaceModel stop) {
         Log.d(TAG, "StopInfo constructed: " + stop);
         m_placeID = stop.placeID();
         m_name = stop.getName();
@@ -50,7 +52,15 @@ public class StopInfo implements Parcelable
             m_latitude = stop.getGeometry().getLocation().getLat();
             m_longitude = stop.getGeometry().getLocation().getLng();
         }
-        m_distance = distance;
+        m_distance = 0.0;
+        if(DeviceInfo.get_location() != null){
+            double stopLat = stop.getGeometry().getLocation().getLat();
+            double stopLng = stop.getGeometry().getLocation().getLng();
+            double currentLat = DeviceInfo.get_location().getLatitude();
+            double currentLng = DeviceInfo.get_location().getLongitude();
+            m_distance = SphericalUtil.computeDistanceBetween(new LatLng(currentLat, currentLng),
+                    new LatLng(stopLat, stopLng));
+        }
     }
 
     public String getName()
