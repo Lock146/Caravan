@@ -44,6 +44,7 @@ import com.example.caravan.Constant.AllConstant;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.DestinationInfo;
 import com.example.caravan.Database;
+import com.example.caravan.DeviceInfo;
 import com.example.caravan.GooglePlaceModel;
 import com.example.caravan.Model.GooglePlaceModel.GoogleResponseModel;
 import com.example.caravan.NearLocationInterface;
@@ -192,6 +193,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         userCurrentLocationId = new ArrayList<>();
 
         m_stops = new ArrayList<>();
+        DeviceInfo.get_location();
 
         return m_binding.getRoot();
     }
@@ -758,6 +760,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         if (!Database.get_instance().in_group()) {
             Database.get_instance().create_group();
         }
+        DeviceInfo.get_location();
 
         Intent intent = new Intent(requireContext(), GroupActivity.class);
         ArrayList<StopInfo> stops = new ArrayList<StopInfo>();

@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.example.caravan.Constant.Constants;
 import com.example.caravan.CurrentLocationUpdateTask;
 import com.example.caravan.Database;
+import com.example.caravan.DeviceInfo;
 import com.example.caravan.R;
 import com.example.caravan.databinding.ActivityMainBinding;
 import com.example.caravan.databinding.NavDrawerLayoutBinding;
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         getToken();
         getUserData();
 
+        DeviceInfo.get_location();
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -143,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         Log.d("MainActivity", "onResume called");
         //getUserData();
+        m_currentLocationUpdater = new Timer();
+        long period = 5000;
+        m_currentLocationUpdater.schedule(new CurrentLocationUpdateTask(getApplicationContext(), period), 0, period);
         Glide.with(MainActivity.this).load(Database.get_instance().get_profile_picture()).into(imgHeader);
         super.onResume();
     }
