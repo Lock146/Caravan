@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.caravan.Model.DirectionPlaceModel.DirectionStepModel;
 import com.example.caravan.databinding.StepItemLayoutBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DirectionStepAdapter extends RecyclerView.Adapter<DirectionStepAdapter.ViewHolder> {
 
-    private List<DirectionStepModel> directionStepModels;
+    private List<DirectionStepModel> m_directionStepModels;
 
     @NonNull
     @Override
@@ -30,8 +31,8 @@ public class DirectionStepAdapter extends RecyclerView.Adapter<DirectionStepAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        if (directionStepModels != null) {
-            DirectionStepModel stepModel = directionStepModels.get(position);
+        if (m_directionStepModels != null) {
+            DirectionStepModel stepModel = m_directionStepModels.get(position);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 holder.binding.txtStepHtml.setText(Html.fromHtml(stepModel.getHtmlInstructions(), Html.FROM_HTML_MODE_LEGACY));
@@ -48,14 +49,22 @@ public class DirectionStepAdapter extends RecyclerView.Adapter<DirectionStepAdap
     @Override
     public int getItemCount() {
 
-        if (directionStepModels != null)
-            return directionStepModels.size();
+        if (m_directionStepModels != null)
+            return m_directionStepModels.size();
         else
             return 0;
     }
 
     public void setDirectionStepModels(List<DirectionStepModel> directionStepModels) {
-        this.directionStepModels = directionStepModels;
+        m_directionStepModels = directionStepModels;
+        notifyDataSetChanged();
+    }
+
+    public void append_direction_step_models(List<DirectionStepModel> directionStepModels){
+        if(m_directionStepModels == null){
+            m_directionStepModels = new ArrayList<>();
+        }
+        m_directionStepModels.addAll(directionStepModels);
         notifyDataSetChanged();
     }
 

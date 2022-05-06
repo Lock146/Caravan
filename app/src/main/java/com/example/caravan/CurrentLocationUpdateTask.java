@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 public class CurrentLocationUpdateTask extends TimerTask {
+    public static final String TAG = CurrentLocationUpdateTask.class.getSimpleName();
     private Database m_database;
     private Context m_context;
     private Location m_currentLocation;
@@ -47,6 +48,7 @@ public class CurrentLocationUpdateTask extends TimerTask {
         m_locationCallback = new LocationCallback(){
             @Override
             public void onLocationResult(LocationResult locationResult) {
+                Log.d(TAG, "Location updated: " + locationResult);
                 super.onLocationResult(locationResult);
                 m_currentLocation = locationResult.getLastLocation();
                 DeviceInfo.set_location(m_currentLocation);
@@ -59,10 +61,10 @@ public class CurrentLocationUpdateTask extends TimerTask {
         Task<Void> task = m_locationClient.requestLocationUpdates(m_locationRequest, m_locationCallback, Looper.getMainLooper());
         task
                 .addOnSuccessListener(unused -> {
-                    Log.d("Device Info", "Location updates granted.");
+                    Log.d(TAG, "Location updates granted.");
                 })
                 .addOnFailureListener(e -> {
-                    Log.d("DeviceInfo", "Location updates denied: " + e.toString());
+                    Log.d(TAG, "Location updates denied: " + e.toString());
                 });
     }
     @Override
