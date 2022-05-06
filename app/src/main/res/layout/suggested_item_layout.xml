@@ -51,19 +51,21 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnLike"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="88dp"
-        android:background="@drawable/ic_circle"
         android:backgroundTint="@color/primaryColor"
         android:scaleX="1.2"
         android:scaleY="1.2"
         android:src="@drawable/ic_liked"
+        app:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:fabCustomSize="40dp"
+        />
 
     <ImageButton
         android:id="@+id/btnLike2"
@@ -73,10 +75,11 @@
         android:layout_marginEnd="72dp"
         android:scaleX="1.2"
         android:scaleY="1.2"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnDislike"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -87,7 +90,10 @@
         android:scaleX="1.2"
         android:scaleY="-1.2"
         android:src="@drawable/ic_liked"
+        app:tint="@color/white"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:fabCustomSize="40dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

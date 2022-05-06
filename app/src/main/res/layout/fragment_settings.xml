@@ -96,6 +96,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:foreground="?attr/selectableItemBackground"
                         android:padding="10dp">
 
                         <TextView
@@ -157,6 +158,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:backgroundTint="@color/backgroundColor"
+                        android:foreground="?attr/selectableItemBackground"
                         android:paddingStart="10dp"
                         android:paddingTop="25dp"
                         android:paddingEnd="10dp"
@@ -202,6 +204,7 @@
                         android:paddingStart="10dp"
                         android:paddingTop="25dp"
                         android:paddingEnd="10dp"
+                        android:foreground="?attr/selectableItemBackground"
                         android:paddingBottom="25dp">
 
                         <TextView
@@ -244,6 +247,7 @@
                         android:paddingStart="10dp"
                         android:paddingTop="25dp"
                         android:paddingEnd="10dp"
+                        android:foreground="?attr/selectableItemBackground"
                         android:paddingBottom="25dp">
 
                         <TextView
@@ -285,6 +289,7 @@
                         android:backgroundTint="@color/backgroundColor"
                         android:paddingStart="10dp"
                         android:paddingTop="25dp"
+                        android:foreground="?attr/selectableItemBackground"
                         android:paddingEnd="10dp"
                         android:paddingBottom="25dp">
 

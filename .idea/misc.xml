@@ -38,22 +38,30 @@
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/drawable/ic_current_file_text.xml" value="0.186" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/drawable/ic_current_route.xml" value="0.186" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/drawable/splash_image.xml" value="0.186" />
-        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.136" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_direction.xml" value="0.264" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_forget.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_group.xml" value="0.264" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_group_chat.xml" value="0.136" />
-        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_group_members.xml" value="0.264" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_group_members.xml" value="0.1" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_login.xml" value="0.2877604166666667" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_main.xml" value="0.1421875" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_maps.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_routetimeline.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/activity_splash.xml" value="0.17760416666666667" />
-        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_home.xml" value="0.72" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_current_locations.xml" value="0.25025641025641027" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_dashboard.xml" value="0.25025641025641027" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_email_change.xml" value="0.25025641025641027" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_email_confirmation.xml" value="0.25025641025641027" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_home.xml" value="0.5341055341055341" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_saved_places.xml" value="0.11302083333333333" />
-        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_settings.xml" value="0.4" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/fragment_settings.xml" value="0.3819444444444444" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/place_item_layout.xml" value="0.264" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/row_item.xml" value="0.6028776978417266" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/saved_item_layout.xml" value="0.4" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/suggested_item_layout.xml" value="0.4" />
         <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/layout/toolbar_layout.xml" value="0.1421875" />
+        <entry key="..\:/Users/Lionp/AndroidStudioProjects/Caravan/app/src/main/res/menu/nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/background_chat_input.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/background_content_top.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/Lionp/Desktop/Test/TestNested/app/src/main/res/drawable/background_received_messages.xml" value="0.26666666666666666" />

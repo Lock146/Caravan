@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:colorBackground"
-    android:foreground="?attr/selectableItemBackground"
+    android:background="@drawable/background_chat_input"
+    android:backgroundTint="?android:colorBackground"
 
-    >
+    android:foreground="?attr/selectableItemBackground">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -17,11 +17,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:tint="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_map" />
+        app:srcCompat="@drawable/ic_map"
+        app:tint="?android:textColorPrimary" />
 
     <TextView
         android:id="@+id/rowCountTextView"
