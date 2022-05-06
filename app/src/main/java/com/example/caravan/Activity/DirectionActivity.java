@@ -196,7 +196,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                                     bottomSheetLayoutBinding.txtSheetTime.setText(legModels.get(0).getDuration().getText());
                                     bottomSheetLayoutBinding.txtSheetDistance.setText(legModels.get(0).getDistance().getText());
                                     for(DirectionLegModel legModel : legModels) {
-                                        adapter.setDirectionStepModels(legModel.getSteps());
+                                        adapter.append_direction_step_models(legModel.getSteps());
 
                                         List<PatternItem> pattern;
                                         if (mode.equals("walking")) {
