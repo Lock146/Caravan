@@ -21,11 +21,10 @@ import com.example.caravan.generated.callback.OnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAdapter.ViewHolder>{
     private static final String TAG = "RecyclerAdapter";
-
-    double MILES = 1609.344;
     double route_miles;
     ArrayList<StopInfo> m_suggestions;
     public suggestedStopsAdapter(ArrayList<StopInfo> suggestions) {
@@ -46,8 +45,8 @@ public class suggestedStopsAdapter extends RecyclerView.Adapter<suggestedStopsAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StopInfo suggestion = m_suggestions.get(position);
-        route_miles = suggestion.getDistance()/MILES;
-        holder.rowCountTextView.setText(String.valueOf(route_miles));
+
+        holder.rowCountTextView.setText(suggestion.get_formatted_distance());
         holder.textView.setText(suggestion.getName());
         if(Database.get_instance().has_vote_cast(suggestion.getPlaceID())){
             holder.dislike.setClickable(false);

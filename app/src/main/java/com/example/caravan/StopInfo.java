@@ -12,6 +12,7 @@ import com.google.maps.android.SphericalUtil;
 import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class StopInfo implements Parcelable
 {
@@ -98,6 +99,19 @@ public class StopInfo implements Parcelable
     public void setLatitude(double latitude) { m_latitude = latitude; }
 
     public void setLongitude(double longitude) { m_longitude = longitude; }
+
+    public String get_formatted_distance(){
+        // Distance is in meters
+        double distance = m_distance * 100 / 12 / 2.54;
+        String distanceOut = "";
+        if(distance > 1000.0){
+            distanceOut = String.format(Locale.US, "%.2f mi", distance / 5280.0);
+        }
+        else{
+            distanceOut = String.format(Locale.US, "%d ft", (int) distance);
+        }
+        return distanceOut;
+    }
 
     public static StopInfo get_stop_info(HashMap<String, Object> hashedStop){
         StopInfo stop = new StopInfo();

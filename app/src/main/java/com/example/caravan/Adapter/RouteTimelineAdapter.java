@@ -38,8 +38,7 @@ public class RouteTimelineAdapter extends RecyclerView.Adapter<RouteTimelineAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        route_miles = Route.get(position).getDistance()/MILES;
-        holder.rowCountTextView.setText(String.valueOf(route_miles));
+        holder.rowCountTextView.setText(Route.get(position).get_formatted_distance());
         holder.textView.setText(Route.get(position).getName());
     }
 
