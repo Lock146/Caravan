@@ -4,12 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class StopInfo implements Parcelable
 {
@@ -38,7 +41,7 @@ public class StopInfo implements Parcelable
         m_longitude = 0.0;
     }
 
-    public StopInfo(GooglePlaceModel stop, double distance) {
+    public StopInfo(GooglePlaceModel stop) {
         Log.d(TAG, "StopInfo constructed: " + stop);
         m_placeID = stop.placeID();
         m_name = stop.getName();
@@ -50,7 +53,15 @@ public class StopInfo implements Parcelable
             m_latitude = stop.getGeometry().getLocation().getLat();
             m_longitude = stop.getGeometry().getLocation().getLng();
         }
-        m_distance = distance;
+        m_distance = 0.0;
+        if(DeviceInfo.get_location() != null){
+            double stopLat = stop.getGeometry().getLocation().getLat();
+            double stopLng = stop.getGeometry().getLocation().getLng();
+            double currentLat = DeviceInfo.get_location().getLatitude();
+            double currentLng = DeviceInfo.get_location().getLongitude();
+            m_distance = SphericalUtil.computeDistanceBetween(new LatLng(currentLat, currentLng),
+                    new LatLng(stopLat, stopLng));
+        }
     }
 
     public String getName()
@@ -88,6 +99,19 @@ public class StopInfo implements Parcelable
     public void setLatitude(double latitude) { m_latitude = latitude; }
 
     public void setLongitude(double longitude) { m_longitude = longitude; }
+
+    public String get_formatted_distance(){
+        // Distance is in meters
+        double distance = m_distance * 100 / 12 / 2.54;
+        String distanceOut = "";
+        if(distance > 1000.0){
+            distanceOut = String.format(Locale.US, "%.2f mi", distance / 5280.0);
+        }
+        else{
+            distanceOut = String.format(Locale.US, "%d ft", (int) distance);
+        }
+        return distanceOut;
+    }
 
     public static StopInfo get_stop_info(HashMap<String, Object> hashedStop){
         StopInfo stop = new StopInfo();

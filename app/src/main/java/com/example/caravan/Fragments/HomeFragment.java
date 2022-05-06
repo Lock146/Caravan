@@ -683,7 +683,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public void onSaveClick(GooglePlaceModel googlePlaceModel) {
         Log.d(TAG, "onSaveClick called. GooglePlaceModel: " + googlePlaceModel.getName());
         if(googlePlaceModel.in_timeline()){
-            StopInfo removed = new StopInfo(googlePlaceModel, 0.0);
+            StopInfo removed = new StopInfo(googlePlaceModel);
             for(int i = 0; i < m_stops.size(); i += 1){
                 if(m_stops.get(i).equals(removed.getPlaceID())){
                     m_stops.remove(i);
@@ -837,7 +837,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             Database.get_instance().append_to_suggestions(stop);
         }
         else{
-            m_stops.add(new StopInfo(stop, 0.0));
+            m_stops.add(new StopInfo(stop));
         }
     }
 }

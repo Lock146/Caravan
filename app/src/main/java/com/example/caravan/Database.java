@@ -18,6 +18,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.caravan.Constant.Constants;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +34,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -355,7 +357,7 @@ public class Database {
     public void append_to_suggestions(GooglePlaceModel suggestion) {
         ArrayList<StopInfo> currentSuggestions = m_suggestedStops == null ? new ArrayList<>() : new ArrayList<>(m_suggestedStops);
         if(!has_suggested_stop(suggestion)){
-            currentSuggestions.add(new StopInfo(suggestion, 0.0));
+            currentSuggestions.add(new StopInfo(suggestion));
             update_group_map(KEY_SUGG_STOPS, currentSuggestions);
         }
     }
@@ -459,9 +461,11 @@ public class Database {
     }
 
     public boolean has_vote_cast(String placeID){
-        if(m_votes.containsKey(placeID)){
+        if(m_votes != null && m_votes.containsKey(placeID)){
             HashMap<String, ArrayList<String>> votes = (HashMap<String, ArrayList<String>>) m_votes.get(placeID);
-            return votes.get(MemberVotes.For).contains(m_userID) || votes.get(MemberVotes.Against).contains(m_userID);
+            if (votes.get(MemberVotes.For) != null && votes.get(MemberVotes.Against) != null) {
+                return votes.get(MemberVotes.For).contains(m_userID) || votes.get(MemberVotes.Against).contains(m_userID);
+            }
         }
         return false;
     }
