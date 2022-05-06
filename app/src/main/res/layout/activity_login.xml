@@ -111,6 +111,7 @@
                 android:backgroundTint="@color/teal_700"
                 android:padding="15dp"
                 android:text="Signup"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:cornerRadius="20dp"
                 app:elevation="10dp" />

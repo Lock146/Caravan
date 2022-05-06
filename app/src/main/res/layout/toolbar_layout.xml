@@ -7,7 +7,7 @@
     android:layout_height="?actionBarSize"
     android:background="?android:colorPrimary"
     android:elevation="1dp"
-    app:titleTextColor="?android:textColorPrimaryInverse"
+    app:titleTextColor="@color/white"
     tools:titleTextAppearance="@style/TextAppearance.AppCompat.Large">
 
 </androidx.appcompat.widget.Toolbar>
